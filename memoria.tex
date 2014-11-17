@@ -1,0 +1,62 @@
+\documentclass[upright, contnum]{umemoria}
+
+\depto{DEPARTAMENTO DE CIENCIAS DE LA COMPUTACI\'ON}
+\author{NICOL\'AS MART\'IN MIRANDA CASTILLO}
+\title{REGLAS DE ASOCIACI\'ON PARA L\'INEAS MOLECULARES}
+\auspicio{.}
+\date{DICIEMBRE 2014}
+\guia{GUILLERMO CABRERA VIVES}
+\carrera{INGENIERO CIVIL EN COMPUTACI\'ON}
+\memoria{MEMORIA PARA OPTAR AL T\'ITULO DE}
+\comision{\ }{\ }{\ }
+
+
+%\usepackage[utf8]{inputenc}
+%\usepackage[T1]{fontenc}
+%\usepackage[latin1]{inputenc}
+
+\usepackage{lipsum}
+\usepackage{verbatim}
+\usepackage{fontspec}
+\usepackage{xunicode}
+\usepackage{setspace}
+
+\begin{document}
+
+\frontmatter
+\maketitle
+
+\begin{abstract}
+\lipsum[1-4]
+\end{abstract}
+
+\begin{dedicatoria}
+Una dedicatoria corta. Por ejemplo, \emph{A los creadores de U-Campus}
+\end{dedicatoria}
+
+\begin{thanks}
+\lipsum[1-2]
+\end{thanks}
+
+\cleardoublepage
+\begin{spacing}{1}
+\tableofcontents
+%\cleardoublepage
+%\listoftables
+%\cleardoublepage
+\listoffigures
+\end{spacing}
+
+\mainmatter
+
+\input{include/introduccion}
+\input{include/marco_teorico}
+\input{include/especificacion}
+\input{include/solucion}
+\input{include/validacion}
+\input{include/conclusiones}
+
+\nocite{*}
+\bibliographystyle{plain}
+\bibliography{report}
+\end{document}
