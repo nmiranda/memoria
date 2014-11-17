@@ -9,3 +9,36 @@
 % Concentra la mayor parte de las citas
 % Alquien que conoce del tema podría saltearse este capítulo e igual comprender la memoria
 
+Gran parte de los datos obtenidos desde ALMA son guardados en estructuras de datos llamadas cubos de datos tipo ALMA (o \textit{ALMA Data Cubes}), que contienen información de distintos puntos de observación del cielo a distintas frecuencias. 
+Los espectros de frecuencia son una forma de representar la intensidad de la radiación electromagnética, recibida desde un punto del espacio, en un cierto rango de frecuencias. Estos contienen puntos altos de intensidad en ciertas frecuencias en las cuales se sabe que una cierta molécula conocida efectúa una transición cuántica. Por lo tanto, mediante reconocer e identificar estos puntos altos, o \textit{peaks}, se puede saber las transiciones moleculares que ocurrieron en el objeto del que proviene la radiación electromagnética. Como, a su vez, se sabe de antemano a qué frecuencia específicamente se realizan las transiciones cuánticas de moléculas conocidas, puede inferirse cuáles son las moléculas presentes en el objeto de origen.
+
+A su vez, los cubos de datos tipo ALMA, como estructura de datos, contienen valores indexados en tres coordenadas. Dos de las coordenadas son espaciales, y corresponden al equivalente a una imagen normal de dos dimensiones, en el sentido que describen puntos del cielo (o del espacio observable desde la tierra). La tercera coordenada corresponde al rango de frecuencias en el que se está detectando radiación electromagnética. Por lo tanto, si se fijan las dos coordenadas espaciales (se fija un punto en el espacio) y se extraen todos los valores en la tercera coordenada de aquel punto, se obtiene el espectro de frecuencias observado en ese punto del espacio.
+
+Los cubos de datos tipo ALMA, por tanto, contienen información de los espectros de frecuencia observados en todos los puntos de un sector dado del espacio. Todos los espectros presentes en un cubo se encuentran en un mismo rango de frecuencia. Sin embargo, distintos cubos de datos pueden tener observaciones hechas en distintos rangos de frecuencia entre sí.
+
+A partir de ALMA se generan enormes cantidades de datos, los cuales, debido a su gran tamaño,  necesariamente deben procesarse por parte de sistemas automatizados de extracción y análisis con el fin de facilitar a los investigadores el extraer información útil a partir de estos. La mayoría de estas herramientas se encuentran dentro de las áreas de investigación de la minería de datos y Machine Learning; disciplinas de la computación que han tenido un gran auge en el último tiempo.
+
+\section{Reglas de asociación}
+
+Dentro del área del aprendizaje computacional automatizado, o Data Mining, existe una técnica que ha sido ampliamente utilizada e investigada desde su concepción. Se trata del aprendizaje mediante reglas de asociación, o \textit{Association Rule Learning (ARL)}; la cual se creó con el fin de identificar relaciones entre los productos preferidos por los consumidores de distintos sistemas de punto de venta, como supermercados, tiendas de venta al detalle, etc.
+La intuición es que, si se posee una base de datos con transacciones, donde cada una de estas posee un cierto conjunto de ítems que un cliente en particular ha comprado, con la ayuda de un algoritmo pueden encontrarse una serie de reglas que indiquen relaciones entre las compras de ciertos ítems en particular. Un ejemplo de regla (bastante intuitiva, por lo demás) sería: “En el 90\% de las transacciones en que se compró pan y mantequilla también se compró leche”. Los algoritmos de ARL permiten obtener relaciones simples, como la del ejemplo, y otras mucho más difíciles de deducir por otros medios.
+
+Formalmente, se considera un conjunto de variables $\mathcal{X}=\{X_{j}\}^p_{j=1}$. Usualmente, estas variables se consideran como binarias: $X_j\in\{0,1\}$. Se define, entonces un conjunto de $N$ \textit{transacciones} $D=\{t_i\}^N_{i=1}$, donde $t_i=\{x_{i,j}\}^p_{j=1}$, y
+
+\[
+x_{i,j}=
+\left\{
+\begin{array}{l l}
+0 \quad \text{si es ítem $j$ es parte de la transacción $i$}\\
+1 \quad \text{de lo contrario.}
+\end{array}
+\right.
+\]
+
+El objetivo principal del análisis mediante reglas de asociación es obtener aquellos valores de variables conjuntas $(X_1.X_2,\dots,X_p)$ que aparezcan de manera más frecuente en el conjunto de datos.
+
+A partir de éstos se generan reglas de asociación, de la forma:
+
+\[I \Rightarrow X_j\Big|c\]
+
+donde $I\subset\mathcal{X}$, $X_j \notin I$ y $c$ es la \textit{confianza de la regla}, o la razón entre el número de transacciones en $D$ que contienen a $I \cup X_j$ y el número de transacciones que contienen a $I$. A su vez, la razón entre el número de transacciones que contienen a $I \cup X_j$ y el número total de transacciones se conoce como el \textit{soporte} de la regla de asociación.
