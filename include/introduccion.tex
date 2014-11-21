@@ -9,10 +9,6 @@
 % - Descripción general de la solución
 % - Resultados de la solución implementada para resolver el problema
 
-
-
-%\bookepigraph{10cm}{we may in time ascertain the mean temperature of heavenly bodies, but I regard this order of facts as for ever excluded from our recognition. We can never learn their internal constitution}{Auguste Comte}{Astronomy, Ch. I: General View, 1835}
-
 \vspace{1em}
 \hfill{}
 \begin{minipage}{9cm}{
@@ -27,6 +23,9 @@
 \vspace{2em}
 \end{minipage}
 
+\section*{Contexto y motivación}
+\addcontentsline{toc}{section}{Contexto y motivación}
+
 En los últimos tiempos, y en gran parte debido al explosivo desarrollo tecnológico, han surgido numerosos campos en los cuales se ha requerido el uso de procesamiento masivo de datos e inteligencia computacional con el fin de automatizar y auxiliar el proceso de generación de nuevo conocimiento. La astronomía es, sin lugar a dudas, uno de ellos. Esto se debe, en parte, al explosivo desarrollo de nuevas tecnologías que ponen al alcance de la comunidad científica una cantidad nunca antes vista de datos; los cuales tienen el potencial de contener invaluable información sobre el universo, su composición, estructura, origen y destino.
 
 Un claro ejemplo de esto lo constituye el \textit{Atacama Large Millimiter/sub-millimiter Array (ALMA)}, un interferómetro radio-astronómico que consiste en un arreglo de 66 antenas que observan el espacio en las bandas milimétricas y submilimétricas del espectro electromagnético. Ubicado en el desierto de Atacama, en el norte de Chile, es parte de uno de los proyectos científicos más importantes del último tiempo a nivel nacional; en el cual se ha hecho uso de tecnologías de punta por parte de investigadores, ingenieros y técnicos expertos en computación de alto rendimiento, redes de fibra óptica, Machine Learning, minería de datos, entre otros. 
@@ -39,16 +38,41 @@ Parte principal de la importancia de estos espectros de radiación electromagné
 
 La detección de lineas espectrales es un problema de interés en sí, y que puede llegar a ser muy complejo dependiendo de en qué bandas de frecuencia se esté trabajando. Sin embargo, se puede seguir obteniendo información valiosa de los objetos observados a partir de estas líneas ya detectadas. Esto incluye potencialmente respuestas a preguntas como: ¿de qué forma se relacionan ciertos tipos de líneas entre sí? ¿Existe una mayor correlación de presencia de líneas de ciertos isótopos o moléculas en particular? ¿Hay una mayor presencia de líneas de ciertas especies en algunos objetos que en otros? ¿Qué nos dice esto de la composición de los objetos y de su química subyacente?
 
+\section*{Objetivos}
+\addcontentsline{toc}{section}{Objetivos}
+
+Los objetivos del presente trabajo se enumeran a continuación:
+
+\subsection*{Objetivo General}
+\addcontentsline{toc}{subsection}{Objetivo General}
+
+\begin{itemize}
+	\item Asociar líneas de transición cuántica presentes en espectros de frecuencia (obtenidos a partir de observaciones astronómicas) entre sí; en particular, tanto aquellas líneas de las cuales se sabe actualmente a qué especie (e.g. átomo, ion, molécula, isótopo) corresponden como aquellas que aun no han sido identificadas o asociadas a alguna especie conocida.
+\end{itemize}
+
+\subsection*{Objetivos Específicos}
+\addcontentsline{toc}{subsection}{Objetivos Específicos}
+
+\begin{itemize}
+  \item Inferir reglas de asociación para líneas moleculares detectadas en espectros dentro de un mismo rango de frecuencias.
+  \item Inferir reglas de asociación para líneas moleculares detectadas en espectros dentro de distintos rangos de frecuencias.
+  \item Evaluación de los algoritmos sobre simulaciones y datos reales.
+  \item Desarrollar una herramienta para asociación de líneas moleculares que funcione en un ambiente de computación de alto rendimiento (HPC) y que sea compatible con plataformas de observatorios virtuales (VO).
+\end{itemize}
+
+\section*{Descripción de la solución}
+\addcontentsline{toc}{section}{Descripción de la solución}
+
 Si bien existen diversas técnicas de clasificación y caracterización de puntos en un espacio multidimensional (en nuestro caso objetos descritos por parámetros), para resolver las preguntas anteriores se requiere más bien de una herramienta que permita encontrar relaciones explícitas entre los parámetros en sí, y que permita asignar medidas de relevancia a estas relaciones.
 
-En el presente trabajo se plantea el uso de \textit{Association Rule Learning (ARL)}, o Aprendizaje de Reglas de Asociación, como una herramienta que puede dar respuesta directa a algunas de estas interrogantes, y ayudar a obtener información clave para el proceso de utilizar otras técnicas en el largo plazo.
+En el presente trabajo se plantea el uso de \textit{Association Rule Learning (ARL)}, o Aprendizaje de Reglas de Asociación, como una herramienta que puede dar respuesta directa a algunas de las interrogantes mencionadas anteriormente, y ayudar a obtener información clave para el proceso de utilizar otras técnicas en el largo plazo.
 
 El Aprendizaje de Reglas de Asociación como técnica se ubica dentro del área de la minería de base de datos, y su concepción original fue el ser aplicada a sistemas de puntos de venta con el fin de encontrar las relaciones más comunes entre artículos comprados por los clientes. Sin embargo, con el tiempo se ha convertido en una de las herramientas más utilizadas de su área, en una diversa gama de contextos.
 
 En el presente trabajo se llevó a cabo el uso de esta técnica con el fin de encontrar relaciones comunes entre líneas espectrales a través de distintos espectros de frecuencia. Ahora bien, la naturaleza innata de estos es más bien contínua y las líneas en sí mismas poseen diversos parámetros que las caracterizan. Por lo tanto, este caso dista mucho de la binaridad del problema original para el cual se pensó ARL. Sin embargo, como se muestra a lo largo de este informe, si se asume que se realizó con anterioridad un buen trabajo de detección de líneas y se efectúa un pre-procesamiento adecuado de los datos, el algoritmo de ARL arroja resultados de interés.
 
-En particular, se utilizó una implementación de dos de los algoritmos más utilizados de ARL: \textit{Apriori} y \textit{FP-Growth}. Luego, se obtuvo una base de datos de líneas espectrales ya detectadas (pero no necesariamente asociadas a alguna especie [átomo, isótopo, etc.]), y sobre este conjunto de datos se procedió a realizar particiones por características de los objetos de procedencia (como tipo de objeto o estructura estelar, cercanía, etc.) y a filtrar las líneas por su brillo o su razón señal a ruido, entre otros. Una vez obtenido un conjunto de datos que resultó de interés, se procedió a aplicar los algoritmos de ARL sobre estos.
+En particular, se utilizó una implementación de dos de los algoritmos más utilizados de ARL: \textit{Apriori} y \textit{FP-Growth}. Luego, se obtuvo una base de datos de líneas espectrales ya detectadas (pero no necesariamente asociadas a alguna especie [átomo, isótopo, etc.]) correspondientes a observaciones del \textit{Sloan Digital Sky Survey (SDSS)}, un sondeo espectroscópico del espacio realizado con un telescopio óptico. Sobre este conjunto de datos se procedió a realizar un pre-procesamiento que, entre otros, consta de filtrar las líneas según su brillo o razón señal a ruido. Luego, se efectuaron particiones según las características de los objetos de procedencia (como tipo de objeto o estructura estelar, cercanía, etc.). Finalmente, sobre estas se procedió a aplicar los algoritmos de ARL.
 
-Los resultados obtenidos fueron efectivamente reglas de asociación entre líneas espectrales que resultaron tener mayor relevancia sobre el conjunto de datos bajo distintas medidas. Quedó para su estudio en trabajos posteriores el crear una forma eficiente e intuitiva para un usuario de recorrer y visualizar estas reglas, filtrar el conjunto inicial por parámetros y encontrar diferencias entre las reglas generadas por distintos conjuntos. Esto con el fin de facilitar aun más el descubrimiento de información valiosa sobre la química y composición de los objetos estudiados.
+Los resultados obtenidos fueron efectivamente reglas de asociación entre líneas espectrales que resultaron tener mayor relevancia sobre el conjunto de datos bajo distintas medidas. Quedó para su estudio en trabajos posteriores el crear una forma eficiente e intuitiva para un usuario de recorrer y visualizar estas reglas, filtrar el conjunto inicial por parámetros y encontrar diferencias entre las reglas generadas por distintos conjuntos. Esto con el fin de facilitar aun más el descubrimiento de información valiosa sobre la química y composición de los objetos estudiados. Junto con esto, queda para desarrollo a futuro una implementación más general del procedimiento para así aplicar los algoritmos a datos obtenidos en otras bandas de frecuencia, como por ejemplo, las observaciones radioastronómicas de ALMA; que por sus caracterísiticas, promete un mayor número de datos sobre los cuales obtener reglas de asociación para líneas espectrales.
 
 \end{intro}
