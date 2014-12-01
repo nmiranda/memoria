@@ -15,7 +15,7 @@
 
 En los comienzos del siglo XIX, los astrónomos comenzaron a realizar medidas que, por primera vez, revelaron con exactitud cuán lejanas se encuentran de la tierra incluso las estrellas más cercanas. Y, al igual que entonces, actualmente sigue siendo técnicamente imposible, con la tecnología que contamos, viajar a las cercanías de estos objetos estelares. Sin embargo, hoy en día es bastante bien conocida la composición química de las estrellas y del material difuso presente en los vastos espacios que las separan. El estudio de los espectros de los objetos astronómicos, o \emph{espectroscopía astronómica}, es lo que ha hecho esto posible.
 
-En el año 1814, el científico Joseph von Fraunhofer (1787 - 1826), mediante el uso de prismas de alta calidad construidos por él, logró difractar un rayo de luz solar y proyectarlo hacia un muro blanco. Además de los colores característicos del arcoíris, observados de esta manera desde los tiempos de Newton, vio en la proyección resultante muchas líneas oscuras. Procedió, luego, a catalogar meticulosamente la longitud de onda exacta de cada una de estas líneas, que hasta el día de hoy se conocen como líneas de Fraunhofer, y asignó letras a las más notorias. De esta forma, Fraunhofer registró el primer espectro astronómico de alta resolución.
+En el año 1814, el científico Joseph von Fraunhofer (1787 - 1826), mediante el uso de prismas de alta calidad construidos por él mismo, logró difractar un rayo de luz solar y proyectarlo hacia un muro blanco. Además de los colores característicos del arcoíris, observados de esta manera desde los tiempos de Newton, vio en la proyección resultante muchas líneas oscuras. Procedió, luego, a catalogar meticulosamente la longitud de onda exacta de cada una de estas líneas, que hasta el día de hoy se conocen como líneas de Fraunhofer, y asignó letras a las más notorias. De esta forma, Fraunhofer registró el primer espectro astronómico de alta resolución.
 
 Ahora bien, él no sabía cuál era la causa de que estas líneas oscuras estuvieran presentes en el espectro. Sin embargo, posteriormente procedió a realizar el mismo experimento, pero esta vez utilizando un rayo de luz proveniente de la estrella roja cercana Betelgeuse, y observó que el patrón de líneas oscuras cambiaba considerablemente. Fraunhofer concluyó correctamente que estas se encuentran de cierta forma relacionadas con la composición del objeto observado. En efecto, algunas de las líneas observadas por Fraunhofer se deben a las especies (e.g átomos, iones, moléculas) que componen la atmósfera terrestre.
 
@@ -66,27 +66,61 @@ El aprendizaje mediante reglas de asociación, o \textit{Association Rule learni
 
 La motivación principal de ARL en su concepción fue el encontrar relaciones lógicas entre los artículos adquiridos por usuarios en puntos de venta del tipo \textit{"Si un cliente compra los artículos A y B, entonces es muy probable que también compre el artículo C"}. Sin embargo, la teoría de fondo que se desarrolló con el tiempo tiene una gran cantidad de aplicaciones en los más diversos ámbitos.
 
-Formalmente, se considera un conjunto de variables $\mathcal{X}=\{X_{j}\}^p_{j=1}$. Usualmente, estas variables se consideran como binarias: $X_j\in\{0,1\}$. Se define, entonces un conjunto de $N$ \textit{transacciones} $D=\{t_i\}^N_{i=1}$, donde $t_i=\{x_{i,j}\}^p_{j=1}$, y 
+\subsection{Definición formal}
 
-\[
-x_{i,j}=
-\left\{
-\begin{array}{l l}
-0 \quad \text{si es ítem $j$ es parte de la transacción $i$}\\
-1 \quad \text{de lo contrario.}
-\end{array}
-\right.
-\]
+Sea $\mathcal{I} = \{i_1,\,i_2,\,i_3,\,\ldots ,\,i_m\}$ un universo de ítemes posibles. Se denomina, entonces a un conjunto $X \subseteq \mathcal{I}$ como \textit{conjunto de ítemes} o \textit{itemset}. Se tiene, además un conjunto de transacciones $\mathcal{T} = \{T_1,\,T_2,\,\ldots,\,T_n\}$, donde $T_i \subseteq \mathcal{I}, \; \forall i \in {[1,n]}$. Dados un conjunto de ítemes $X$ y una transacción $T_i$, se dice que la trasacción $T_i$ \textit{satisface} $X$ si y solo si $X \subseteq I_i$.
 
-El objetivo principal del análisis mediante reglas de asociación es obtener aquellos valores de variables conjuntas $(X_1.X_2,\dots,X_p)$ que aparezcan de manera más frecuente en el conjunto de datos.
+Una \textit{regla de asociación} es, entonces, una relación (más específicamente, una implicancia) entre dos conjuntos de la forma $X \Rightarrow Y$, donde $X \subset \mathcal{I}$, $Y \subset \mathcal{I}$, y $X \cap Y = \emptyset$. A $X$ se denomina el \textit{antecedente} de la regla y a $Y$ se denomina el \textit{consecuente} de la regla.
 
-A partir de éstos se generan reglas de asociación, de la forma:
+Existen, también, una serie de medidas para cuantificar la relevancia de una regla de asociación. A continuación se define algunas de ellas.
 
-\[I \Rightarrow X_j\Big|c\]
+El \textit{soporte} de un conjunto de ítemes $X$, o $\mathit{supp}(X)$, se define como $$\mathit{supp}(X) = \frac{|\mathcal{T}_X|}{|\mathcal{T}|} \quad \text{, tal que} \quad \mathcal{T}_X = \{T \in \mathcal{T} \, : \, X \subset T \}\text{,}$$ vale decir, corresponde a la fracción del total de transacciones en la que está presente el conjunto.
 
-donde $I\subset\mathcal{X}$, $X_j \notin I$ y $c$ es la \textit{confianza de la regla}, o la razón entre el número de transacciones en $D$ que contienen a $I \cup X_j$ y el número de transacciones que contienen a $I$. A su vez, la razón entre el número de transacciones que contienen a $I \cup X_j$ y el número total de transacciones se conoce como el \textit{soporte} de la regla de asociación.
+A su vez, el soporte de una regla de asociación $X \Rightarrow Y$, o $\mathit{supp}(X \Rightarrow Y)$, se define como $$\mathit{supp}(X \Rightarrow Y) = \mathit{supp}(X \cup Y)\text{,}$$ vale decir, corresponde a la fracción del total de transacciones en las cuales está presente tanto el antecedente como el consecuente de la regla simultáneamente\footnote{Debe tenerse en mente que la expresión $mathit{supp}(X \cup Y)$ indica la fracción del total de transacciones en las cuales está presente \textbf{tanto} el antecedente como el consecuente de la regla \textbf{simultáneamente}, y \textbf{no} de aquellas en las cuales está presente el antecedente \textbf{o} el consecuente. El argumento del soporte $\mathit{supp}$ es un conjunto de ``pre-condiciones", y, por lo tanto, se vuelve más restrictivo en la medida que su cardinalidad aumenta.}.
 
-En el mismo artículo seminal de ARL, se presentó el algoritmo de ARL, llamado \textit{Apriori}. Este algoritmo hace uso de las propiedades de clausura descendiente de la frecuencia de los conjuntos con respecto a sus subconjuntos con el fin de optimizar el proceso de generación de conjuntos de ítemes frecuentes.
+La \textit{confianza} de una regla de asociación $X \Rightarrow Y$, denotada por $\mathit{conf}(X \Rightarrow Y)$, se define como $$\mathit{conf}(X \Rightarrow Y) = \frac{\mathit{supp}(X \cup Y)}{\mathit{supp}(X)}\text{,}$$ es decir, indica en qué fracción de las transacciones en las cuales está presente el antecedente la regla se cumple (i.e. está presente también el consecuente de la regla). Debido al uso frecuente de esta medida de relevancia, resulta usual el expresar una regla de asociación mediante la notación $$X \Rightarrow Y \, \Big| \, c$$ donde $c = \mathit{conf}(X \Rightarrow Y)$.
+
+El \textit{lift} de una regla de asociación $X \Rightarrow Y$, denotado por $\mathit{lift}(X \Rightarrow Y)$, se define como $$\mathit{lift}(X \Rightarrow Y) = \frac{\mathit{conf}(X \Rightarrow Y)}{\mathit{supp}(Y)} = \frac{\mathit{supp}(X \cup Y)}{\mathit{supp}(X) \times \mathit{supp}(Y)}\text{.}$$ La intuición detrás del concepto de lift tiene lugar al interpretar las medidas descritas anteriormente desde un punto de vista probabilístico. Tomando el conjunto $\mathcal{T}$ como un universo de posibles resultados, o espacio muestral, se tiene que $$\mathit{supp}(X) = P(X) \quad \text{y} \quad \mathit{conf}(X \Rightarrow Y) = P(Y| X)\text{.}$$ Desde este punto de vista, la medida de lift indica qué tan bien la presencia del antecedente de una regla lograría predecir la presencia del consecuente. Por lo tanto, si la presencia del antecedente y del consecuente en una transacción cualquiera son eventos estadísticamente independientes (i.e. la ocurrencia de uno no afecta la probabilidad de que el otro ocurra), se tendrá que $\mathit{lift}(X \Rightarrow Y) = 1$; y este valor irá variando en la medida que ambos eventos sean más dependientes entre sí.
+
+Por ejemplo, supongamos que se tiene el siguiente conjunto de transacciones
+
+\begin{tabular}{l l}
+\textbf{TID} & \textbf{Items} \\
+1 & $a$, $c$ \\
+2 & $a$, $d$ \\
+3 & $b$, $c$ \\
+4 & $b$, $d$ \\
+\end{tabular}
+
+donde \textit{TID} es el número identificador de la transacción. Luego, para este caso, se tiene que $$\mathit{lift}(\{a\} \Rightarrow \{c\}) = \frac{\mathit{supp}(\{a\} \cup \{c\})}{\mathit{supp}(\{a\}) \times \mathit{supp}(\{c\})} = \frac{1/4}{1/2 \times 1/2} = 1\text{,}$$ lo cual indica que la que la ocurrencia de que una transacción cualquiera satisfaga $\{a\}$ es estadísticamente independiente de que una transacción cualquiera satisfaga $\{b\}$.
+
+En cambio, en el siguiente conjunto de transacciones
+
+\begin{tabular}{l l}
+\textbf{TID} & \textbf{Items} \\
+1 & $a$, $c$ \\
+2 & $a$, $d$ \\
+3 & $b$, $c$ \\
+4 & $b$, $c$ \\
+\end{tabular}
+
+se tiene que $$\mathit{lift}(\{a\} \Rightarrow \{c\}) = \frac{\mathit{supp}(\{a\} \cup \{c\})}{\mathit{supp}(\{a\}) \times \mathit{supp}(\{c\})} = \frac{1/4}{1/2 \times 3/4} = 2/3 < 1\text{,}$$ lo cual quiere decir que hay una mayor razón de transacciones que satisfacen $\{c\}$ dentro del total de transacciones que dentro del conjunto de transacciones que satisfacen $\{a\}$.
+
+Finalmente, en el conjunto de transacciones
+
+\begin{tabular}{l l}
+\textbf{TID} & \textbf{Items} \\
+1 & $a$, $c$ \\
+2 & $a$, $d$ \\
+3 & $b$, $d$ \\
+4 & $b$, $d$ \\
+\end{tabular}
+
+se cumple que $$\mathit{lift}(\{a\} \Rightarrow \{c\}) = \frac{\mathit{supp}(\{a\} \cup \{c\})}{\mathit{supp}(\{a\}) \times \mathit{supp}(\{c\})} = \frac{1/4}{1/2 \times 1/4} = 2 > 1\text{,}$$ lo cual indica que hay una mayor razón de transacciones que satisfacen $\{c\}$ dentro del conjunto de transacciones que satisfacen $\{a\}$ que dentro del total de transacciones.
+
+\subsection{Algoritmos, implementaciones y aplicaciones}
+
+En el mismo artículo seminal de ARL por Agrawal et al.\cite{agrawal1993mining}, se presentó el algoritmo \textit{Apriori}. Este algoritmo hace uso de las propiedades de clausura descendiente de la frecuencia de los conjuntos con respecto a sus subconjuntos con el fin de optimizar el proceso de generación de conjuntos de ítemes frecuentes.
 
 Posteriormente, Agrawal et al. presentaron el algoritmo \textit{AprioriTid}, cuyas mejores características fueron combinadas con el algoritmo \textit{Apriori} para crear el algoritmo \textit{AprioriHybrid}, de orden de complejidad lineal en el número de transacciones\cite{agrawal1994fast}. Luego se han realizado más desarrollos en ARL orientado a transacciones secuenciales de clientes de puntos de ventas\cite{agrawal1995mining}.
 
@@ -98,7 +132,7 @@ Más recientemente, Han et al. introdujeron el uso de una estructura de datos ll
 
 Desde su concepción, el método de ARL ha sido aplicado en numerosas áreas, tales como la detección de intrusiones\cite{lee2000framework} y anomalías\cite{patcha2007overview}\cite{chandola2009anomaly}, educación\cite{romero2007educational}\cite{romero2008data}, química\cite{dehaspe1998finding}, privacidad de datos\cite{ghinita2008private}, búsqueda en la web\cite{ferragina2008personalized}, tráfico en redes\cite{estan2003automatically}, computación social\cite{li2008tag}, búsqueda semántica\cite{cohen2007associative}, biología\cite{kramer2001molecular}\cite{carmona2007genecodis}, salud\cite{karabatak2009expert}\cite{chaves2011efficient}, medios de comunicación\cite{davidson2010youtube}\cite{kobilarov2009media}, y la investigación forense\cite{iqbal2013unified}. Junto con esto, se han realizado numerosas investigaciones sobre el estado actual de ARL y sus posibles desarrollos a futuro dentro del marco de métodos automatizados de generación de conocimiento\cite{han2007frequent}.
 
-Si bien existen numerosos esfuerzos por utilizar minería de datos y Machine Learning en diversos ámbitos de la astronomía (en particular, en detección, clasificación y caracterización de líneas moleculares en espectros de emisión\cite{vskoda2011searching}), hasta la fecha no se ha propuesto abiertamente el uso de ARL sobre datos extraídos de espectros de frecuencia. 
+Si bien existen numerosos esfuerzos por utilizar minería de datos y Machine Learning en diversos ámbitos de la astronomía (en particular, en detección, clasificación y caracterización de líneas moleculares en espectros de emisión\cite{vskoda2011searching}), hasta la fecha no se ha propuesto abiertamente el uso de ARL sobre datos extraídos de espectros de frecuencia.
 
 Sin embargo, se han realizado avances en ampliar los conceptos subyacentes en ARL con el fin de aplicar el método en campos más diversos\cite{brin1997beyond}. Específicamente, una rama de investigación ha desarrollado lo que se denomina \textit{Weighted Association Rule Learning}\cite{wang2000efficient}\cite{cai1998mining}. Este método permite asociar medidas de interés arbitrario a priori a ciertos conjuntos de datos. Si bien esto hace que se pierdan propiedades de clausura que son útiles a la hora de generar algoritmos eficientes, también permite trabajar con distintos conjuntos de transacciones sin que las reglas generadas estos dependan exclusivamente de su soporte u otras medidas estándar.
 
