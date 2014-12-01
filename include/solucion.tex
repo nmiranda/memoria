@@ -148,13 +148,58 @@ La clase \textit{AssociationRule} es la que define la estructura y comportamient
 
 \subsection{Clase \textit{FrequentItemSetMiner}}
 
+La clase \textit{FrequentItemSetMiner} es la encargada de abstraer y guardar información sobre el proceso de extraer a partir de las transacciones aquellos conjuntos de ítemes que cumplan con un requisito de soporte mínimo dado. Cada instancia de esta clase corresponde a un proceso de estracción distinto, conteniendo campos y estructuras de datos para los algoritmos involucrados, su estado actual y su resultado.
+
+En su implementación actual, esta clase es heredada por dos sub-clases. Una correspondiente al algoritmo \textit{Apriori}, y otra al algoritmo \textit{FP-Growth}. Cada una contiene su propia implementación de los métodos principales, definidos en su clase padre, junto con sus propias funciones auxiliares y estructuras de datos correspondientes.
+
 \subsection{Clase \textit{RuleMiner}}
+
+La clase \textit{RuleMiner} es la que abstrae el proceso de extraer reglas de asociación a partir de conjuntos frecuentes de ítemes. Cada instancia de esta clase corresponde a un proceso de extracción distinto; básicamente el mismo en todo los casos salvo en ciertos detalles, como algunas funciones auxiliares y referencias a estructuras de datos, dependiendo de si los conjuntos fueron extraídos mediante \textit{Apriori} o \textit{FP-Growth}.
 
 \section{Algoritmos y estructuras de datos}
 
+Para el desarrollo de este sistema se llevó a cabo la implementación de dos algoritmos de aprendizaje de reglas de asociación. El primero es el algoritmo \textit{Apriori} y el segundo es una optimización de este, llamada \textit{FP-Growth}. Sus procedimientos generales y estructuras de datos principales se describen a continuación.
+
 \subsection{Algoritmo \textit{Apriori}}
 
+El algoritmo \textit{Apriori} recibe como entrada un conjunto de transacciones, y tiene como objetivo encontrar y retornar todos aquellos conjuntos presentes que cumplan con el requisito de soporte mínimo indicado, también llamados \textit{conjuntos frecuentes}.
+
+Por ejemplo, supongamos que se cuenta con el un conjunto de transacciones, y que cada una contiene ítemes pertenecientes a un universo de solo 4 elementos posibles, $\mathcal{I} = \{0,\,1,\,2,\,3\}$. Luego, en principio, para extraer los conjuntos frecuentes a partir de estas transacciones, por cada uno de los conjuntos que es posible generar con este universo de 4 ítemes posibles (llamados \textit{conjuntos candidatos}), se debe recorrer cada una de las transacciones, ver si la transaccion satisface este conjunto, y de ser así incrementar un contador. Luego de terminar este proceso para cada uno de los conjuntos posibles, se tendrá el número de veces que cada uno de estos se encuentra dentro del conjunto de transacciones, y teniendo el número total de estas, se puede obtener de forma directa el soporte de estos conjuntos.
+
+\missingfigure{Grafo con los conjuntos generados a partir de un universo de 4 ítemes posibles}
+
+El problema radica en que el número de conjuntos candidatos crece de manera exponencial en el número de ítemes del universo posible. En efecto, si el número de ítemes del universo es $n$, entonces a partir de este es posible generar $2^n+1$ conjuntos. Por tanto, para un universo de 100 elementos, existen nada menos que $1.26\times10^30$ conjuntos candidatos; y debe, por tanto, recorrerse el total de transacciones este número de veces.
+
+No obstante, es posible reducir el número de conjuntos candidatos utilizando la propiedad de \textit{clausura descendiente} de los conjuntos frecuentes, tambien llamado \textit{principio Apriori}. Esta propiedad asegura que si un conjunto dado es, en efecto, frecuente, entonces necesariamente todos sus subconjuntos también lo son. O, expresado de forma recíproca, si un conjunto dado resulta no ser frecuente, entonces necesariamente todos sus superconjuntos tampoco lo son. Esta última expresión es la que resulta más relevante para nuestro caso. Esto implica que luego de generar un conjunto candidato y verificar si es frecuente verificando el número de transacciones que lo satisfacen, si se comprueba que este conjunto no es frecuente (vale decir, no cumple con el requisito de soporte mínimo), entonces necesariamente ninguno de sus conjuntos posibles que lo contienen será frecuente, y por tanto no será necesario obtener sus soportes correspondientes contando el número de transacciones que los satisfacen.
+
+\missingfigure{Grafo igual al anterior, pero que muestra cuales de los conjuntos necesariamente no son frecuentes si uno de ellos resulta no serlo.}
+
+Esta propiedad permite reducir considerablemente el número de conjuntos candidatos y, por tanto, optimizar el algoritmo final; ya que no será necesario recorrer el total de transacciones tantas veces como se planteó originalmente. Para poder utilizar esta propiedad y beneficiarse de la optimización correspondiente, es necesario generar los conjuntos candidatos comenzando por aquellos que poseen menos elementos, y a partir de estos generar todos los superconjuntos posibles.
+
+El algoritmo \textit{Apriori}, por lo tanto, en terminos generales resulta ser el siguiente
+
+\begin{algorithm}[H]
+\DontPrintSemicolon
+\KwData{Conjunto de transacciones $\mathcal{T}$}
+\KwResult{Conjunto de ítemes frecuentes $\mathcal{L}$}
+$\mathcal{L}_1 \leftarrow \{\text{conjuntos de 1 solo ítem}\}$\;
+\For{$k = 2; \, L_{k-1} \neq \emptyset; \, {k++}$}{
+	$C_k = \texttt{apriori-gen}(L_{k-1})$\;
+	\For{transacciones $T \in \mathcal{T}$}{
+	$\mathcal{C}_1 = \texttt{subset}(\mathcal{C}_k,\,T)$\;
+	\For{candidatos $C \in \mathcal{C}_t$}{
+	$\text{C.count} \leftarrow \text{C.count} + 1$\;
+	}
+	}
+	$\mathcal{L}_k = \{C \in \mathcal{C}_k \, : \, \text{C.count} \geq \text{minsup}\}$\;
+}
+$\mathcal{L} \leftarrow \bigcup_k \, \mathcal{L}_k$\;
+\caption{Algoritmo \textit{Apriori}}
+\end{algorithm}
+
 \subsection{Algoritmo \textit{FP-Growth}}
+
+\subsection{Extracción de reglas de asociación}
 
 \subsection{Desempeño comparativo}
 
