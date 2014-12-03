@@ -13,7 +13,7 @@
 
 \subsection{Espectroscopía Astronómica}
 
-En los comienzos del siglo XIX, los astrónomos comenzaron a realizar medidas que, por primera vez, revelaron con exactitud cuán lejanas se encuentran de la tierra incluso las estrellas más cercanas. Y, al igual que entonces, actualmente sigue siendo técnicamente imposible, con la tecnología que contamos, viajar a las cercanías de estos objetos estelares. Sin embargo, hoy en día es bastante bien conocida la composición química de las estrellas y del material difuso presente en los vastos espacios que las separan. El estudio de los espectros de los objetos astronómicos, o \emph{espectroscopía astronómica}, es lo que ha hecho esto posible.
+En los comienzos del siglo XIX, los astrónomos comenzaron a realizar medidas que, por primera vez, revelaron con exactitud cuán lejanas se encuentran las estrellas de la tierra. Esta distancia es de una envergadura tal que, al igual que entonces, actualmente sigue siendo técnicamente imposible, con la tecnología que contamos, viajar incluso al más cercano de estos objetos estelares. Sin embargo, hoy en día es bastante bien conocida la composición química de las estrellas y del material difuso presente en los vastos espacios que las separan. El estudio de los espectros de los objetos astronómicos, o \emph{espectroscopía astronómica}, es lo que ha hecho esto posible.
 
 En el año 1814, el científico Joseph von Fraunhofer (1787 - 1826), mediante el uso de prismas de alta calidad construidos por él mismo, logró difractar un rayo de luz solar y proyectarlo hacia un muro blanco. Además de los colores característicos del arcoíris, observados de esta manera desde los tiempos de Newton, vio en la proyección resultante muchas líneas oscuras. Procedió, luego, a catalogar meticulosamente la longitud de onda exacta de cada una de estas líneas, que hasta el día de hoy se conocen como líneas de Fraunhofer, y asignó letras a las más notorias. De esta forma, Fraunhofer registró el primer espectro astronómico de alta resolución.
 
@@ -47,7 +47,7 @@ Los datos de SDSS se hacen disponibles mediante publicaciones regulares o \texti
 
 \subsection{Atacama Large Millimeter/submillimeter Array (ALMA)}
 
-El \textit{Atacama Large Millimeter/submillimeter Array (ALMA)} es un interferómetro astronómico de radiotelescopios ubicados en el desierto de Atacama, en el norte de Chile. Es parte de un proyecto llevado a cabo mediante una asociación de organizaciones de Norteamérica, Europa y el este de Asia. Comenzó sus observaciones científicas en la segunda mitad del año 2011. Se encuentra completamente operacional desde marzo del año 2013; y es el mayor y más caro radiotelescopio construido hasta la fecha.
+El \textit{Atacama Large Millimeter/submillimeter Array (ALMA)} es un interferómetro de señales de radio ubicado en el desierto de Atacama, en el norte de Chile. Es parte de un proyecto llevado a cabo mediante una asociación de organizaciones de Norteamérica, Europa y el este de Asia. Comenzó sus observaciones científicas en la segunda mitad del año 2011. Se encuentra completamente operacional desde marzo del año 2013; y es el mayor y más caro radiotelescopio construido hasta la fecha.
 
 ALMA realiza observaciones captando radiación electromagnética proveniente del espacio en bandas milimétricas y submilimétricas en sus longitudes de onda, que corresponden a ondas de radio. Debido a que en condiciones normales la humedad del ambiente y del cielo absorbe gran parte de este tipo de radiación, es crucial para el funcionamiento de los telescopios el estar ubicados en uno de los lugares más secos del mundo, el llano de Chajnantor en el desierto de Atacama, a más de 5000 metros de altura. 
 
@@ -118,9 +118,92 @@ Finalmente, en el conjunto de transacciones
 
 se cumple que $$\mathit{lift}(\{a\} \Rightarrow \{c\}) = \frac{\mathit{supp}(\{a\} \cup \{c\})}{\mathit{supp}(\{a\}) \times \mathit{supp}(\{c\})} = \frac{1/4}{1/2 \times 1/4} = 2 > 1\text{,}$$ lo cual indica que hay una mayor razón de transacciones que satisfacen $\{c\}$ dentro del conjunto de transacciones que satisfacen $\{a\}$ que dentro del total de transacciones.
 
-\subsection{Algoritmos, implementaciones y aplicaciones}
+\subsection{Algoritmos principales}
+
+\subsubsection{Algoritmo \textit{Apriori}}
 
 En el mismo artículo seminal de ARL por Agrawal et al.\cite{agrawal1993mining}, se presentó el algoritmo \textit{Apriori}. Este algoritmo hace uso de las propiedades de clausura descendiente de la frecuencia de los conjuntos con respecto a sus subconjuntos con el fin de optimizar el proceso de generación de conjuntos de ítemes frecuentes.
+
+El algoritmo \textit{Apriori} recibe como entrada un conjunto de transacciones, y tiene como objetivo encontrar y retornar todos aquellos conjuntos presentes que cumplan con el requisito de soporte mínimo indicado, también llamados \textit{conjuntos frecuentes}.
+
+Por ejemplo, supongamos que se cuenta con el un conjunto de transacciones, y que cada una contiene ítemes pertenecientes a un universo de solo 4 elementos posibles, $\mathcal{I} = \{0,\,1,\,2,\,3\}$. Luego, en principio, para extraer los conjuntos frecuentes a partir de estas transacciones, por cada uno de los conjuntos que es posible generar con este universo de 4 ítemes posibles (llamados \textit{conjuntos candidatos}), se debe recorrer cada una de las transacciones, ver si la transaccion satisface este conjunto, y de ser así incrementar un contador. Luego de terminar este proceso para cada uno de los conjuntos posibles, se tendrá el número de veces que cada uno de estos se encuentra dentro del conjunto de transacciones, y teniendo el número total de estas, se puede obtener de forma directa el soporte de estos conjuntos.
+
+\missingfigure{Grafo con los conjuntos generados a partir de un universo de 4 ítemes posibles}
+
+El problema radica en que el número de conjuntos candidatos crece de manera exponencial en el número de ítemes del universo posible. En efecto, si el número de ítemes del universo es $n$, entonces a partir de este es posible generar $2^n+1$ conjuntos. Por tanto, para un universo de 100 elementos, existen nada menos que $1.26\times10^{30}$ conjuntos candidatos; y debe, por tanto, recorrerse el total de transacciones este número de veces.
+
+No obstante, es posible reducir el número de conjuntos candidatos utilizando la propiedad de \textit{clausura descendiente} de los conjuntos frecuentes, tambien llamado \textit{principio Apriori}. Esta propiedad asegura que si un conjunto dado es, en efecto, frecuente, entonces necesariamente todos sus subconjuntos también lo son. O, expresado de forma recíproca, si un conjunto dado resulta no ser frecuente, entonces necesariamente todos sus superconjuntos tampoco lo son. Esta última expresión es la que resulta más relevante para nuestro caso. Esto implica que luego de generar un conjunto candidato y verificar si es frecuente verificando el número de transacciones que lo satisfacen, si se comprueba que este conjunto no es frecuente (vale decir, no cumple con el requisito de soporte mínimo), entonces necesariamente ninguno de sus conjuntos posibles que lo contienen será frecuente, y por tanto no será necesario obtener sus soportes correspondientes contando el número de transacciones que los satisfacen.
+
+\missingfigure{Grafo igual al anterior, pero que muestra cuales de los conjuntos necesariamente no son frecuentes si uno de ellos resulta no serlo.}
+
+Esta propiedad permite reducir considerablemente el número de conjuntos candidatos y, por tanto, optimizar el algoritmo final; ya que no será necesario recorrer el total de transacciones tantas veces como se planteó originalmente. Para poder utilizar esta propiedad y beneficiarse de la optimización correspondiente, es necesario generar los conjuntos candidatos comenzando por aquellos que poseen menos elementos, y a partir de estos generar todos los superconjuntos posibles.
+
+El algoritmo \textit{Apriori}, por lo tanto, en terminos generales resulta ser el siguiente
+
+\begin{algorithm}[H]
+\DontPrintSemicolon
+\KwData{Conjunto de transacciones $\mathcal{T}$}
+\KwResult{Conjunto de ítemes frecuentes $\mathcal{L}$}
+$\mathcal{L}_1 \leftarrow \{\text{conjuntos de 1 solo ítem}\}$\;
+\For{$k = 2; \, L_{k-1} \neq \emptyset; \, {k++}$}{
+	$C_k = \texttt{apriori-gen}(L_{k-1})$\;
+	\For{transacciones $T \in \mathcal{T}$}{
+	$\mathcal{C}_T = \texttt{subset}(\mathcal{C}_k,\,T)$\;
+	\For{candidatos $C \in \mathcal{C}_t$}{
+	$\text{C.count} \leftarrow \text{C.count} + 1$\;
+	}
+	}
+	$\mathcal{L}_k = \{C \in \mathcal{C}_k \, : \, \text{C.count} \geq \text{minsup}\}$\;
+}
+$\mathcal{L} \leftarrow \bigcup_k \, \mathcal{L}_k$\;
+\caption{Algoritmo \textit{Apriori}}
+\end{algorithm}
+
+Donde $\mathcal{L}_k$ corresponde a la colección de conjuntos frecuentes con $k$ elementos, los cuales tienen un contador asociado; y $\mathcal{C}_k$ consiste en la colección de conjuntos candidatos con $k$ elementos, que tienen también un contador asociado. La función \texttt{apriori-gen} es la encargada de generar la colección de conjuntos frecuentes de tamaño $k$ a partir de la colección de conjuntos candidatos datos de tamaño $k$. La función \texttt{subset} se encarga de recibir una colección de conjuntos de ítemes frecuentes $\mathcal{C}_k$ y una transacción $T$ y de retornar una colección de ítemes $\mathcal{C}_T = \{C \in \mathcal{C}_k \, : \, C \subseteq T\}$.
+
+La teoría indica que la complejidad del algoritmo Apriori se encuentra está acotada por $\mathcal{O}(\mathcal{C}_{\mathit{sum}} \times |\mathcal{T}|)$, donde $\mathcal{C}_{\mathit{sum}}$ es la suma de los tamaños del total de conjuntos candidatos considerados y $|\mathcal{T}|)$ denota el tamaño del conjunto de transacciones.
+
+\subsubsection{Algoritmo \textit{FP-Growth}}
+
+Más recientemente, Han et al. introdujeron el uso de una estructura de datos llamada \textit{Frequent Pattern Tree}\cite{han2004mining} en la extracción de conjuntos de ítemes frecuentes a partir de conjuntos de transacciones. Con esto dieron origen al algoritmo \textit{FP-Growth}.
+
+Un \textit{Frequent Pattern Tree (FP-Tree)} es una estructura de datos de tipo árbol, que consiste en un nodo raíz que tiene como sus hijos a \textit{sub-árboles de prefijos de ítems}. Cada nodo del \textit{sub-árbol de prefijo de ítem} contiene tres campos: el nombre del ítem al cual el nodo representa, un contador que registra el número de transacciones que satisfacen la rama del árbol que va de la raíz hasta este nodo, y un puntero al siguiente nodo del FP-Tree que contenga el mismo nombre de ítem o un puntero vacío si no existe tal nodo.
+
+A su vez, el FP-Tree posee una estructura de datos auxiliar denominada \textit{tabla de encabezados}. Cada entrada en esta tabla posee dos campos. El primero es el nombre del ítem y el segundo es un puntero al primer nodo del FP-Tree que posee el mismo nombre de ítem.
+
+Supongamos, por ejemplo, que se cuenta con el siguiente conjunto de transacciones:
+
+\begin{tabular}{l l}
+\textbf{TID} & \textbf{Ítemes} \\
+1 & $r$, $z$, $h$, $j$, $p$ \\
+2 & $z$, $y$, $x$, $w$, $v$, $u$, $t$, $s$ \\
+3 & $z$ \\
+4 & $r$, $x$, $n$, $o$, $s$ \\
+5 & $y$, $r$, $x$, $z$, $q$, $t$, $p$ \\
+6 & $y$, $z$, $x$, $e$, $q$, $s$, $t$, $m$ \\
+\end{tabular}
+
+Supongamos, entonces que se desea extraer de estas transacciones aquellos conjuntos frecuentes que cumplan un soporte mínimo de 0.5. El procedimiento para generar el FP-Tree es, entonces, el siguiente. En primer lugar, se extrae a partir de las transacciones todos los ítemes presentes y se ordenan por orden de frecuencia. En este caso, el resultado es el conjunto $I = \{z, \, r, \, x, \, y, \, s, \, t, \, p, \, q, \, h, \, j, \, w, \, v, \, u, \, n, \, o, \, e, \, m\}$. Luego, se elimina de este conjunto todos aquellos ítemes que no cumplan con el requisito mínimo de soporte deseado, obteniendo como resultado $I = \{z, \, r, \, x, \, y, \, s, \, t\}$
+
+Luego, se hace lo mismo con los ítemes de las transacciones, obteniendo el siguiente resultado
+
+\begin{tabular}{l l l}
+\textbf{TID} & \textbf{Ítemes} & \textbf{Ítemes ordenados y filtrados} \\
+1 & $r$, $z$, $h$, $j$, $p$ & $z$, $r$ \\
+2 & $z$, $y$, $x$, $w$, $v$, $u$, $t$, $s$ & $z$, $x$, $y$, $s$, $t$ \\
+3 & $z$ & $z$ \\
+4 & $r$, $x$, $n$, $o$, $s$ & $x$, $s$, $r$ \\
+5 & $y$, $r$, $x$, $z$, $q$, $t$, $p$ & $z$, $x$, $y$, $r$, $t$ \\
+6 & $y$, $z$, $x$, $e$, $q$, $s$, $t$, $m$ & $z$, $x$, $y$, $s$, $t$ \\
+\end{tabular}
+
+Una vez listo esto, puede comenzarse con el procedimiento de construcción del árbol en sí. Se comienza por insertar el nodo raíz, cuyo nombre es vacío o \textit{null}. Luego se comienza a añadir los conjuntos frecuentes a partir de las transacciones con ítemes ordenados y filtrados. Estas son sucesivamente añadidas al árbol de tal manera que cada ítem resulte ser hijo del ítem anterior según el orden en que se encuentra en la transacción. Ahora bien, si el ítem a añadir ya se encuentra presente en una cierta posición dentro de el árbol, entonces en vez de agregar un nuevo nodo con el mismo nombre, simplemente se incrementa el contador del nodo ya existente y se inserta el siguiente ítem en la transacción como hijo de este.
+
+En términos generales, el algoritmo final de generación de FP-Tree es como sigue
+
+Luego, se procede a extraer los conjuntos frecuentes a partir del FP-Tree de la siguiente manera
+
+\subsection{Otros algoritmos implementaciones y aplicaciones}
 
 Posteriormente, Agrawal et al. presentaron el algoritmo \textit{AprioriTid}, cuyas mejores características fueron combinadas con el algoritmo \textit{Apriori} para crear el algoritmo \textit{AprioriHybrid}, de orden de complejidad lineal en el número de transacciones\cite{agrawal1994fast}. Luego se han realizado más desarrollos en ARL orientado a transacciones secuenciales de clientes de puntos de ventas\cite{agrawal1995mining}.
 
@@ -128,7 +211,7 @@ Savasere et al. introdujeron el algoritmo \textit{Partition}\cite{savasere1995ef
 
 Esfuerzos posteriores se han realizado con el fin de profundizar en los fundamentos teóricos subyacentes en ARL (e.g. definiendo el conjunto de posibles ítemes como una estructura algebráica llamada \textit{retículo})\cite{zaki1998theoretical}, y con el fin de extender la noción de reglas de asociación a correlaciones\cite{brin1997beyond}.
 
-Más recientemente, Han et al. introdujeron el uso de una estructura de datos llamada \textit{Frequent Pattern Tree}\cite{han2004mining} en la extracción de reglas de asociación a partir de conjuntos de transacciones. Luego de esto, se han hecho numerosas implementaciones y optimizaciones a los algoritmos más utilizados en ARL, como, por ejemplo, el algoritmo Apriori\cite{bodon2010fast}; así como implementaciones que facilitan el mantener la privacidad de cada una de las fuentes de datos que participan en el proceso\cite{evfimievski2004privacy}.
+Luego de esto, se han hecho numerosas implementaciones y optimizaciones a los algoritmos más utilizados en ARL, como, por ejemplo, el algoritmo Apriori\cite{bodon2010fast}; así como implementaciones que facilitan el mantener la privacidad de cada una de las fuentes de datos que participan en el proceso\cite{evfimievski2004privacy}.
 
 Desde su concepción, el método de ARL ha sido aplicado en numerosas áreas, tales como la detección de intrusiones\cite{lee2000framework} y anomalías\cite{patcha2007overview}\cite{chandola2009anomaly}, educación\cite{romero2007educational}\cite{romero2008data}, química\cite{dehaspe1998finding}, privacidad de datos\cite{ghinita2008private}, búsqueda en la web\cite{ferragina2008personalized}, tráfico en redes\cite{estan2003automatically}, computación social\cite{li2008tag}, búsqueda semántica\cite{cohen2007associative}, biología\cite{kramer2001molecular}\cite{carmona2007genecodis}, salud\cite{karabatak2009expert}\cite{chaves2011efficient}, medios de comunicación\cite{davidson2010youtube}\cite{kobilarov2009media}, y la investigación forense\cite{iqbal2013unified}. Junto con esto, se han realizado numerosas investigaciones sobre el estado actual de ARL y sus posibles desarrollos a futuro dentro del marco de métodos automatizados de generación de conocimiento\cite{han2007frequent}.
 

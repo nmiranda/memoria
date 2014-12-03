@@ -26,68 +26,6 @@ El paquete de Association Rule Learning (ARL) es el encargado de realizar el apr
 
 En las siguientes secciones se espacifican los formatos de entrada y salida de este paquete junto con una descripción de los módulos que lo componen.
 
-\subsubsection{Entrada y salida}
-
-Este paquete recibe como entrada un archivo de tabla en formato de valores separados por coma o \textit{comma separated values (CSV)}. Este archivo debe tener el siguiente formato en cada una de sus filas
-
-\begin{lstlisting}[basicstyle=\ttfamily]
-<TID>,"<ItemList>"
-\end{lstlisting}
-
-donde \textit{<TID>} es el identificador de la presente transacción, e \textit{<ItemList>} es una lista de identificadores únicos de los ítemes presentes en la transacción separados por comas. Tal como se indica, esta lista debe ir rodeada por comillas dobles en el archivo de entrada. A continuación se muestra un ejemplo de archivo de entrada válido.
-
-\begin{lstlisting}[basicstyle=\ttfamily]
-000001,"15,2,44"
-000002,"5,4,23,67,43,234"
-000003,"66,3,53,23"
-\end{lstlisting}
-
-Adicionalmente, se puede especificar para cada transacción un tipo o clase a la que pertenece, o de la cual se origina, con el fin de realizar estadísticas pertinentes con las reglas generadas. De ser así, el archivo de entrada debe tener el siguiente formato en cada una de sus filas,
-
-\begin{lstlisting}[basicstyle=\ttfamily]
-<TID>,<Class>,"<ItemList>"
-\end{lstlisting}
-
-donde, en esta ocasión, se añade en la segunda posición el campo \textit{<Class>}, que consiste en una secuencia de caracteres válidos que identifique de manera unívoca la clase a la cual la transacción pertenece. A continuación un ejemplo de entrada válida en este formato.
-
-\begin{lstlisting}[basicstyle=\ttfamily]
-000001,MORNING,"15,2,44"
-000002,MORNING,"5,4,23,67,43,234"
-000003,NIGHT,"66,3,53,23"
-\end{lstlisting}
-
-Esta lista es leída y procesada dentro del paquete de ARL y luego entregada en una estructura de datos correspondiente al algoritmo indicado, que obtendrá las reglas de asociación presentes en el conjunto de transacciones. Estas reglas, por defecto, serán retornadas en un archivo de texto en formato CSV con la siguiente estructura en cada una de sus líneas.
-
-\begin{lstlisting}[basicstyle=\ttfamily]
-<N>,"<Antecedent>","<Consequent>",<Support>,<Confidence>,<Lift>
-\end{lstlisting}
-
-Donde \textit{N} es un número identificador de la regla de asociación, \textit{<Antecedent>} es una lista de ítemes separados por coma correspondientes al antecedente de la regla, \textit{<Consequent>} es una lista de ítemes separados por coma correspondientes al consecuente de la regla, \textit{<Support>} es un valor de punto flotante entre 0 y 1 correspondiente al soporte de la regla, \textit{<Confidence>} es un valor de punto flotante entre 0 y 1 correspondiente a la confianza de la regla, y \textit{<Lift>} es un valor de punto flotante entre 0 y 1 correspondiente al lift de la regla. A continuación un ejemplo de este formato de archivo de salida.
-
-\begin{lstlisting}[basicstyle=\ttfamily]
-1,"15,33","2,89,91",0.21,0.85,2.31
-2,"12,33,44","5,23,31",0.23,0.81,3.3
-\end{lstlisting}
-
-Si, además, en los datos de entrada se especificó una clase para cada transacción, entonces el archivo de salida tendrá el siguiente formato
-
-\begin{lstlisting}[basicstyle=\ttfamily]
-<N>,"<Antecedent>","<Consequent>",<Support>,<Confidence>,<Lift>,"<ClassCount>"
-\end{lstlisting}
-
-en donde \textit{<ClassCount>} es una lista de valores separados por comas con el siguiente formato
-
-\begin{lstlisting}[basicstyle=\ttfamily]
-<Class01>:<Count01>,<Class02>:<Count02>,...
-\end{lstlisting}
-
-donde \textit{<Class01>} es el identificador de la primera clase, \textit{<Count01>} es un número entero que indica cuántas de las transacciones que satisfacen la regla actual pertenecen a esta primera clase, y así sucesivamente con todas las clases posibles. A continuación un ejemplo de archivo de salida con el formato recién descrito.
-
-\begin{lstlisting}[basicstyle=\ttfamily]
-1,"15,33","2,89,91",0.21,0.85,2.31,"MORNING:210,NIGHT:15"
-2,"12,33,44","5,23,31",0.23,0.81,3.3,"MORNING:20,NIGHT:91"
-\end{lstlisting}
-
 \subsubsection{Módulo de interfaz de usuario/controlador}
 
 El módulo de interfaz de usuario y controlador es el encargado de recibir directamente del usuario los parámetros de entrada correspondientes. Este módulo contiene métodos, clases y funciones que reciben los parámetros del usuario, abren y leen los archivos de entrada adecuados, los procesan de acuerdo al formato especificado, y hacen entrega de los datos al módulo principal de ARL.
@@ -156,51 +94,84 @@ En su implementación actual, esta clase es heredada por dos sub-clases. Una cor
 
 La clase \textit{RuleMiner} es la que abstrae el proceso de extraer reglas de asociación a partir de conjuntos frecuentes de ítemes. Cada instancia de esta clase corresponde a un proceso de extracción distinto; básicamente el mismo en todo los casos salvo en ciertos detalles, como algunas funciones auxiliares y referencias a estructuras de datos, dependiendo de si los conjuntos fueron extraídos mediante \textit{Apriori} o \textit{FP-Growth}.
 
-\section{Algoritmos y estructuras de datos}
+\section{Detalles de implementación}
 
-Para el desarrollo de este sistema se llevó a cabo la implementación de dos algoritmos de aprendizaje de reglas de asociación. El primero es el algoritmo \textit{Apriori} y el segundo es una optimización de este, llamada \textit{FP-Growth}. Sus procedimientos generales y estructuras de datos principales se describen a continuación.
+La implementación del sistema se llevó a cabo en el lenguaje de programación Python. Se realizó una implementación propia de los algoritmos antes descritos, con algunas adaptaciones para su funcionamiento correcto en el contexto de este proyecto; y se hizo uso de paquetes externos con el fin de hacer más simple el manejo de archivos CSV y la implementación de la interfaz por línea de comando.
 
-\subsection{Algoritmo \textit{Apriori}}
+\subsection{Extracción de conjuntos de ítemes frecuentes}
 
-El algoritmo \textit{Apriori} recibe como entrada un conjunto de transacciones, y tiene como objetivo encontrar y retornar todos aquellos conjuntos presentes que cumplan con el requisito de soporte mínimo indicado, también llamados \textit{conjuntos frecuentes}.
+Para la extracción de conjuntos de ítemes frecuentes se procedió a realizar la implementación de los algoritmos \textit{Apriori} y \textit{FP-Growth}. Ambos algoritmos reciben las transacciones en una misma estructura de datos y retornan los conjuntos frecuentes también en una misma estructura en ambos casos. Pero cada una de estas clases posee sus propios métodos, definidos por los algoritmos en general.
 
-Por ejemplo, supongamos que se cuenta con el un conjunto de transacciones, y que cada una contiene ítemes pertenecientes a un universo de solo 4 elementos posibles, $\mathcal{I} = \{0,\,1,\,2,\,3\}$. Luego, en principio, para extraer los conjuntos frecuentes a partir de estas transacciones, por cada uno de los conjuntos que es posible generar con este universo de 4 ítemes posibles (llamados \textit{conjuntos candidatos}), se debe recorrer cada una de las transacciones, ver si la transaccion satisface este conjunto, y de ser así incrementar un contador. Luego de terminar este proceso para cada uno de los conjuntos posibles, se tendrá el número de veces que cada uno de estos se encuentra dentro del conjunto de transacciones, y teniendo el número total de estas, se puede obtener de forma directa el soporte de estos conjuntos.
-
-\missingfigure{Grafo con los conjuntos generados a partir de un universo de 4 ítemes posibles}
-
-El problema radica en que el número de conjuntos candidatos crece de manera exponencial en el número de ítemes del universo posible. En efecto, si el número de ítemes del universo es $n$, entonces a partir de este es posible generar $2^n+1$ conjuntos. Por tanto, para un universo de 100 elementos, existen nada menos que $1.26\times10^30$ conjuntos candidatos; y debe, por tanto, recorrerse el total de transacciones este número de veces.
-
-No obstante, es posible reducir el número de conjuntos candidatos utilizando la propiedad de \textit{clausura descendiente} de los conjuntos frecuentes, tambien llamado \textit{principio Apriori}. Esta propiedad asegura que si un conjunto dado es, en efecto, frecuente, entonces necesariamente todos sus subconjuntos también lo son. O, expresado de forma recíproca, si un conjunto dado resulta no ser frecuente, entonces necesariamente todos sus superconjuntos tampoco lo son. Esta última expresión es la que resulta más relevante para nuestro caso. Esto implica que luego de generar un conjunto candidato y verificar si es frecuente verificando el número de transacciones que lo satisfacen, si se comprueba que este conjunto no es frecuente (vale decir, no cumple con el requisito de soporte mínimo), entonces necesariamente ninguno de sus conjuntos posibles que lo contienen será frecuente, y por tanto no será necesario obtener sus soportes correspondientes contando el número de transacciones que los satisfacen.
-
-\missingfigure{Grafo igual al anterior, pero que muestra cuales de los conjuntos necesariamente no son frecuentes si uno de ellos resulta no serlo.}
-
-Esta propiedad permite reducir considerablemente el número de conjuntos candidatos y, por tanto, optimizar el algoritmo final; ya que no será necesario recorrer el total de transacciones tantas veces como se planteó originalmente. Para poder utilizar esta propiedad y beneficiarse de la optimización correspondiente, es necesario generar los conjuntos candidatos comenzando por aquellos que poseen menos elementos, y a partir de estos generar todos los superconjuntos posibles.
-
-El algoritmo \textit{Apriori}, por lo tanto, en terminos generales resulta ser el siguiente
-
-\begin{algorithm}[H]
-\DontPrintSemicolon
-\KwData{Conjunto de transacciones $\mathcal{T}$}
-\KwResult{Conjunto de ítemes frecuentes $\mathcal{L}$}
-$\mathcal{L}_1 \leftarrow \{\text{conjuntos de 1 solo ítem}\}$\;
-\For{$k = 2; \, L_{k-1} \neq \emptyset; \, {k++}$}{
-	$C_k = \texttt{apriori-gen}(L_{k-1})$\;
-	\For{transacciones $T \in \mathcal{T}$}{
-	$\mathcal{C}_1 = \texttt{subset}(\mathcal{C}_k,\,T)$\;
-	\For{candidatos $C \in \mathcal{C}_t$}{
-	$\text{C.count} \leftarrow \text{C.count} + 1$\;
-	}
-	}
-	$\mathcal{L}_k = \{C \in \mathcal{C}_k \, : \, \text{C.count} \geq \text{minsup}\}$\;
-}
-$\mathcal{L} \leftarrow \bigcup_k \, \mathcal{L}_k$\;
-\caption{Algoritmo \textit{Apriori}}
-\end{algorithm}
-
-\subsection{Algoritmo \textit{FP-Growth}}
+En general, para ambos algoritmos la estructura de datos más utilizada para la implementación subyacente en los objetos correspondientes a conjuntos frecuentes, candidatos, antecedentes y consecuentes por igual, fue la de \textit{frozensets}. Esta clase de objetos, además de permitir las operaciones matemáticas de conjuntos clásicas, tales como sumas y diferencias de conjuntos, permite que los objetos sean hasheables; y, por lo tanto, utilizar los conjuntos como llaves de diccionario en forma de tablas de hash, y de esta forma, por ejemplo, indexar por conjunto distintas estructuras de datos auxiliares.
 
 \subsection{Extracción de reglas de asociación}
 
-\subsection{Desempeño comparativo}
+La extracción de reglas de asociación a partir de conjuntos frecuentes se llevó a cabo mediante una implementación del algoritmo \textit{Apriori} de generación de reglas.
+
+\subsubsection{Entrada y salida}
+
+El paquete de \textit{Association Rule Learning (ARL)} recibe como entrada un archivo de tabla en formato de valores separados por coma o \textit{comma separated values (CSV)}. Este archivo debe tener el siguiente formato en cada una de sus filas
+
+\begin{lstlisting}[basicstyle=\ttfamily]
+<TID>,"<ItemList>"
+\end{lstlisting}
+
+donde \textit{<TID>} es el identificador de la presente transacción, e \textit{<ItemList>} es una lista de identificadores únicos de los ítemes presentes en la transacción separados por comas. Tal como se indica, esta lista debe ir rodeada por comillas dobles en el archivo de entrada. A continuación se muestra un ejemplo de archivo de entrada válido.
+
+\begin{lstlisting}[basicstyle=\ttfamily]
+000001,"15,2,44"
+000002,"5,4,23,67,43,234"
+000003,"66,3,53,23"
+\end{lstlisting}
+
+Adicionalmente, se puede especificar para cada transacción un tipo o clase a la que pertenece, o de la cual se origina, con el fin de realizar estadísticas pertinentes con las reglas generadas. De ser así, el archivo de entrada debe tener el siguiente formato en cada una de sus filas,
+
+\begin{lstlisting}[basicstyle=\ttfamily]
+<TID>,<Class>,"<ItemList>"
+\end{lstlisting}
+
+donde, en esta ocasión, se añade en la segunda posición el campo \textit{<Class>}, que consiste en una secuencia de caracteres válidos que identifique de manera unívoca la clase a la cual la transacción pertenece. A continuación un ejemplo de entrada válida en este formato.
+
+\begin{lstlisting}[basicstyle=\ttfamily]
+000001,MORNING,"15,2,44"
+000002,MORNING,"5,4,23,67,43,234"
+000003,NIGHT,"66,3,53,23"
+\end{lstlisting}
+
+Esta lista es leída y procesada dentro del paquete de ARL y luego entregada en una estructura de datos correspondiente al algoritmo indicado, que obtendrá las reglas de asociación presentes en el conjunto de transacciones. Estas reglas, por defecto, serán retornadas en un archivo de texto en formato CSV con la siguiente estructura en cada una de sus líneas.
+
+\begin{lstlisting}[basicstyle=\ttfamily]
+<N>,"<Antecedent>","<Consequent>",<Support>,<Confidence>,<Lift>
+\end{lstlisting}
+
+Donde \textit{N} es un número identificador de la regla de asociación, \textit{<Antecedent>} es una lista de ítemes separados por coma correspondientes al antecedente de la regla, \textit{<Consequent>} es una lista de ítemes separados por coma correspondientes al consecuente de la regla, \textit{<Support>} es un valor de punto flotante entre 0 y 1 correspondiente al soporte de la regla, \textit{<Confidence>} es un valor de punto flotante entre 0 y 1 correspondiente a la confianza de la regla, y \textit{<Lift>} es un valor de punto flotante entre 0 y 1 correspondiente al lift de la regla. A continuación un ejemplo de este formato de archivo de salida.
+
+\begin{lstlisting}[basicstyle=\ttfamily]
+1,"15,33","2,89,91",0.21,0.85,2.31
+2,"12,33,44","5,23,31",0.23,0.81,3.3
+\end{lstlisting}
+
+Si, además, en los datos de entrada se especificó una clase para cada transacción, entonces el archivo de salida tendrá el siguiente formato
+
+\begin{lstlisting}[basicstyle=\ttfamily]
+<N>,"<Antecedent>","<Consequent>",<Support>,<Confidence>,<Lift>,"<ClassCount>"
+\end{lstlisting}
+
+en donde \textit{<ClassCount>} es una lista de valores separados por comas con el siguiente formato
+
+\begin{lstlisting}[basicstyle=\ttfamily]
+<Class01>:<Count01>,<Class02>:<Count02>,...
+\end{lstlisting}
+
+donde \textit{<Class01>} es el identificador de la primera clase, \textit{<Count01>} es un número entero que indica cuántas de las transacciones que satisfacen la regla actual pertenecen a esta primera clase, y así sucesivamente con todas las clases posibles. A continuación un ejemplo de archivo de salida con el formato recién descrito.
+
+\begin{lstlisting}[basicstyle=\ttfamily]
+1,"15,33","2,89,91",0.21,0.85,2.31,"MORNING:210,NIGHT:15"
+2,"12,33,44","5,23,31",0.23,0.81,3.3,"MORNING:20,NIGHT:91"
+\end{lstlisting}
+
 
 \section{Interfaz de usuario}
+
+
+
