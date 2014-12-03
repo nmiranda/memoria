@@ -199,11 +199,15 @@ Luego, se hace lo mismo con los ítemes de las transacciones, obteniendo el sigu
 
 Una vez listo esto, puede comenzarse con el procedimiento de construcción del árbol en sí. Se comienza por insertar el nodo raíz, cuyo nombre es vacío o \textit{null}. Luego se comienza a añadir los conjuntos frecuentes a partir de las transacciones con ítemes ordenados y filtrados. Estas son sucesivamente añadidas al árbol de tal manera que cada ítem resulte ser hijo del ítem anterior según el orden en que se encuentra en la transacción. Ahora bien, si el ítem a añadir ya se encuentra presente en una cierta posición dentro de el árbol, entonces en vez de agregar un nuevo nodo con el mismo nombre, simplemente se incrementa el contador del nodo ya existente y se inserta el siguiente ítem en la transacción como hijo de este.
 
+\missingfigure{Proceso de construcción del FP-Tree del ejemplo}
+
 En términos generales, el algoritmo final de generación de FP-Tree es como sigue
+
+\missingfigure{FP-Tree y headertables resultantes del ejemplo}
 
 Luego, se procede a extraer los conjuntos frecuentes a partir del FP-Tree de la siguiente manera
 
-\subsection{Otros algoritmos implementaciones y aplicaciones}
+\subsection{Otros algoritmos, implementaciones y aplicaciones}
 
 Posteriormente, Agrawal et al. presentaron el algoritmo \textit{AprioriTid}, cuyas mejores características fueron combinadas con el algoritmo \textit{Apriori} para crear el algoritmo \textit{AprioriHybrid}, de orden de complejidad lineal en el número de transacciones\cite{agrawal1994fast}. Luego se han realizado más desarrollos en ARL orientado a transacciones secuenciales de clientes de puntos de ventas\cite{agrawal1995mining}.
 

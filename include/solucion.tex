@@ -14,11 +14,18 @@ A continuación se describe la solución implementada para el presente proyecto.
 
 \section{Arquitectura de software}
 
-Dado que, para fines del proyecto, se requería de una herramienta con la cual se puediese llevar a cabo una serie de pruebas en distintos contextos, se optó por dividir el sistema en dos paquetes distintos; cada uno con una función específica, e interfaces bien definidas, con el fin de facilitar su posterior extensión y reutilización.
+Dado que, para fines del proyecto, se requería de una herramienta con la cual se puediese llevar a cabo una serie de pruebas en distintos contextos, se optó por dividir el sistema en dos paquetes distintos; cada uno con una función específica, e interfaces bien definidas, con el fin de facilitar su posterior extensión y reutilización. En la Figura \label{fig:arq_sistema} se muestra un diagrama con la arquitectura general del sistema.
 
-\missingfigure{Diagrama de los paquetes del sistema}
+\begin{figure}[h!]
+\begin{center}
+\includegraphics[width=0.9\textwidth]{imagenes/arq_sistema.png}
+\end{center}
+\vspace*{-5mm}
+\caption{Diagrama de la arquitectura del sistema, con sus paquetes y módulos principales.}
+\label{fig:arq_sistema}
+\end{figure}
 
-A continuación se detallan los paquetes del sistema, sus módulos, interfaces y funciones:
+A continuación se detallan sus paquetes, módulos, e interfaces y explica sus funciones.
 
 \subsection{Paquete de Association Rule Learning (ARL)}
 
@@ -66,15 +73,24 @@ Una colección de queries relevantes para ejecutar en las bases de datos de SDSS
 
 Contiene una serie de scripts cuyo fin es recibir un archivo de tabla de base de datos en formato CSV y procesar los datos que contiene; por ejemplo, eliminando ciertas filas, añadiendo columnas calculadas a partir de las ya existentes, entre otros. Los resultados son guardados en un nuevo archivo de tabla en formato CSV.
 
-\subsubsection{Módulo de extracción de transacciones}
+\subsubsection{Módulo de generación de transacciones}
 
 Este módulo contiene scripts cuya función es recibir un archivo de tabla de base de datos en formato CSV, y a partir de él generar un archivo CSV que contenga una transacción por cada fila; cada una de estas con una lista de ítemes en formato adecuado para ser recibido por el paquete de ARL.
 
 \section{Diseño de clases}
 
-A continuación se detallan las clases de objetos más importantes del sistema.
+En la Figura \label{fig:arl_diag_clases} se observa un diagrama con las clases más importantes dentro del paquete de Association Rule Learning y sus relaciones.
 
-\missingfigure{Diagrama UML de las clases más importantes del sistema}
+\begin{figure}[h!]
+\begin{center}
+\includegraphics[width=0.9\textwidth]{imagenes/arl_diag_clases.png}
+\end{center}
+\vspace*{-5mm}
+\caption{Diagrama de clases más importantes del paquete de ARL.}
+\label{fig:arl_diag_clases}
+\end{figure}
+
+A continuación se detallan las clases de objetos más importantes del sistema.
 
 \subsection{Clase \textit{ItemSet}}
 

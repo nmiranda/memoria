@@ -9,8 +9,6 @@
 
 \section{Antecedentes de datos de prueba}
 
-\todo[inline]{Explicar datos de sloan}
-
 Una vez lista la implementación de la mayor parte del sistema y los algoritmos de ARL, se procedió a realizar una prueba de concepto con datos reales. El objetivo final del sistema de ARL es poder ser aplicado a datos de líneas espectrales de diversos orígenes y características; sobre todo en observaciones sobre bandas de baja frecuencia, donde una mayor densidad de presencia de líneas hace más difícil el trabajar directamente sobre ellas, como suele ser el caso en bandas de frecuencia más alta.
 
 Sin embargo, se decidió realizar la prueba de concepto de este proyecto sobre datos del \textit{Sloan Digital Sky Survey (SDSS)} por las siguientes razones:
@@ -69,6 +67,7 @@ En efecto, existe en el DR7 una tabla llamada \textit{SpecLineNames} que enumera
 8665 & CaII\_8665 \\
 1335 & CII\_1335 \\
 2326 & CII\_2326 \\
+$\ldots$ & $\ldots$ \\
 \end{tabular}
 
 A continuación se numeran los objetos de la tabla \textit{SpecObj} según el tipo de objeto determinado mediante su espectro (campo \textit{specClass}).
@@ -84,8 +83,6 @@ A continuación se numeran los objetos de la tabla \textit{SpecObj} según el ti
 \end{tabular}
 
 \section{Selección y pre-procesamiento de datos}
-
-\todo[inline]{Filtrado, de objetos, de líneas. Gráficos.}
 
 Para fines de esta prueba de concepto y validacíón del sistema se escogió realizar la extracción de reglas de asociación a partir de objetos de tipo estelar (\textit{specClass} 1 o 6), principalmente debido a que para objetos de este tipo el \textit{redshift} del objeto en general debería ser más coherente que el \textit{redshift} detectado por línea o espectro que en el caso de, por ejemplo, objetos de tipo galáctico.
 
@@ -139,8 +136,81 @@ Incluso en muchas las 979173 líneas que resultan de filtrar aquellas que poseen
 
 Dado que el identificador de línea \textit{lineID} corresponde a una aproximación del la posición central de la línea espectral teórica o medida en laboratorio en Armstrongs (campo \textit{restWave} de la tabla \textit{specLineAll}) al entero más cercano, y que este último valor se calcula a partir de la posición central observada (campo \textit{wave}) y el \textit{redshift} de la línea (campo \textit{z}), se entiende que si el valor de \textit{redshift} no es el correcto, entonces finalmente el identificador de línea tampoco lo será.
 
-Por eso, como parte del pre-procesamiento de los datos se prefirió, para aquellas líneas con \textit{lineID} inexistente o \textit{redshift} erróneo, volver a calcular un \textit{restWave} utilizando el \textit{redshift} del objeto en vez del de la línea; y de ahí incluir el \textit{lineID} resultante de aproximar el 
+Por eso, como parte del pre-procesamiento de los datos se prefirió, para aquellas líneas con \textit{lineID} inexistente o \textit{redshift} erróneo, volver a calcular un \textit{restWave} a partir del \textit{wave} utilizando el \textit{redshift} del objeto en vez del de la línea; y de ahí asignarle un nuevo \textit{lineID} resultante de aproximar el \textit{restWave} al entero más cercano. El cálculo del \textit{wave} de la línea a partir de su \textit{restWave} y el \textit{redshift} del objeto se llevó a cabo mediante la fórmula $$\lambda_{restWave} = \frac{\lambda_{wave}}{1 + z_{obj}}$$ donde $\lambda_{restWave}$ corresponde al campo \textit{restWave} de la línea, $\lambda_{wave}$ a su \textit{wave} y $z_{obj}$ al \textit{redshift} del objeto.
 
 \section{Resultados}
 
-\todo[inline]{Mostrar las reglas de asociación resultantes con tablas, gráficos, grafos, figuritas, pegatinas, etc...}
+Al aplicar a los datos anteriores ya procesados el algoritmo de ARL, con un soporte mínimo de 0.15 y confianza mínima de 0.7, se produjo un total de 5181 reglas, generadas a partir de 576 conjuntos de ítemes frecuentes. Las 25 reglas con mayor soporte se muestran en la siguiente tabla.
+
+\begin{longtable}{| c | l | c | c | c |}
+\hline
+\textbf{N} & \textbf{Rule} & \textbf{Supp} & \textbf{Conf} & \textbf{Lift} \\ \hline
+1 & $\begin{array}{c c c}\left\{\begin{array}{c}4863 (Hb\_4863)\end{array}\right\} & \Rightarrow & \left\{\begin{array}{c}6565 (Ha\_6565)\end{array}\right\}\end{array}$ & 0.41 & 0.90 & 1.69 \\ \hline
+2 & $\begin{array}{c c c}\left\{\begin{array}{c}6565 (Ha\_6565)\end{array}\right\} & \Rightarrow & \left\{\begin{array}{c}4863 (Hb\_4863)\end{array}\right\}\end{array}$ & 0.41 & 0.77 & 1.69 \\ \hline
+3 & $\begin{array}{c c c}\left\{\begin{array}{c}4863 (Hb\_4863)\end{array}\right\} & \Rightarrow & \left\{\begin{array}{c}4342 (Hg\_4342)\end{array}\right\}\end{array}$ & 0.40 & 0.87 & 2.03 \\ \hline
+4 & $\begin{array}{c c c}\left\{\begin{array}{c}4342 (Hg\_4342)\end{array}\right\} & \Rightarrow & \left\{\begin{array}{c}4863 (Hb\_4863)\end{array}\right\}\end{array}$ & 0.40 & 0.93 & 2.03 \\ \hline
+5 & $\begin{array}{c c c}\left\{\begin{array}{c}4863 (Hb\_4863)\end{array}\right\} & \Rightarrow & \left\{\begin{array}{c}3970 (H\_3970)\end{array}\right\}\end{array}$ & 0.39 & 0.84 & 1.81 \\ \hline
+6 & $\begin{array}{c c c}\left\{\begin{array}{c}3970 (H\_3970)\end{array}\right\} & \Rightarrow & \left\{\begin{array}{c}4863 (Hb\_4863)\end{array}\right\}\end{array}$ & 0.39 & 0.83 & 1.81 \\ \hline
+7 & $\begin{array}{c c c}\left\{\begin{array}{c}4342 (Hg\_4342)\end{array}\right\} & \Rightarrow & \left\{\begin{array}{c}3970 (H\_3970)\end{array}\right\}\end{array}$ & 0.37 & 0.87 & 1.88 \\ \hline
+8 & $\begin{array}{c c c}\left\{\begin{array}{c}3970 (H\_3970)\end{array}\right\} & \Rightarrow & \left\{\begin{array}{c}4342 (Hg\_4342)\end{array}\right\}\end{array}$ & 0.37 & 0.80 & 1.88 \\ \hline
+9 & $\begin{array}{c c c}\left\{\begin{array}{c}3970 (H\_3970)\end{array}\right\} & \Rightarrow & \left\{\begin{array}{c}6565 (Ha\_6565)\end{array}\right\}\end{array}$ & 0.37 & 0.79 & 1.49 \\ \hline
+10 & $\begin{array}{c c c}\left\{\begin{array}{c}4342 (Hg\_4342)\end{array}\right\} & \Rightarrow & \left\{\begin{array}{c}6565 (Ha\_6565)\end{array}\right\}\end{array}$ & 0.37 & 0.86 & 1.61 \\ \hline
+11 & $\begin{array}{c c c}\left\{\begin{array}{c}4103 (Hd\_4103)\end{array}\right\} & \Rightarrow & \left\{\begin{array}{c}4342 (Hg\_4342)\end{array}\right\}\end{array}$ & 0.37 & 0.94 & 2.19 \\ \hline
+12 & $\begin{array}{c c c}\left\{\begin{array}{c}4342 (Hg\_4342)\end{array}\right\} & \Rightarrow & \left\{\begin{array}{c}4103 (Hd\_4103)\end{array}\right\}\end{array}$ & 0.37 & 0.86 & 2.19 \\ \hline
+13 & $\begin{array}{c c c}\left\{\begin{array}{c}4103 (Hd\_4103)\end{array}\right\} & \Rightarrow & \left\{\begin{array}{c}3970 (H\_3970)\end{array}\right\}\end{array}$ & 0.36 & 0.92 & 1.99 \\ \hline
+14 & $\begin{array}{c c c}\left\{\begin{array}{c}3970 (H\_3970)\end{array}\right\} & \Rightarrow & \left\{\begin{array}{c}4103 (Hd\_4103)\end{array}\right\}\end{array}$ & 0.36 & 0.78 & 1.99 \\ \hline
+15 & $\begin{array}{c c c}\left\{\begin{array}{c}4863 (Hb\_4863)\end{array}\right\} & \Rightarrow & \left\{\begin{array}{c}4342 (Hg\_4342) \\ 6565 (Ha\_6565)\end{array}\right\}\end{array}$ & 0.36 & 0.79 & 2.14 \\ \hline
+16 & $\begin{array}{c c c}\left\{\begin{array}{c}4342 (Hg\_4342)\end{array}\right\} & \Rightarrow & \left\{\begin{array}{c}4863 (Hb\_4863) \\ 6565 (Ha\_6565)\end{array}\right\}\end{array}$ & 0.36 & 0.84 & 2.04 \\ \hline
+17 & $\begin{array}{c c c}\left\{\begin{array}{c}4342 (Hg\_4342)\end{array}\right\} & \Rightarrow & \left\{\begin{array}{c}3970 (H\_3970) \\ 4863 (Hb\_4863)\end{array}\right\}\end{array}$ & 0.35 & 0.83 & 2.15 \\ \hline
+18 & $\begin{array}{c c c}\left\{\begin{array}{c}4863 (Hb\_4863)\end{array}\right\} & \Rightarrow & \left\{\begin{array}{c}3970 (H\_3970) \\ 4342 (Hg\_4342)\end{array}\right\}\end{array}$ & 0.35 & 0.77 & 2.07 \\ \hline
+19 & $\begin{array}{c c c}\left\{\begin{array}{c}3970 (H\_3970)\end{array}\right\} & \Rightarrow & \left\{\begin{array}{c}4342 (Hg\_4342) \\ 4863 (Hb\_4863)\end{array}\right\}\end{array}$ & 0.35 & 0.76 & 1.92 \\ \hline
+20 & $\begin{array}{c c c}\left\{\begin{array}{c}4863 (Hb\_4863)\end{array}\right\} & \Rightarrow & \left\{\begin{array}{c}4103 (Hd\_4103)\end{array}\right\}\end{array}$ & 0.35 & 0.77 & 1.97 \\ \hline
+21 & $\begin{array}{c c c}\left\{\begin{array}{c}4103 (Hd\_4103)\end{array}\right\} & \Rightarrow & \left\{\begin{array}{c}4863 (Hb\_4863)\end{array}\right\}\end{array}$ & 0.35 & 0.90 & 1.97 \\ \hline
+22 & $\begin{array}{c c c}\left\{\begin{array}{c}4863 (Hb\_4863)\end{array}\right\} & \Rightarrow & \left\{\begin{array}{c}3970 (H\_3970) \\ 6565 (Ha\_6565)\end{array}\right\}\end{array}$ & 0.35 & 0.76 & 2.07 \\ \hline
+23 & $\begin{array}{c c c}\left\{\begin{array}{c}3970 (H\_3970)\end{array}\right\} & \Rightarrow & \left\{\begin{array}{c}4863 (Hb\_4863) \\ 6565 (Ha\_6565)\end{array}\right\}\end{array}$ & 0.35 & 0.75 & 1.83 \\ \hline
+24 & $\begin{array}{c c c}\left\{\begin{array}{c}4342 (Hg\_4342)\end{array}\right\} & \Rightarrow & \left\{\begin{array}{c}4103 (Hd\_4103) \\ 4863 (Hb\_4863)\end{array}\right\}\end{array}$ & 0.35 & 0.81 & 2.29 \\ \hline
+25 & $\begin{array}{c c c}\left\{\begin{array}{c}4103 (Hd\_4103)\end{array}\right\} & \Rightarrow & \left\{\begin{array}{c}4342 (Hg\_4342) \\ 4863 (Hb\_4863)\end{array}\right\}\end{array}$ & 0.35 & 0.88 & 2.23 \\ \hline
+\end{longtable}
+
+Como es de esperarse, las reglas con más soporte poseen pocos elementos tanto en su antecedente como en su consecuente. Los valores tanto de confianza como de \textit{lift} observados dentro de este conjunto muestran que las líneas con alto soporte tienden a aparecer juntas en la mayoría de las ocasiones, y que, en general, tanto el antecedente como el consecuente muestran una alta dependencia entre sí.
+
+A continuación se muestra una tabla con las 25 reglas de mayor confianza.
+
+\begin{longtable}{| c | l | c | c | c |}
+\hline
+\textbf{N} & \textbf{Rule} & \textbf{Supp} & \textbf{Conf} & \textbf{Lift} \\ \hline
+1 & $\begin{array}{c c c}\left\{\begin{array}{c}3836 (Oy\_3836) \\ 3889 (HeI\_3889) \\ 3935 (K\_3935) \\ 4103 (Hd\_4103) \\ 4342 (Hg\_4342) \\ 6565 (Ha\_6565)\end{array}\right\} & \Rightarrow & \left\{\begin{array}{c}3970 (H\_3970) \\ 4863 (Hb\_4863)\end{array}\right\}\end{array}$ & 0.19 & 1.00 & 2.59 \\ \hline
+2 & $\begin{array}{c c c}\left\{\begin{array}{c}3836 (Oy\_3836) \\ 3889 (HeI\_3889) \\ 3935 (K\_3935) \\ 4103 (Hd\_4103) \\ 6565 (Ha\_6565)\end{array}\right\} & \Rightarrow & \left\{\begin{array}{c}3970 (H\_3970) \\ 4863 (Hb\_4863)\end{array}\right\}\end{array}$ & 0.19 & 1.00 & 2.59 \\ \hline
+3 & $\begin{array}{c c c}\left\{\begin{array}{c}3836 (Oy\_3836) \\ 3889 (HeI\_3889) \\ 3935 (K\_3935) \\ 4342 (Hg\_4342) \\ 6565 (Ha\_6565)\end{array}\right\} & \Rightarrow & \left\{\begin{array}{c}3970 (H\_3970) \\ 4863 (Hb\_4863)\end{array}\right\}\end{array}$ & 0.20 & 1.00 & 2.59 \\ \hline
+4 & $\begin{array}{c c c}\left\{\begin{array}{c}3889 (HeI\_3889) \\ 4103 (Hd\_4103) \\ 4306 (G\_4306) \\ 4342 (Hg\_4342) \\ 6565 (Ha\_6565)\end{array}\right\} & \Rightarrow & \left\{\begin{array}{c}3970 (H\_3970) \\ 4863 (Hb\_4863)\end{array}\right\}\end{array}$ & 0.15 & 1.00 & 2.59 \\ \hline
+5 & $\begin{array}{c c c}\left\{\begin{array}{c}3836 (Oy\_3836) \\ 3889 (HeI\_3889) \\ 4103 (Hd\_4103) \\ 4342 (Hg\_4342) \\ 6565 (Ha\_6565)\end{array}\right\} & \Rightarrow & \left\{\begin{array}{c}3970 (H\_3970) \\ 4863 (Hb\_4863)\end{array}\right\}\end{array}$ & 0.22 & 1.00 & 2.59 \\ \hline
+6 & $\begin{array}{c c c}\left\{\begin{array}{c}3889 (HeI\_3889) \\ 3935 (K\_3935) \\ 4103 (Hd\_4103) \\ 4342 (Hg\_4342) \\ 6565 (Ha\_6565)\end{array}\right\} & \Rightarrow & \left\{\begin{array}{c}3970 (H\_3970) \\ 4863 (Hb\_4863)\end{array}\right\}\end{array}$ & 0.20 & 1.00 & 2.59 \\ \hline
+7 & $\begin{array}{c c c}\left\{\begin{array}{c}3889 (HeI\_3889) \\ 4103 (Hd\_4103) \\ 4306 (G\_4306) \\ 6565 (Ha\_6565)\end{array}\right\} & \Rightarrow & \left\{\begin{array}{c}3970 (H\_3970) \\ 4863 (Hb\_4863)\end{array}\right\}\end{array}$ & 0.15 & 1.00 & 2.59 \\ \hline
+8 & $\begin{array}{c c c}\left\{\begin{array}{c}3836 (Oy\_3836) \\ 3935 (K\_3935) \\ 4103 (Hd\_4103) \\ 4342 (Hg\_4342) \\ 6565 (Ha\_6565)\end{array}\right\} & \Rightarrow & \left\{\begin{array}{c}3970 (H\_3970) \\ 4863 (Hb\_4863)\end{array}\right\}\end{array}$ & 0.20 & 1.00 & 2.59 \\ \hline
+9 & $\begin{array}{c c c}\left\{\begin{array}{c}3935 (K\_3935) \\ 4103 (Hd\_4103) \\ 4306 (G\_4306) \\ 4342 (Hg\_4342) \\ 6565 (Ha\_6565)\end{array}\right\} & \Rightarrow & \left\{\begin{array}{c}3970 (H\_3970) \\ 4863 (Hb\_4863)\end{array}\right\}\end{array}$ & 0.15 & 1.00 & 2.59 \\ \hline
+10 & $\begin{array}{c c c}\left\{\begin{array}{c}3836 (Oy\_3836) \\ 3889 (HeI\_3889) \\ 4342 (Hg\_4342) \\ 6565 (Ha\_6565)\end{array}\right\} & \Rightarrow & \left\{\begin{array}{c}3970 (H\_3970) \\ 4863 (Hb\_4863)\end{array}\right\}\end{array}$ & 0.22 & 1.00 & 2.59 \\ \hline
+11 & $\begin{array}{c c c}\left\{\begin{array}{c}3836 (Oy\_3836) \\ 3889 (HeI\_3889) \\ 4103 (Hd\_4103) \\ 6565 (Ha\_6565)\end{array}\right\} & \Rightarrow & \left\{\begin{array}{c}3970 (H\_3970) \\ 4863 (Hb\_4863)\end{array}\right\}\end{array}$ & 0.22 & 1.00 & 2.59 \\ \hline
+12 & $\begin{array}{c c c}\left\{\begin{array}{c}3836 (Oy\_3836) \\ 3889 (HeI\_3889) \\ 3935 (K\_3935) \\ 6565 (Ha\_6565)\end{array}\right\} & \Rightarrow & \left\{\begin{array}{c}3970 (H\_3970) \\ 4863 (Hb\_4863)\end{array}\right\}\end{array}$ & 0.20 & 1.00 & 2.59 \\ \hline
+13 & $\begin{array}{c c c}\left\{\begin{array}{c}3836 (Oy\_3836) \\ 3935 (K\_3935) \\ 4103 (Hd\_4103) \\ 6565 (Ha\_6565)\end{array}\right\} & \Rightarrow & \left\{\begin{array}{c}3970 (H\_3970) \\ 4863 (Hb\_4863)\end{array}\right\}\end{array}$ & 0.20 & 1.00 & 2.59 \\ \hline
+14 & $\begin{array}{c c c}\left\{\begin{array}{c}3889 (HeI\_3889) \\ 4306 (G\_4306) \\ 4342 (Hg\_4342) \\ 6565 (Ha\_6565)\end{array}\right\} & \Rightarrow & \left\{\begin{array}{c}3970 (H\_3970) \\ 4863 (Hb\_4863)\end{array}\right\}\end{array}$ & 0.16 & 1.00 & 2.59 \\ \hline
+15 & $\begin{array}{c c c}\left\{\begin{array}{c}3836 (Oy\_3836) \\ 3935 (K\_3935) \\ 4306 (G\_4306) \\ 4342 (Hg\_4342) \\ 6565 (Ha\_6565)\end{array}\right\} & \Rightarrow & \left\{\begin{array}{c}3970 (H\_3970) \\ 4863 (Hb\_4863)\end{array}\right\}\end{array}$ & 0.15 & 1.00 & 2.59 \\ \hline
+16 & $\begin{array}{c c c}\left\{\begin{array}{c}3889 (HeI\_3889) \\ 3935 (K\_3935) \\ 4103 (Hd\_4103) \\ 6565 (Ha\_6565)\end{array}\right\} & \Rightarrow & \left\{\begin{array}{c}3970 (H\_3970) \\ 4863 (Hb\_4863)\end{array}\right\}\end{array}$ & 0.20 & 1.00 & 2.59 \\ \hline
+17 & $\begin{array}{c c c}\left\{\begin{array}{c}3889 (HeI\_3889) \\ 3935 (K\_3935) \\ 4342 (Hg\_4342) \\ 6565 (Ha\_6565)\end{array}\right\} & \Rightarrow & \left\{\begin{array}{c}3970 (H\_3970) \\ 4863 (Hb\_4863)\end{array}\right\}\end{array}$ & 0.21 & 1.00 & 2.59 \\ \hline
+18 & $\begin{array}{c c c}\left\{\begin{array}{c}3836 (Oy\_3836) \\ 3935 (K\_3935) \\ 4342 (Hg\_4342) \\ 6565 (Ha\_6565)\end{array}\right\} & \Rightarrow & \left\{\begin{array}{c}3970 (H\_3970) \\ 4863 (Hb\_4863)\end{array}\right\}\end{array}$ & 0.21 & 1.00 & 2.59 \\ \hline
+19 & $\begin{array}{c c c}\left\{\begin{array}{c}3836 (Oy\_3836) \\ 4306 (G\_4306) \\ 4342 (Hg\_4342) \\ 6565 (Ha\_6565)\end{array}\right\} & \Rightarrow & \left\{\begin{array}{c}3970 (H\_3970) \\ 4863 (Hb\_4863)\end{array}\right\}\end{array}$ & 0.16 & 1.00 & 2.59 \\ \hline
+20 & $\begin{array}{c c c}\left\{\begin{array}{c}3836 (Oy\_3836) \\ 4103 (Hd\_4103) \\ 4342 (Hg\_4342) \\ 6565 (Ha\_6565)\end{array}\right\} & \Rightarrow & \left\{\begin{array}{c}3970 (H\_3970) \\ 4863 (Hb\_4863)\end{array}\right\}\end{array}$ & 0.23 & 1.00 & 2.59 \\ \hline
+21 & $\begin{array}{c c c}\left\{\begin{array}{c}3836 (Oy\_3836) \\ 3889 (HeI\_3889) \\ 6565 (Ha\_6565)\end{array}\right\} & \Rightarrow & \left\{\begin{array}{c}3970 (H\_3970) \\ 4863 (Hb\_4863)\end{array}\right\}\end{array}$ & 0.23 & 1.00 & 2.59 \\ \hline
+22 & $\begin{array}{c c c}\left\{\begin{array}{c}3935 (K\_3935) \\ 4103 (Hd\_4103) \\ 4306 (G\_4306) \\ 6565 (Ha\_6565)\end{array}\right\} & \Rightarrow & \left\{\begin{array}{c}3970 (H\_3970) \\ 4863 (Hb\_4863)\end{array}\right\}\end{array}$ & 0.16 & 1.00 & 2.59 \\ \hline
+23 & $\begin{array}{c c c}\left\{\begin{array}{c}3889 (HeI\_3889) \\ 4103 (Hd\_4103) \\ 4342 (Hg\_4342) \\ 6565 (Ha\_6565)\end{array}\right\} & \Rightarrow & \left\{\begin{array}{c}3970 (H\_3970) \\ 4863 (Hb\_4863)\end{array}\right\}\end{array}$ & 0.24 & 1.00 & 2.58 \\ \hline
+24 & $\begin{array}{c c c}\left\{\begin{array}{c}3836 (Oy\_3836) \\ 4103 (Hd\_4103) \\ 6565 (Ha\_6565)\end{array}\right\} & \Rightarrow & \left\{\begin{array}{c}3970 (H\_3970) \\ 4863 (Hb\_4863)\end{array}\right\}\end{array}$ & 0.23 & 1.00 & 2.58 \\ \hline
+25 & $\begin{array}{c c c}\left\{\begin{array}{c}3935 (K\_3935) \\ 4103 (Hd\_4103) \\ 4342 (Hg\_4342) \\ 6565 (Ha\_6565)\end{array}\right\} & \Rightarrow & \left\{\begin{array}{c}3970 (H\_3970) \\ 4863 (Hb\_4863)\end{array}\right\}\end{array}$ & 0.23 & 1.00 & 2.58 \\ \hline
+\end{longtable}
+
+\begin{figure}[h!]
+\begin{center}
+\includegraphics[width=0.9\textwidth]{imagenes/complexity_support.png}
+\end{center}
+\vspace*{-5mm}
+\caption{Grafico de tiempos de ejecución de algoritmos \textit{Apriori} y \textit{FP-Growth} para distintas medidas de soporte}
+\label{fig:complexity_support}
+\end{figure}

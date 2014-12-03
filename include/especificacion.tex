@@ -18,6 +18,47 @@ Teniendo estos conjuntos de espectros con sus respectivas líneas detectadas se 
 
 \section{Requisitos de la solución y casos de uso}
 
-\todo[inline]{Definir los casos de uso}
+A continuación se enuncian los requerimientos del sistema:
 
-\missingfigure{Diagrama de casos de uso}
+\begin{enumerate}
+	\item \textbf{Obtener reglas de asociación entre líneas de emisión espectrales [esencial].} \\
+	El sistema debe generar reglas de asosiación entre líneas de emisión presentes en espectros de frecuencia, independientemente de si estos pertenecen a una misma o a distintas moléculas o átomos, o si no han sido aun identificadas.
+	\item \textbf{Permitir al usuario observar las reglas generadas, y las medidas de relevancia de cada una de ellas, y guardar estos resultados [esencial].} \\
+	Una vez extraídas las reglas de asociación, el usuario debe poder revisarlas y guardarlas para su revisión posterior.
+	\item \textbf{Permitir al usuario aplicar los mismos algoritmos de reglas de asociación a datos de diversas fuentes [esencial].} \\
+	Se desea que el sistema de extracción sea lo más general posible, de modo tal de poder aplicarlo a datos de líneas espectrales extraídos de distintos \textit{surveys}, bases de datos, sistemas de modelamiento y detección de líneas, entre otros.
+	\item \textbf{El sistema debe ser ejecutable en un ambiente de computación de alto rendimiento [deseable].}
+	\item \textbf{El sistema debe ser compatible con plataformas de observatorios virtuales [deseable].} 
+	\item \textbf{Implementar una interfaz gráfica de usuario [opcional].}
+\end{enumerate}
+
+\subsection{Casos de Uso}
+
+En la Figura \ref{fig:cases} se muestra un diagrama con los casos de uso preliminares del sistema a desarrollar.
+
+\begin{figure}[h!]
+\begin{center}
+\includegraphics[width=14cm]{imagenes/casos_de_uso.png}
+\end{center}
+\vspace*{-5mm}
+\caption{Diagrama de casos de uso del sistema.}
+\label{fig:cases}
+\end{figure}
+
+\subsubsection{Actores}
+
+Para este sistema existe solo un tipo de actor, dado que todos los usuarios finales tendrán acceso a las mismas funcionalidades. Este usuario será el encargado de seleccionar el conjunto de datos que quiere ingresar al sistema, en forma de vectores de líneas moleculares. Cada vector poseerá las líneas identificadas en un espectro de frecuencia en particular. Este usuario ingresará estos datos al sistema y luego seleccionará los parámetros de detección de reglas que desee. Una vez ejecutados los algoritmos correspondientes, el usuario podrá observar las reglas generadas y, si así lo desea, ajustar nuevamente los parámetros para obtener mejores resultados sobre el mismo conjunto de datos.
+
+Posteriormente, el mismo u otro usuario podrá verificar los resultados obtenidos en una sesión de ARL anterior y ajustar los parámetros de búsqueda a su agrado para luego volver a correr los algoritmos sobre los mismos iniciales.
+
+\subsubsection{Descripción de casos de uso}
+
+En la siguiente tabla se muestra una descripción detallada de los casos de uso y se indica, de ser así, a qué requerimiento está asociado.
+
+\begin{tabular}{|l|p{4cm}|p{7cm}|l|l|}
+	\hline
+	ID & Caso de uso & Descripción & Tipo & Ref. \\ \hline
+	1 & Ejecutar ARL sobre datos con rangos espectrales idénticos & El usuario selecciona un conjunto de espectros extraídos a partir de un sólo cubo de datos o de más de uno, pero siempre en rangos de frecuencia idénticos, selecciona los parámetros adecuados y ejecuta los algoritmos de ARL sobre ellos. & Esencial & 1,2,4 \\ \hline
+	2 & Ejecutar ARL sobre datos con distintos rangos espectrales & El usuario selecciona un conjunto de espectros extraídos a partir de dos o más cubos de datos con distintos rangos de frecuencia, selecciona los parámetros adecuados y ejecuta los algoritmos de ARL sobre ellos. & Esencial & 1,2,3 \\ \hline
+	3 & Verificar resultados & El usuario examina las reglas generadas por los algoritmos determinando si le dan información valiosa o si, en su defecto, necesita volver a ejecutarlos con distintos parámetros & Esencial & 3 \\ \hline
+\end{tabular}
