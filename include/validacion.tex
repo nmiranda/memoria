@@ -214,3 +214,13 @@ A continuación se muestra una tabla con las 25 reglas de mayor confianza.
 \caption{Grafico de tiempos de ejecución de algoritmos \textit{Apriori} y \textit{FP-Growth} para distintas medidas de soporte}
 \label{fig:complexity_support}
 \end{figure}
+
+\section{Observaciones y conclusiones}
+
+Una vez observados estos resultados obtenidos a partir de espectros de la selección de objetos estelares del SDSS se pueden extraer las siguientes conclusiones.
+
+Al seleccionar reglas con alto soporte se privilegia aquellas con líneas espectrales comunes a una gran cantidad de espectros. En particular, la mayor parte de las reglas son entre líneas del hidrógeno, que es el elemento más abundante en las estrellas y además tiene una serie de líneas espectrales en el óptico. Existen pocas líneas de otros elementos presentes en estas reglas de alta confianza, como por ejemplo la línea H del calcio. Claramente estas se detectan en una gran cantidad de las estrellas con líneas brillantes del hidrógeno.
+
+Además, se observa que al reducir el soporte y seleccionar por confianza, se encuentran conjuntos de líneas altamente correlacionados, pero presentes en una menor fracción del conjunto total de espectros. Por ejemplo, las líneas $O$, $H_e$, $G$ y $K$ aparecen, y están muy correlacionadas con las líneas $H_a$, $H_b$ y $H$, entre otras.
+
+En síntesis, puede decirse que es preferible, con el fin de no encontrar solo relaciones triviales o comúnes en demasía, buscar reglas por alta confianza y bajo soporte.

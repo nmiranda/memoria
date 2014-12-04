@@ -26,15 +26,13 @@
 \section*{Contexto y motivación}
 \addcontentsline{toc}{section}{Contexto y motivación}
 
-En los últimos tiempos, y en gran parte debido al explosivo desarrollo tecnológico, han surgido numerosos campos en los cuales se ha requerido el uso de procesamiento masivo de datos e inteligencia computacional con el fin de automatizar y auxiliar el proceso de generación de nuevo conocimiento. La astronomía es, sin lugar a dudas, uno de ellos. Esto se debe, en parte, al explosivo desarrollo de nuevas tecnologías que ponen al alcance de la comunidad científica una cantidad nunca antes vista de datos; los cuales tienen el potencial de contener invaluable información sobre el universo, su composición, estructura, origen y destino.
+En los últimos tiempos, y en gran parte debido al explosivo desarrollo tecnológico, han surgido numerosos campos en los cuales se ha requerido el uso de procesamiento masivo de datos e inteligencia computacional con el fin de automatizar y auxiliar el proceso de generación de nuevo conocimiento. La astronomía es, sin lugar a dudas, uno de ellos. Esto se debe, en parte, al explosivo desarrollo de nuevas tecnologías que ponen al alcance de la comunidad científica una cantidad nunca antes vista de datos; los cuales contienen abundante información sobre el universo, su composición, estructura, origen y destino.
 
-Un claro ejemplo de esto lo constituye el \textit{Atacama Large Millimiter/sub-millimiter Array (ALMA)}, un interferómetro radio-astronómico que consiste en un arreglo de 66 antenas que observan el espacio en las bandas milimétricas y submilimétricas del espectro electromagnético. Ubicado en el desierto de Atacama, en el norte de Chile, es parte de uno de los proyectos científicos más importantes del último tiempo a nivel nacional; en el cual se ha hecho uso de tecnologías de punta por parte de investigadores, ingenieros y técnicos expertos en computación de alto rendimiento, redes de fibra óptica, Machine Learning, minería de datos, entre otros. 
+Un claro ejemplo de esto lo constituye el \textit{Atacama Large Millimiter/sub-millimiter Array (ALMA)}\cite{wootten2009atacama}, un interferómetro radio-astronómico que consiste en un arreglo de 66 antenas que observan el espacio en las bandas milimétricas y submilimétricas del espectro electromagnético. Ubicado en el desierto de Atacama, en el norte de Chile, es parte de uno de los proyectos científicos más importantes del último tiempo; en el cual se ha hecho uso de tecnologías de punta por parte de investigadores, ingenieros y técnicos expertos en diversas áreas del conocimiento, tales como la astronomía, la computación científica y de alto rendimiento, la electrónica, entre otros.
 
-La tecnología involucrada en el proyecto \textit{ALMA} ha permitido, entre otras cosas, obtener datos de alta resolución provenientes de distintas fuentes u objetos del espacio observable desde la tierra, cuya posición en el cielo es cuantificada mediante coordenadas celestes. La radiación electromagnética emitida por estos objetos, en bandas de frecuencia de radio, son captadas por el arreglo de antenas y posteriormente procesadas por equipos de alta capacidad con el fin de obtener los espectros electromagnéticos correspondientes. Estos, a su vez pueden ser analizados directamente o utilizarse para generar imágenes de alta calidad de regiones del espacio en diversos rangos de frecuencia.
+La tecnología involucrada en el proyecto \textit{ALMA} ha permitido, entre otras cosas, obtener datos de alta resolución provenientes de distintas fuentes u objetos del espacio observable desde la tierra. La radiación electromagnética emitida por estos objetos, en bandas de frecuencia de radio, son captadas por el arreglo de antenas y posteriormente procesadas por equipos de alta capacidad con el fin de obtener los espectros electromagnéticos correspondientes. Estos, a su vez pueden ser analizados directamente o utilizarse para generar imágenes de alta calidad.
 
-Si bien el caso de \textit{ALMA} es notable por las características particulares de las observaciones en frecuencias de radio y por las oportunidades tecnológicas que involucra, el analizar y extraer información a partir de radiación electromagnética, en diversos rangos de su espectro, es parte primordial de la labor astronómica en todos sus campos.
-
-Parte principal de la importancia de estos espectros de radiación electromagnética es que dan información valiosa sobre la composición química de los objetos de los que esta proviene; ya sean estrellas, galaxias u otros muchos tipos de objetos astronómicos. Esto se debe a que los átomos que componen estos objetos emiten o absorben una mayor cantidad de energía en frecuencias muy específicas, tal y como lo predice la teoría cuántica subyacente. Por lo tanto, un espectro en particular tendrá rangos estrechos de mayor o menor intensidad en ciertas frecuencias dependiendo de los elementos químicos de los que está compuesto el objeto del que proviene.
+Parte principal de la importancia de estos espectros de radiación electromagnética es que dan información valiosa sobre la composición química de los objetos de los que esta proviene. Esto se debe a que los átomos que componen estos objetos emiten o absorben una mayor cantidad de energía en frecuencias muy específicas. Por lo tanto, un espectro en particular tendrá rangos estrechos de mayor o menor intensidad en ciertas frecuencias dependiendo de los elementos químicos de los que está compuesto el objeto del que proviene.
 
 La detección de lineas espectrales es un problema de interés en sí, y que puede llegar a ser muy complejo dependiendo de en qué bandas de frecuencia se esté trabajando. Sin embargo, se puede seguir obteniendo información valiosa de los objetos observados a partir de estas líneas ya detectadas. Esto incluye potencialmente respuestas a preguntas como: ¿de qué forma se relacionan ciertos tipos de líneas entre sí? ¿Existe una mayor correlación de presencia de líneas de ciertos isótopos o moléculas en particular? ¿Hay una mayor presencia de líneas de ciertas especies en algunos objetos que en otros? ¿Qué nos dice esto de la composición de los objetos y de su química subyacente?
 
@@ -47,25 +45,25 @@ Los objetivos del presente trabajo se enumeran a continuación:
 \addcontentsline{toc}{subsection}{Objetivo General}
 
 \begin{itemize}
-	\item Asociar líneas de transición cuántica presentes en espectros de frecuencia (obtenidos a partir de observaciones astronómicas) entre sí; en particular, tanto aquellas líneas de las cuales se sabe actualmente a qué especie (e.g. átomo, ion, molécula, isótopo) corresponden como aquellas que aun no han sido identificadas o asociadas a alguna especie conocida.
+	\item Implementar un sistema de aprendizaje de reglas de asociación, o \textit{Association Rule Learning (ARL)}, que permita obtener relaciones lógicas entre líneas espectrales presentes dentro de un conjunto de datos de espectroscopía astronómica.
 \end{itemize}
 
 \subsection*{Objetivos Específicos}
 \addcontentsline{toc}{subsection}{Objetivos Específicos}
 
 \begin{itemize}
-  \item Inferir reglas de asociación para líneas moleculares detectadas en espectros dentro de un mismo rango de frecuencias.
-  \item Inferir reglas de asociación para líneas moleculares detectadas en espectros dentro de distintos rangos de frecuencias.
-  \item Evaluación de los algoritmos sobre simulaciones y datos reales.
-  \item Desarrollar una herramienta para asociación de líneas moleculares que funcione en un ambiente de computación de alto rendimiento (HPC) y que sea compatible con plataformas de observatorios virtuales (VO).
+  \item Implementar un sistema de ARL genérico que permita aplicarse a datos provenientes de diversos orígenes.
+  \item Obtener reglas de asociación entre líneas espectrales obtenidas a partir de datos reales.
+  \item Visualizar las reglas de asociación, presentes en el conjunto de datos, que sean de mayor interés según medidas estadísticas. 
+  \item Filtrar las reglas de asociación encontradas en un conjunto de datos de espectroscopía astronómica según las líneas que las componen.
 \end{itemize}
 
 \section*{Descripción de la solución}
 \addcontentsline{toc}{section}{Descripción de la solución}
 
-Si bien existen diversas técnicas de clasificación y caracterización de puntos en un espacio multidimensional (en nuestro caso objetos descritos por parámetros), para resolver las preguntas anteriores se requiere más bien de una herramienta que permita encontrar relaciones explícitas entre los parámetros en sí, y que permita asignar medidas de relevancia a estas relaciones.
+Si bien existen diversas técnicas de clasificación y caracterización de puntos en un espacio multidimensional (en nuestro caso objetos descritos por parámetros), para resolver las preguntas anteriores se requiere más bien de una herramienta que permita encontrar relaciones explícitas entre los parámetros en sí, y que permita asignar medidas de relevancia estadística a estas relaciones.
 
-En el presente trabajo se plantea el uso de \textit{Association Rule Learning (ARL)}, o Aprendizaje de Reglas de Asociación, como una herramienta que puede dar respuesta directa a algunas de las interrogantes mencionadas anteriormente, y ayudar a obtener información clave para el proceso de utilizar otras técnicas en el largo plazo.
+Para ello se planteó el uso de \textit{Association Rule Learning (ARL)}, o Aprendizaje de Reglas de Asociación, como una herramienta que puede dar respuesta directa a algunas de las interrogantes mencionadas anteriormente, y ayudar a obtener información clave para el proceso de utilizar otras técnicas en el largo plazo.
 
 El Aprendizaje de Reglas de Asociación como técnica se ubica dentro del área de la minería de base de datos, y su concepción original fue el ser aplicada a sistemas de puntos de venta con el fin de encontrar las relaciones más comunes entre artículos comprados por los clientes. Sin embargo, con el tiempo se ha convertido en una de las herramientas más utilizadas de su área, en una diversa gama de contextos.
 

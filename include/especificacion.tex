@@ -8,13 +8,11 @@
 
 \section{Descripción del problema}
 
-\todo[inline]{Explicar que las líneas ya han sido detectadas. Como? Mencionar o citar el trabajo de Karim Pichara y Andrés Riveros?}
+Supóngase que se cuenta con conjuntos de espectros, y que cada uno de ellos posee todas sus líneas espectrales correctamente detectadas y, por lo tanto, se conoce su posición en el espectro. En la práctica eso puede ser muy difícil de lograr, sobre todo en circunstancias donde pueden existir en principio una alta cantidad de líneas espectrales y estas pueden interferir unas con otras en la señal final, lo que se conoce como \textit{blending}.
 
-Supóngase que se cuenta con conjuntos de espectros, y que cada uno de ellos posee todas sus líneas espectrales correctamente detectadas y, por lo tanto, se conoce su posición en el espectro. En la práctica eso puede ser muy difícil de lograr, sobre todo en circunstancias donde pueden existir en principio una alta cantidad de líneas espectrales y estas pueden interferir unas con otras en la señal final, lo que se conoce como \textit{blending}.\todo[inline]{No sé si poner lo anterior acá o en el capítulo de marco teórico} Por lo tanto, para efectos de lo que sigue, basta con asumir que existe la posibilidad que no todas las líneas hayan sido detectadas. Pero es importante que las que sí fueron detectadas, lo hayan sido con una seguridad suficiente y que se sepa de manera adecuada su posición.\todo[inline]{Explicar cómo se llevó a cabo la detección en términos más rigurosos. Cómo?}
+Por lo tanto, para efectos de lo que sigue, basta con asumir que existe la posibilidad que no todas las líneas hayan sido detectadas. Pero es importante que las que sí fueron detectadas, lo hayan sido con una seguridad suficiente y que se sepa de manera adecuada su posición. Actualmente existen herramientas que son capaces de ajustar modelos físicos conocidos con anterioridad a datos espectrales con el fin de identificas las líneas en ellos presentes.
 
-Teniendo estos conjuntos de espectros con sus respectivas líneas detectadas se desea... 
-
-\todo[inline]{Definir el problema de forma general, quizás con lineamientos de objetivos, que no involucre directamente como solución el uso de reglas de asociación}
+Teniendo estos conjuntos de espectros con sus respectivas líneas detectadas se desea aplicar a conjuntos de líneas espectrales extraídas a partir de datos de observaciones astronómicas, para así obtener información de las relaciones existentes entre ellas bajo distintas medidas de interés y relevancia estadística.
 
 \section{Requisitos de la solución y casos de uso}
 
@@ -22,8 +20,9 @@ A continuación se enuncian los requerimientos del sistema:
 
 \begin{enumerate}
 	\item \textbf{Obtener reglas de asociación entre líneas de emisión espectrales [esencial].} \\
-	El sistema debe generar reglas de asosiación entre líneas de emisión presentes en espectros de frecuencia, independientemente de si estos pertenecen a una misma o a distintas moléculas o átomos, o si no han sido aun identificadas.
-	\item \textbf{Permitir al usuario observar las reglas generadas, y las medidas de relevancia de cada una de ellas, y guardar estos resultados [esencial].} \\
+	El sistema debe generar reglas de asociación entre líneas de emisión presentes en espectros, independientemente de si estos pertenecen a una misma o a distintas moléculas o átomos, o si no han sido aun identificadas.
+	\item \textbf{Permitir al usuario observar las reglas generadas, y ordenarlas según distintas medidas de relevancia estadística [esencial].} \\
+	\item \textbf{Permitir al usuario guardar las reglas de asociación generadas [esencial].} \\
 	Una vez extraídas las reglas de asociación, el usuario debe poder revisarlas y guardarlas para su revisión posterior.
 	\item \textbf{Permitir al usuario aplicar los mismos algoritmos de reglas de asociación a datos de diversas fuentes [esencial].} \\
 	Se desea que el sistema de extracción sea lo más general posible, de modo tal de poder aplicarlo a datos de líneas espectrales extraídos de distintos \textit{surveys}, bases de datos, sistemas de modelamiento y detección de líneas, entre otros.
@@ -58,7 +57,6 @@ En la siguiente tabla se muestra una descripción detallada de los casos de uso 
 \begin{tabular}{|l|p{4cm}|p{7cm}|l|l|}
 	\hline
 	ID & Caso de uso & Descripción & Tipo & Ref. \\ \hline
-	1 & Ejecutar ARL sobre datos con rangos espectrales idénticos & El usuario selecciona un conjunto de espectros extraídos a partir de un sólo cubo de datos o de más de uno, pero siempre en rangos de frecuencia idénticos, selecciona los parámetros adecuados y ejecuta los algoritmos de ARL sobre ellos. & Esencial & 1,2,4 \\ \hline
-	2 & Ejecutar ARL sobre datos con distintos rangos espectrales & El usuario selecciona un conjunto de espectros extraídos a partir de dos o más cubos de datos con distintos rangos de frecuencia, selecciona los parámetros adecuados y ejecuta los algoritmos de ARL sobre ellos. & Esencial & 1,2,3 \\ \hline
-	3 & Verificar resultados & El usuario examina las reglas generadas por los algoritmos determinando si le dan información valiosa o si, en su defecto, necesita volver a ejecutarlos con distintos parámetros & Esencial & 3 \\ \hline
+	1 & Obtener reglas de asociación generales & El usuario obtiene reglas de asociación extraídas a partir de un conjunto de transacciones de líneas espectrales y las filtra u ordena mediante soporte, confianza o \textit{lift} & Esencial & 1,2,3,4 \\ \hline
+	2 & Obtener reglas de asociación de un cierto ítem & El usuario obtiene reglas de asociación extraídas a partir de un conjunto de transacciones de líneas espectrales, selecciona solo aquellas que posean un cierto ítem en su antecedente y/o consecuente, y las ordena mediante soporte, confianza o \textit{lift}. & Esencial & 1,2,3,4 \\ \hline
 \end{tabular}
