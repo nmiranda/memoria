@@ -37,7 +37,7 @@ En la Figura \ref{fig:cases} se muestra un diagrama con los casos de uso prelimi
 
 \begin{figure}[h!]
 \begin{center}
-\includegraphics[width=14cm]{imagenes/casos_de_uso.png}
+\includegraphics[width=0.9\textwidth]{imagenes/casos_de_uso.png}
 \end{center}
 \vspace*{-5mm}
 \caption{Diagrama de casos de uso del sistema.}
@@ -46,9 +46,10 @@ En la Figura \ref{fig:cases} se muestra un diagrama con los casos de uso prelimi
 
 \subsubsection{Actores}
 
-Para este sistema existe solo un tipo de actor, dado que todos los usuarios finales tendrán acceso a las mismas funcionalidades. Este usuario será el encargado de seleccionar el conjunto de datos que quiere ingresar al sistema, en forma de vectores de líneas moleculares. Cada vector poseerá las líneas identificadas en un espectro de frecuencia en particular. Este usuario ingresará estos datos al sistema y luego seleccionará los parámetros de detección de reglas que desee. Una vez ejecutados los algoritmos correspondientes, el usuario podrá observar las reglas generadas y, si así lo desea, ajustar nuevamente los parámetros para obtener mejores resultados sobre el mismo conjunto de datos.
+Para este sistema existe solo un tipo de actor, dado que todos los usuarios finales tendrán acceso a las mismas funcionalidades. Este usuario será el encargado de seleccionar el conjunto de datos que quiere ingresar al sistema, en forma de transacciones de líneas moleculares. Cada transacción poseerá las líneas identificadas en un espectro en particular. Este usuario ingresará estos datos al sistema y luego seleccionará los parámetros de detección de reglas que desee. Una vez ejecutados los algoritmos correspondientes, el usuario podrá observar las reglas generadas y, si así lo desea, ajustar nuevamente los parámetros para obtener mejores resultados sobre el mismo conjunto de datos.
 
-Posteriormente, el mismo u otro usuario podrá verificar los resultados obtenidos en una sesión de ARL anterior y ajustar los parámetros de búsqueda a su agrado para luego volver a correr los algoritmos sobre los mismos iniciales.
+Desde un punto de vista práctico, el usuario objetivo posee conocimientos técnicos sobre espectroscopía, sabe hacer uso de un terminal o línea de comandos, y puede manejar tablas en formato de valores separados por comas (CSV).
+
 
 \subsubsection{Descripción de casos de uso}
 

@@ -14,7 +14,7 @@ A continuación se describe la solución implementada para el presente proyecto.
 
 \section{Arquitectura de software}
 
-Dado que, para fines del proyecto, se requería de una herramienta con la cual se puediese llevar a cabo una serie de pruebas en distintos contextos, se optó por dividir el sistema en dos paquetes distintos; cada uno con una función específica, e interfaces bien definidas, con el fin de facilitar su posterior extensión y reutilización. En la Figura \label{fig:arq_sistema} se muestra un diagrama con la arquitectura general del sistema.
+Dado que, para fines del proyecto, se requería de una herramienta con la cual se puediese llevar a cabo una serie de pruebas en distintos contextos, se optó por dividir el sistema en dos paquetes distintos; cada uno con una función específica, e interfaces bien definidas, con el fin de facilitar su posterior extensión y reutilización. En la Figura \ref{fig:arq_sistema} se muestra un diagrama con la arquitectura general del sistema.
 
 \begin{figure}[h!]
 \begin{center}
@@ -29,7 +29,7 @@ A continuación se detallan sus paquetes, módulos, e interfaces y explica sus f
 
 \subsection{Paquete de Association Rule Learning (ARL)}
 
-El paquete de Association Rule Learning (ARL) es el encargado de realizar el aprendizaje mediante reglas de asociación en sí; vale decir, de recibir un conjunto de datos con transacciones y de retornar reglas de asociación generadas a partir de aquel conjunto.
+El paquete de \textit{Association Rule Learning (ARL)} es el encargado de realizar el aprendizaje mediante reglas de asociación en sí; vale decir, de recibir un conjunto de datos con transacciones y de retornar reglas de asociación generadas a partir de aquel conjunto.
 
 En las siguientes secciones se espacifican los formatos de entrada y salida de este paquete junto con una descripción de los módulos que lo componen.
 
@@ -43,7 +43,7 @@ Este módulo, es el encargado, además de recibir las reglas de asociación, ent
 
 Es el módulo encargado de analizar los archivos de entrada leídos por el módulo de interfaz de usuario, extraer la información pertinente de ellos según el formato especificado, y retornar los datos en una estructura adecuada para luego ser procesados por el módulo principal de ARL. A su vez, este módulo realiza, además la labor inversa; vale decir, recibe las reglas de asociación en una estructura de datos estándar para luego entregarlas al módulo de interfaz en el formato requerido por el usuario.
 
-Hasta el momento los formatos soportados son CSV para archivos de entrada, y CSV o tabla en formato \LaTeX\ para archivos de salida.
+Hasta el momento los formatos soportados son valores separados por coma, o \textit{comma separated values (CSV)} para archivos de entrada, y CSV o tabla en formato \LaTeX\ para archivos de salida.
 
 \subsubsection{Módulo principal de ARL}
 
@@ -79,7 +79,7 @@ Este módulo contiene scripts cuya función es recibir un archivo de tabla de ba
 
 \section{Diseño de clases}
 
-En la Figura \label{fig:arl_diag_clases} se observa un diagrama con las clases más importantes dentro del paquete de Association Rule Learning y sus relaciones.
+En la Figura \ref{fig:arl_diag_clases} se observa un diagrama con las clases más importantes dentro del paquete de Association Rule Learning y sus relaciones.
 
 \begin{figure}[h!]
 \begin{center}
@@ -112,7 +112,7 @@ La clase \textit{RuleMiner} es la que abstrae el proceso de extraer reglas de as
 
 \section{Detalles de implementación}
 
-La implementación del sistema se llevó a cabo en el lenguaje de programación Python. Se realizó una implementación propia de los algoritmos antes descritos, con algunas adaptaciones para su funcionamiento correcto en el contexto de este proyecto; y se hizo uso de paquetes externos con el fin de hacer más simple el manejo de archivos CSV y la implementación de la interfaz por línea de comando.
+La implementación del sistema se llevó a cabo en el lenguaje de programación Python\cite{python.org}. Se realizó una implementación propia de los algoritmos antes descritos, con algunas adaptaciones para su funcionamiento correcto en el contexto de este proyecto; y se hizo uso de paquetes externos con el fin de hacer más simple el manejo de archivos CSV y la implementación de la interfaz por línea de comando.
 
 \subsection{Extracción de conjuntos de ítemes frecuentes}
 
@@ -122,7 +122,7 @@ En general, para ambos algoritmos la estructura de datos más utilizada para la 
 
 \subsection{Extracción de reglas de asociación}
 
-La extracción de reglas de asociación a partir de conjuntos frecuentes se llevó a cabo mediante una implementación del algoritmo \textit{Apriori} de generación de reglas.
+La extracción de reglas de asociación a partir de conjuntos frecuentes se llevó a cabo mediante una implementación del algoritmo \textit{Apriori} de generación de reglas. El sistema retorna al usuario reglas de asociación que cumplan con las medidas mínimas de soporte y confianza que él requiera. Estas serán mostradas en orden decreciente de soporte, confianza o \textit{lift}, según se requiera. Además, el sistema permite al usuario mostrar sólamente aquellas reglas en las que esté presente un cierto ítem en el antecedente o en el consecuente de ellas.
 
 \subsubsection{Entrada y salida}
 
@@ -189,5 +189,42 @@ donde \textit{<Class01>} es el identificador de la primera clase, \textit{<Count
 
 \section{Interfaz de usuario}
 
+La interfaz del usuario con el paquete principal de ARL y con los scripts del paquete de pre-procesamiento de datos, se realiza mediante un terminal o línea de comandos. Los parámetros, con los cuales se invoca cada uno de estos, siguen la sintaxis estándar \textit{de facto} de la mayoría de los sistemas tipo UNIX. En la implementación de estas interfaces se priorizó la claridad de las instrucciones por sobre lo conciso de estas, y se favorece la escritura de resultados a archivo; haciendo uso de la salida estándar solo en casos de errores y avisos del funcionamiento del sistema.
 
+Cada uno de los archivos de entrada o interfaz de los módulos puede ser invocado con el parámetro \textit{\'-h\'} y se desplegará un texto de ayuda con los parámetros disponibles y sus funcionalidades.
 
+Por ejemplo, el archivo de entrada del paquete de ARL, llamado \textit{spelar.py}, tiene la siguiente sintaxis de invocación:
+
+\begin{lstlisting}[basicstyle=\ttfamily]
+spelar.py [-h] [-d DESCRIPTIONS] [-l LATEX | -c CSV] (-ap | -fp)
+ [-m MAX] [--by_supp] [--by_conf] [--by_lift] [--in_ant ITEM] 
+ [--in_con ITEM] in_file min_supp min_conf
+\end{lstlisting}\footnote{Parámetros rodeados por corchetes son opcionales. La barra vertical indica parámetros mutuamente excluyentes entre sí.}
+
+Donde las opciones son:
+
+\begin{itemize}
+\item \texttt{-h}: Desplegar texto de ayuda.
+\item \texttt{-d}: Permite especificar la ubicación de un archivo en formato CSV (\texttt{DESCRIPTIONS}) que contenga una descripción para cada identificador de ítem, para mostrar en las reglas resultantes y así ayudar a hacer más clara su semántica al usuario.
+Un ejemplo de archivo de descripciones es el siguiente:
+\begin{lstlisting}[basicstyle=\ttfamily]
+id,description
+1857,AlIII_1857
+8500,CaII_8500
+8544,CaII_8544
+8665,CaII_8665
+\end{lstlisting}
+\item \texttt{-l}: Permite especificar la ubicación de un archivo (\texttt{LATEX}) en el cual escribir en formato LaTeX las reglas extraídas.
+\item \texttt{-c}: Permite especificar la ubicación de un archivo (\texttt{CSV}) en el cual escribir en formato CSV las reglas extraídas.
+\item \texttt{-ap}: Utilizar algoritmo Apriori para generar conjuntos frecuentes.
+\item \texttt{-fp}: Utilizar algoritmo FP-Growth para generar conjuntos frecuentes.
+\item \texttt{-m}: Permite especificar un número máximo \texttt{MAX} de reglas a retornar.
+\item \texttt{--by\_supp}: Desplegar reglas ordenadas por soporte.
+\item \texttt{--by\_conf}: Desplegar reglas ordenadas por confianza.
+\item \texttt{--by\_lift}: Desplegar reglas ordenadas por lift.
+\item \texttt{--in\_ant}: Mostrar sólo las reglas que posean el ítem \texttt{ITEM} en su antecedente.
+\item \texttt{--in\_con}: Mostrar sólo las reglas que posean el ítem \texttt{ITEM} en su consecuente.
+\item \texttt{in\_file}: Archivo de entrada en formato CSV con las transacciones.
+\item \texttt{min\_supp}: Soporte mínimo de las reglas a extraer. Valor de punto flotante entre 0 y 1.
+\item \texttt{min\_conf}: Confianza mínima de las reglas a extraer. Valor de punto flotante entre 0 y 1.
+\end{itemize}

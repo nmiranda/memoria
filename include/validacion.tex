@@ -99,7 +99,7 @@ En primer lugar, se consideró el conjunto de 131882 objetos de tipo estelar. En
 \label{fig:stelar_obj_redshift}
 \end{figure}
 
-Ahora bien, con el fin de reducir de forma más considerable el número de líneas a analizar, se decidió filtrar estas y dejar sólo las más brillantes. Para esto, se utilizó los valores de \textit{ancho equivalente (ew)} de cada una de las líneas, y se calculó una nueva medida a la que se denominó \textit{razón señal a ruido (SNR)} que consiste en la razón entre el ancho equivalente y su error (\textit{ewErr}). Para comprobar si este valor es un filtro efectivo del número de líneas, se tomo una muestra de 1 millón de líneas del total asociado a objetos estelares, y se produjo el histograma acumulativo de la Figura \label{fig:stelar_obj_snr}. Observando esta figura, se puede apreciar que, en efecto, esta nueva medida introducida es un parámetro efectivo de selección de líneas (cerca del 20\% de las líneas de la muestra tiene un SNR mayor que 5).
+Ahora bien, con el fin de reducir de forma más considerable el número de líneas a analizar, se decidió filtrar estas y dejar sólo las más brillantes. Para esto, se utilizó los valores de \textit{ancho equivalente (ew)} de cada una de las líneas, y se calculó una nueva medida a la que se denominó \textit{razón señal a ruido (SNR)} que consiste en la razón entre el ancho equivalente y su error (\textit{ewErr}). Para comprobar si este valor es un filtro efectivo del número de líneas, se tomo una muestra de 1 millón de líneas del total asociado a objetos estelares, y se produjo el histograma acumulativo de la Figura \ref{fig:stelar_obj_snr}. Observando esta figura, se puede apreciar que, en efecto, esta nueva medida introducida es un parámetro efectivo de selección de líneas (cerca del 20\% de las líneas de la muestra tiene un SNR mayor que 5).
 
 \begin{figure}[h!]
 \begin{center}
@@ -112,7 +112,7 @@ Ahora bien, con el fin de reducir de forma más considerable el número de líne
 
 Seleccionando, del total de líneas asociadas a objetos estelares, aquellas que estén asociadas a objetos con redshift menor que 0.002 y que tengan un \textit{SNR} mayor que 5, se obtiene un total de 1189817 líneas asociadas a 120250 objetos estelares. 
 
-Sin embargo, algunas de estas líneas no poseen un identificador \textit{lineID} y otras que sí lo poseen se encuentran mal identificadas. La razón de por qué ocurre esto se muestra en la Figura \label{fig:speclinez_hist}. Como ahí se puede apreciar, existe un gran número de líneas cuyo \textit{redshift} (indicado por el campo \textbf{z} de la tabla \textit{SpecLineAll}) tiene como valor ${-9999}$. Esto no tiene sentido alguno desde el punto de vista físico, e indica sencillamente un valor nulo o inexistente.
+Sin embargo, algunas de estas líneas no poseen un identificador \textit{lineID} y otras que sí lo poseen se encuentran mal identificadas. La razón de por qué ocurre esto se muestra en la Figura \ref{fig:speclinez_hist}. Como ahí se puede apreciar, existe un gran número de líneas cuyo \textit{redshift} (indicado por el campo \textbf{z} de la tabla \textit{SpecLineAll}) tiene como valor ${-9999}$. Esto no tiene sentido alguno desde el punto de vista físico, e indica sencillamente un valor nulo o inexistente.
 
 \begin{figure}[h!]
 \begin{center}
@@ -123,14 +123,14 @@ Sin embargo, algunas de estas líneas no poseen un identificador \textit{lineID}
 \label{fig:speclinez_hist}
 \end{figure}
 
-Incluso en muchas las 979173 líneas que resultan de filtrar aquellas que poseen valores nulos de \textit{redshift}, este valor aún así no concuerda con el \textit{redshift} del objeto; tomando el \textit{redshift} de la línea valores que llegan hasta 5, cuando el del objeto correspondiente se encuentra mucho más cercano a 0, como se observa en la Figura \label{fig:specobjz_vs_speclinez}
+Incluso en muchas las 979173 líneas que resultan de filtrar aquellas que poseen valores nulos de \textit{redshift}, este valor aún así no concuerda con el \textit{redshift} del objeto; tomando el \textit{redshift} de la línea valores que llegan hasta 5, cuando el del objeto correspondiente se encuentra mucho más cercano a 0, como se observa en la Figura \ref{fig:specobjz_vs_speclinez}
 
 \begin{figure}[h!]
 \begin{center}
 \includegraphics[width=0.9\textwidth]{imagenes/specobjz_vs_speclinez.png}
 \end{center}
 \vspace*{-5mm}
-\caption{Gráfico de \textit{redshift} de las líneas espectrales seleccionadas vs el del objeto al que pertenecen.}
+\caption{Gráfico de \textit{redshift} de las líneas espectrales seleccionadas vs el del objeto al que pertenecen; una vez filtrados aquellas con valores inválidos de \textit{redshift}}
 \label{fig:specobjz_vs_speclinez}
 \end{figure}
 
@@ -206,6 +206,20 @@ A continuación se muestra una tabla con las 25 reglas de mayor confianza.
 25 & $\begin{array}{c c c}\left\{\begin{array}{c}3935 (K\_3935) \\ 4103 (Hd\_4103) \\ 4342 (Hg\_4342) \\ 6565 (Ha\_6565)\end{array}\right\} & \Rightarrow & \left\{\begin{array}{c}3970 (H\_3970) \\ 4863 (Hb\_4863)\end{array}\right\}\end{array}$ & 0.23 & 1.00 & 2.58 \\ \hline
 \end{longtable}
 
+El sistema permite, además, filtrar las reglas de tal modo que se muestren solamente aquellas en las que se encuentre un cierto ítem en el antecedente o en el consecuente de la regla. A modo de ejemplo, a continuación se muestran las 5 reglas con mayor confianza que contienen a la línea \textit{CaII\_8544} en el antecedente.
+
+\begin{longtable}{| c | l | c | c |}
+\hline
+\textbf{N} & \textbf{Rule} & \textbf{Supp} & \textbf{Conf} \\ \hline
+1 & $\begin{array}{c c c}\left\{\begin{array}{c}8544 (CaII\_8544)\end{array}\right\} & \Rightarrow & \left\{\begin{array}{c}5177 (Mg\_5177)\end{array}\right\}\end{array}$ & 0.27 & 0.75 \\ \hline
+2 & $\begin{array}{c c c}\left\{\begin{array}{c}4863 (Hb\_4863) \\ 8544 (CaII\_8544)\end{array}\right\} & \Rightarrow & \left\{\begin{array}{c}3970 (H\_3970) \\ 6565 (Ha\_6565)\end{array}\right\}\end{array}$ & 0.17 & 0.86 \\ \hline
+3 & $\begin{array}{c c c}\left\{\begin{array}{c}3970 (H\_3970) \\ 8544 (CaII\_8544)\end{array}\right\} & \Rightarrow & \left\{\begin{array}{c}4863 (Hb\_4863) \\ 6565 (Ha\_6565)\end{array}\right\}\end{array}$ & 0.17 & 0.89 \\ \hline
+4 & $\begin{array}{c c c}\left\{\begin{array}{c}3970 (H\_3970) \\ 8544 (CaII\_8544)\end{array}\right\} & \Rightarrow & \left\{\begin{array}{c}3935 (K\_3935) \\ 6565 (Ha\_6565)\end{array}\right\}\end{array}$ & 0.17 & 0.88 \\ \hline
+5 & $\begin{array}{c c c}\left\{\begin{array}{c}3935 (K\_3935) \\ 8544 (CaII\_8544)\end{array}\right\} & \Rightarrow & \left\{\begin{array}{c}3970 (H\_3970) \\ 6565 (Ha\_6565)\end{array}\right\}\end{array}$ & 0.17 & 0.96 \\ \hline
+\end{longtable}
+
+En la Figura \ref{fig:complexity_support} se muestra el resultado de realizar medidas de tiempo de ejecución de los algoritmos Apriori y FP-Growth para distintos niveles de soporte mínimo sobre estos datos.
+
 \begin{figure}[h!]
 \begin{center}
 \includegraphics[width=0.9\textwidth]{imagenes/complexity_support.png}
@@ -224,3 +238,5 @@ Al seleccionar reglas con alto soporte se privilegia aquellas con líneas espect
 Además, se observa que al reducir el soporte y seleccionar por confianza, se encuentran conjuntos de líneas altamente correlacionados, pero presentes en una menor fracción del conjunto total de espectros. Por ejemplo, las líneas $O$, $H_e$, $G$ y $K$ aparecen, y están muy correlacionadas con las líneas $H_a$, $H_b$ y $H$, entre otras.
 
 En síntesis, puede decirse que es preferible, con el fin de no encontrar solo relaciones triviales o comúnes en demasía, buscar reglas por alta confianza y bajo soporte.
+
+En cuanto al desempeño y eficiencia de los algoritmos, en primera instancia sorprende el hecho que para valores de soporte menor que 0.15 los tiempos de ejecución del algoritmo \textit{Apriori} sean mucho menores que los del algoritmo \textit{FP-Growth}, siendo que este último fue concebido como una optimización del primero. Si bien el encontrar la razón del por qué de estos resultados requiere un estudio más a cabalidad de experimentaciones sistemáticas a la luz del funcionamiento de los algoritmos, una hipótesis plausible puede tener que ver con el hecho de que se está trabajando con una cantidad reducida de transacciones y que las operaciones de conjuntos de Python, que son clave en la operación del algoritmo \textit{FP-Growth}, no se encuentren debidamente optimizadas para los requerimientos de este.

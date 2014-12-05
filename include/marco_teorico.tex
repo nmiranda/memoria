@@ -17,7 +17,7 @@ En el año 1814, el científico Joseph von Fraunhofer (1787 - 1826), mediante el
 
 \begin{figure}[h!]
 \begin{center}
-\includegraphics[width=14cm]{imagenes/fraunhofer_sun.png}
+\includegraphics[width=0.9\textwidth]{imagenes/fraunhofer_sun.png}
 \end{center}
 \vspace*{-5mm}
 \caption{Espectro solar registrado por Fraunhofer.}
@@ -38,7 +38,7 @@ Esto se lleva a cabo con equipos de alto poder resolutivo y sensibilidad. Dos ej
 
 \subsection{Atacama Large Millimeter Array (ALMA)}
 
-El \textit{Atacama Large Millimeter Array (ALMA)} es un interferómetro de señales de radio ubicado en el desierto de Atacama, en el norte de Chile. Es un proyecto llevado a cabo mediante una asociación de organizaciones de Norteamérica, Europa y el Este de Asia. Comenzó sus observaciones científicas en la segunda mitad del año 2011. Es, por lejor, el mayor y más importante radiotelescopio construido hasta la fecha. Se encuentra realizando observaciones preliminares desde marzo del año 2013, y se espera que que opere al cien por ciento de su capacidad desde marzo del 2017.
+El \textit{Atacama Large Millimeter Array (ALMA)}\cite{almaobservatory.org}\cite{wootten2009atacama} es un interferómetro de señales de radio ubicado en el desierto de Atacama, en el norte de Chile. Es un proyecto llevado a cabo mediante una asociación de organizaciones de Norteamérica, Europa y el Este de Asia. Comenzó sus observaciones científicas en la segunda mitad del año 2011. Es, por lejor, el mayor y más importante radiotelescopio construido hasta la fecha. Se encuentra realizando observaciones preliminares desde marzo del año 2013, y se espera que que opere al cien por ciento de su capacidad desde marzo del 2017.
 
 ALMA realiza observaciones captando radiación electromagnética proveniente del espacio en bandas milimétricas y submilimétricas en sus longitudes de onda, que corresponden a ondas de radio. Debido a que en condiciones normales la humedad del ambiente y del cielo absorbe gran parte de este tipo de radiación, es crucial para el funcionamiento de los telescopios el estar ubicados en un lugar seco; y el más idóneo en ese sentido es, sin dudas, el llano de Chajnantor en el desierto de Atacama, a más de 5000 metros de altura.
 
@@ -46,11 +46,11 @@ Debido al diseño de ALMA, en muchas de sus observaciones se detectará una abun
 
 Con el tiempo se espera ocurra una eventual acumulación de grandes cantidades de datos espectrales de ALMA. Esto abre la oportunidad de desarrollar nuevas técnicas de estudio basados en la minería de datos u otras técnicas de computación poco usadas por los astrónomos. De ahí que en el presente trabajo se busque implementar algoritmos de aprendizaje de reglas de asociación, o \textit{Association Rule Learning (ARL)}, para el estudio masivo de datos espectroscópicos
 
-Gran parte de los datos obtenidos desde ALMA son guardados en estructuras de datos llamadas cubos de datos tipo ALMA (o \textit{ALMA Data Cubes})\label{fig:data_cube}, que contienen información de distintos puntos de observación del cielo a distintas frecuencias. Los cubos de datos tipo ALMA, como estructura de datos, contienen valores indexados en tres coordenadas. Dos de las coordenadas son espaciales, y corresponden al equivalente a una imagen normal de dos dimensiones, en el sentido que describen puntos del cielo (o del espacio observable desde la tierra). La tercera coordenada corresponde al rango de frecuencias en el que se está detectando radiación electromagnética. Por lo tanto, si se fijan las dos coordenadas espaciales (se fija un punto en el espacio) y se extraen todos los valores en la tercera coordenada de aquel punto, se obtiene el espectro de frecuencias observado en ese punto del espacio.
+Gran parte de los datos obtenidos desde ALMA son guardados en estructuras de datos llamadas cubos de datos tipo ALMA (o \textit{ALMA Data Cubes})\ref{fig:data_cube}, que contienen información de distintos puntos de observación del cielo a distintas frecuencias. Los cubos de datos tipo ALMA, como estructura de datos, contienen valores indexados en tres coordenadas. Dos de las coordenadas son espaciales, y corresponden al equivalente a una imagen normal de dos dimensiones, en el sentido que describen puntos del cielo (o del espacio observable desde la tierra). La tercera coordenada corresponde al rango de frecuencias en el que se está detectando radiación electromagnética. Por lo tanto, si se fijan las dos coordenadas espaciales (se fija un punto en el espacio) y se extraen todos los valores en la tercera coordenada de aquel punto, se obtiene el espectro de frecuencias observado en ese punto del espacio.
 
 \begin{figure}[h!]
 \begin{center}
-\includegraphics[width=14cm]{imagenes/data_cube.png}
+\includegraphics[width=0.9\textwidth]{imagenes/data_cube.png}
 \end{center}
 \vspace*{-5mm}
 \caption{Representación gráfica de un cubo de datos tipo ALMA. Dos de sus cordenadas son espaciales mientras la tercera corresponde al dominio de las frecuencias.}
@@ -63,9 +63,18 @@ A partir de ALMA se generan enormes cantidades de datos (actualmente cerca el or
 
 Dado que se espera obtener datos de ALMA para el uso de técnicas tales como el aprendizaje de reglas de asociación a partir del año 2017, se requiere una base de datos espectroscópicos pre-existente con el fin de poner a prueba el sistema desarrollado en el presente trabajo.
 
-El \textit{Sloan Digital Sky Survey (SDSS)} es un proyecto de inspección y estudio del espacio llevado a cabo mediante el uso de un telescopio óptico ubicado en el observatorio Apache Point (APO), Nuevo México, Estados Unidos. La recolección de datos comenzó en el año 2000, y las imágenes finales de los datos publicados cubren un 35\% del cielo, con observaciones fotométricas de 500 millones de objetos y espectros ópticos de 1 millón de objetos.
+El \textit{Sloan Digital Sky Survey (SDSS)}\cite{york2000sloan} es un proyecto de inspección y estudio del espacio llevado a cabo mediante el uso de un telescopio óptico ubicado en el observatorio Apache Point (APO), Nuevo México, Estados Unidos. La recolección de datos comenzó en el año 2000, y las imágenes finales de los datos publicados cubren un 35\% del cielo, con observaciones fotométricas de 500 millones de objetos y espectros ópticos de 1 millón de objetos.
 
-Los espectros del SDSS cubren desde 3600 a 10400 Angstroms ({\AA})\footnote{\url{https://www.sdss3.org/instruments/boss_spectrograph.php\#Parameters}} con una resolución de 1 {\AA}\footnote{$1\,\text{{\AA}} = 10^{-10}\,m = 10^{-1}\,nm$}. Los objetos estudiados son principalmente galaxias, incluyendo \textit{quásares} y \textit{AGN} (un 80\% del total de datos), y el resto son estrellas de distinto tipo (20\% del total) cuyos espectros se encuentran dominados por muchas líneas de absorción. Los espectros de regiones de gas o de galaxias, por otra parte, poseen pocas líneas de absorción. El SDSS tiene en sus catálogos un universo de casi 50 líneas espectrales posibles, presentes dentro de su rango de detección.
+Los espectros del SDSS cubren desde 3600 a 10400 Angstroms ({\AA})\footnote{\url{https://www.sdss3.org/instruments/boss_spectrograph.php\#Parameters}} con una resolución de 1 {\AA}\footnote{$1\,\text{{\AA}} = 10^{-10}\,m = 10^{-1}\,nm$}. Los objetos estudiados son principalmente galaxias, incluyendo \textit{quásares} y \textit{AGN} (un 80\% del total de datos), y el resto son estrellas de distinto tipo (20\% del total) cuyos espectros se encuentran dominados por muchas líneas de absorción, como el que se muestra en la Figura \ref{fig:sdss_spec}. Los espectros de regiones de gas o de galaxias, por otra parte, poseen pocas líneas de absorción. El SDSS tiene en sus catálogos un universo de casi 50 líneas espectrales posibles, presentes dentro de su rango de detección.
+
+\begin{figure}[h!]
+\begin{center}
+\includegraphics[width=0.9\textwidth]{imagenes/sdss_spec.png}
+\end{center}
+\vspace*{-5mm}
+\caption{Espectro de frecuencia de un objeto estelar del SDSS con sus líneas identificadas. Se puede apreciar que el espectro es dominado por líneas de absorción}
+\label{fig:sdss_spec}
+\end{figure}
 
 Los datos de SDSS se hacen disponibles mediante publicaciones regulares o \textit{data releases} a través de internet. La última publicación llevada a cabo fue la correspondiente al data release 10 (DR10), con fecha de julio del 2013. Los datos de todos los data releases se encuentran en un servidor \textit{Microsoft SQL Server} y pueden accederse mediante diversas interfaces o APIs presentes en el sitio web de SDSS. En particular, existe una interfaz web llamada \textit{CasJobs} que permite realizar consultas en lenguaje \textit{SQL} a un servidor que encola la petición, la ejecuta y guarda los resultados en una base de datos asignada al usuario.
 
@@ -87,7 +96,7 @@ Existen una serie de medidas para cuantificar la relevancia de una regla de asoc
 
 El \textit{soporte} de un conjunto de ítemes $X$, o $\mathit{supp}(X)$, se define como $$\mathit{supp}(X) = \frac{|\mathcal{T}_X|}{|\mathcal{T}|} \quad \text{, tal que} \quad \mathcal{T}_X = \{T \in \mathcal{T} \, : \, X \subset T \}\text{,}$$ donde $|X|$, cuando $X$ es un conjunto finito cualquiera, significa el número de elementos que posee el conjunto. Vale decir, el soporte corresponde a la fracción del total de transacciones en la que está presente el conjunto.
 
-A su vez, el soporte de una regla de asociación $X \Rightarrow Y$, o $\mathit{supp}(X \Rightarrow Y)$, se define como $$\mathit{supp}(X \Rightarrow Y) = \mathit{supp}(X \cup Y)\text{,}$$ vale decir, corresponde a la fracción del total de transacciones en las cuales está presente tanto el antecedente como el consecuente de la regla simultáneamente\footnote{Debe tenerse en mente que la expresión $mathit{supp}(X \cup Y)$ indica la fracción del total de transacciones en las cuales está presente \textbf{tanto} el antecedente como el consecuente de la regla \textbf{simultáneamente}, y \textbf{no} de aquellas en las cuales está presente el antecedente \textbf{o} el consecuente. El argumento del soporte $\mathit{supp}$ es un conjunto de ``pre-condiciones", y, por lo tanto, se vuelve más restrictivo en la medida que su cardinalidad aumenta.}.
+A su vez, el soporte de una regla de asociación $X \Rightarrow Y$, o $\mathit{supp}(X \Rightarrow Y)$, se define como $$\mathit{supp}(X \Rightarrow Y) = \mathit{supp}(X \cup Y)\text{,}$$ vale decir, corresponde a la fracción del total de transacciones en las cuales está presente tanto el antecedente como el consecuente de la regla simultáneamente\footnote{Debe tenerse en mente que la expresión $\mathit{supp}(X \cup Y)$ indica la fracción del total de transacciones en las cuales está presente \textbf{tanto} el antecedente como el consecuente de la regla \textbf{simultáneamente}, y \textbf{no} de aquellas en las cuales está presente el antecedente \textbf{o} el consecuente. El argumento del soporte $\mathit{supp}$ es un conjunto de ``pre-condiciones", y, por lo tanto, se vuelve más restrictivo en la medida que su cardinalidad aumenta.}.
 
 La \textit{confianza} de una regla de asociación $X \Rightarrow Y$, denotada por $\mathit{conf}(X \Rightarrow Y)$, se define como $$\mathit{conf}(X \Rightarrow Y) = \frac{\mathit{supp}(X \cup Y)}{\mathit{supp}(X)}\text{,}$$ es decir, indica en qué fracción de las transacciones en las cuales está presente el antecedente la regla se cumple (i.e. está presente también el consecuente de la regla). Debido al uso frecuente de esta medida de relevancia, resulta usual el expresar una regla de asociación mediante la notación $$X \Rightarrow Y \, \Big| \, c$$ donde $c = \mathit{conf}(X \Rightarrow Y)$.
 
@@ -137,15 +146,29 @@ En el mismo artículo seminal de ARL por Agrawal et al.\cite{agrawal1993mining},
 
 El algoritmo \textit{Apriori} recibe como entrada un conjunto de transacciones, y tiene como objetivo encontrar y retornar todos aquellos conjuntos presentes que cumplan con el requisito de soporte mínimo indicado, también llamados \textit{conjuntos frecuentes}.
 
-Por ejemplo, supongamos que se cuenta con el un conjunto de transacciones, y que cada una contiene ítemes pertenecientes a un universo de solo 4 elementos posibles, $\mathcal{I} = \{0,\,1,\,2,\,3\}$. Luego, en principio, para extraer los conjuntos frecuentes a partir de estas transacciones, por cada uno de los conjuntos que es posible generar con este universo de 4 ítemes posibles (llamados \textit{conjuntos candidatos}), se debe recorrer cada una de las transacciones, ver si la transaccion satisface este conjunto, y de ser así incrementar un contador. Luego de terminar este proceso para cada uno de los conjuntos posibles, se tendrá el número de veces que cada uno de estos se encuentra dentro del conjunto de transacciones, y teniendo el número total de estas, se puede obtener de forma directa el soporte de estos conjuntos.
+Por ejemplo, supongamos que se cuenta con el un conjunto de transacciones, y que cada una contiene ítemes pertenecientes a un universo de solo 4 elementos posibles, $\mathcal{I} = \{0,\,1,\,2,\,3\}$. Luego, en principio, para extraer los conjuntos frecuentes a partir de estas transacciones, por cada uno de los conjuntos que es posible generar con este universo de 4 ítemes posibles (llamados \textit{conjuntos candidatos}), se debe recorrer cada una de las transacciones, ver si la transaccion satisface este conjunto, y de ser así incrementar un contador. Luego de terminar este proceso para cada uno de los conjuntos posibles, se tendrá el número de veces que cada uno de estos se encuentra dentro del conjunto de transacciones, y teniendo el número total de estas, se puede obtener de forma directa el soporte de estos conjuntos\ref{fig:possible_itemsets}.
 
-\missingfigure{Grafo con los conjuntos generados a partir de un universo de 4 ítemes posibles}
+\begin{figure}[h!]
+\begin{center}
+\includegraphics[width=0.7\textwidth]{imagenes/possible_itemsets.png}
+\end{center}
+\vspace*{-5mm}
+\caption{Grafo que muestra todos los conjuntos posibles generados a partir del conjunto universo \{0, 1, 2, 3\}\cite{harrington2012machine}}
+\label{fig:possible_itemsets}
+\end{figure}
 
 El problema radica en que el número de conjuntos candidatos crece de manera exponencial en el número de ítemes del universo posible. En efecto, si el número de ítemes del universo es $n$, entonces a partir de este es posible generar $2^n+1$ conjuntos. Por tanto, para un universo de 100 elementos, existen nada menos que $1.26\times10^{30}$ conjuntos candidatos; y debe, por tanto, recorrerse el total de transacciones este número de veces.
 
-No obstante, es posible reducir el número de conjuntos candidatos utilizando la propiedad de \textit{clausura descendiente} de los conjuntos frecuentes, tambien llamado \textit{principio Apriori}. Esta propiedad asegura que si un conjunto dado es, en efecto, frecuente, entonces necesariamente todos sus subconjuntos también lo son. O, expresado de forma recíproca, si un conjunto dado resulta no ser frecuente, entonces necesariamente todos sus superconjuntos tampoco lo son. Esta última expresión es la que resulta más relevante para nuestro caso. Esto implica que luego de generar un conjunto candidato y verificar si es frecuente verificando el número de transacciones que lo satisfacen, si se comprueba que este conjunto no es frecuente (vale decir, no cumple con el requisito de soporte mínimo), entonces necesariamente ninguno de sus conjuntos posibles que lo contienen será frecuente, y por tanto no será necesario obtener sus soportes correspondientes contando el número de transacciones que los satisfacen.
+No obstante, es posible reducir el número de conjuntos candidatos utilizando la propiedad de \textit{clausura descendiente} de los conjuntos frecuentes, tambien llamado \textit{principio Apriori}. Esta propiedad asegura que si un conjunto dado es, en efecto, frecuente, entonces necesariamente todos sus subconjuntos también lo son. O, expresado de forma recíproca, si un conjunto dado resulta no ser frecuente, entonces necesariamente todos sus superconjuntos tampoco lo son. Esta última expresión es la que resulta más relevante para nuestro caso. Esto implica que luego de generar un conjunto candidato y verificar si es frecuente verificando el número de transacciones que lo satisfacen, si se comprueba que este conjunto no es frecuente (vale decir, no cumple con el requisito de soporte mínimo), entonces necesariamente ninguno de sus conjuntos posibles que lo contienen será frecuente, y por tanto no será necesario obtener sus soportes correspondientes contando el número de transacciones que los satisfacen\ref{fig:unfrequent_itemsets}.
 
-\missingfigure{Grafo igual al anterior, pero que muestra cuales de los conjuntos necesariamente no son frecuentes si uno de ellos resulta no serlo.}
+\begin{figure}[h!]
+\begin{center}
+\includegraphics[width=0.7\textwidth]{imagenes/unfrequent_itemsets.png}
+\end{center}
+\vspace*{-5mm}
+\caption{Grafo que muestra todos los conjuntos posibles generados a partir del conjunto universo \{0, 1, 2, 3\}. Los conjuntos en gris son aquellos que de inmediato se sabe no son frecuentes si el conjunto \{2, 3\} resulta no serlo\cite{harrington2012machine}.}
+\label{fig:unfrequent_itemsets}
+\end{figure}
 
 Esta propiedad permite reducir considerablemente el número de conjuntos candidatos y, por tanto, optimizar el algoritmo final; ya que no será necesario recorrer el total de transacciones tantas veces como se planteó originalmente. Para poder utilizar esta propiedad y beneficiarse de la optimización correspondiente, es necesario generar los conjuntos candidatos comenzando por aquellos que poseen menos elementos, y a partir de estos generar todos los superconjuntos posibles.
 
@@ -171,6 +194,38 @@ $\mathcal{L} \leftarrow \bigcup_k \, \mathcal{L}_k$\;
 \end{algorithm}
 
 Donde $\mathcal{L}_k$ corresponde a la colección de conjuntos frecuentes con $k$ elementos, los cuales tienen un contador asociado; y $\mathcal{C}_k$ consiste en la colección de conjuntos candidatos con $k$ elementos, que tienen también un contador asociado. La función \texttt{apriori-gen} es la encargada de generar la colección de conjuntos frecuentes de tamaño $k$ a partir de la colección de conjuntos candidatos datos de tamaño $k$. La función \texttt{subset} se encarga de recibir una colección de conjuntos de ítemes frecuentes $\mathcal{C}_k$ y una transacción $T$ y de retornar una colección de ítemes $\mathcal{C}_T = \{C \in \mathcal{C}_k \, : \, C \subseteq T\}$.
+
+Posteriormente, se lleva a cabo la extracción de reglas a partir de la colección de conjuntos frecuentes $\mathcal{L}$. Para ello, se utiliza el algoritmo \textit{Apriori} de generación de reglas, que se detalla a continuación.
+
+\begin{algorithm}[H]
+\DontPrintSemicolon
+\KwData{Colección de conjuntos frecuentes $\mathcal{T}$}
+\KwResult{Colección de reglas de asociación $\mathcal{R}$}
+\SetKw{Yield}{yield}
+\SetKwFunction{GenRules}{genRules}
+\ForAll{conjuntos frecuentes $l_k$, $k \geq 2$}{
+	\Yield \GenRules{$l_k$, $l_k$}\;
+}
+\caption{Algoritmo \textit{Apriori} de generación de reglas}
+\end{algorithm}
+
+\begin{procedure}[H]
+\DontPrintSemicolon
+\SetKwFunction{Support}{support}
+\SetKw{Yield}{yield}
+\SetKwFunction{GenRules}{genRules}
+\caption{genRules($l_k$: conjunto de $k$ ítemes, $a_m$: conjunto de $m$ ítemes)}
+$A = \{a_{m-1} \, : \, a_{m-1} \subset a_m\}$\;
+\ForAll{$a_{m-1} \in A$}{
+	conf = \Support{$l_k$}/\Support{$a_{m-1}$}\;
+	\If{conf $\leq$ minconf}{
+		\Yield regla $a_{m-1} \Rightarrow (l_k - a_{m-1})$, con confianza = conf y soporte = \Support{$l_k$}\;
+		\If{$m-1 > 1$}{
+			\GenRules{$l_k$, $a_{m-1}$}\;
+		}
+	}
+}
+\end{procedure}
 
 La teoría indica que la complejidad del algoritmo Apriori se encuentra está acotada por $\mathcal{O}(\mathcal{C}_{\mathit{sum}} \times |\mathcal{T}|)$, donde $\mathcal{C}_{\mathit{sum}}$ es la suma de los tamaños del total de conjuntos candidatos considerados y $|\mathcal{T}|)$ denota el tamaño del conjunto de transacciones.
 
@@ -208,15 +263,41 @@ Luego, se hace lo mismo con los ítemes de las transacciones, obteniendo el sigu
 6 & $y$, $z$, $x$, $e$, $q$, $s$, $t$, $m$ & $z$, $x$, $y$, $s$, $t$ \\
 \end{tabular}
 
-Una vez listo esto, puede comenzarse con el procedimiento de construcción del árbol en sí. Se comienza por insertar el nodo raíz, cuyo nombre es vacío o \textit{null}. Luego se comienza a añadir los conjuntos frecuentes a partir de las transacciones con ítemes ordenados y filtrados. Estas son sucesivamente añadidas al árbol de tal manera que cada ítem resulte ser hijo del ítem anterior según el orden en que se encuentra en la transacción. Ahora bien, si el ítem a añadir ya se encuentra presente en una cierta posición dentro de el árbol, entonces en vez de agregar un nuevo nodo con el mismo nombre, simplemente se incrementa el contador del nodo ya existente y se inserta el siguiente ítem en la transacción como hijo de este.
+Una vez listo esto, puede comenzarse con el procedimiento de construcción del árbol en sí. Se comienza por insertar el nodo raíz, cuyo nombre es vacío o \textit{null}. Luego se comienza a añadir los conjuntos frecuentes a partir de las transacciones con ítemes ordenados y filtrados. Estas son sucesivamente añadidas al árbol de tal manera que cada ítem resulte ser hijo del ítem anterior según el orden en que se encuentra en la transacción. Ahora bien, si el ítem a añadir ya se encuentra presente en una cierta posición dentro de el árbol, entonces en vez de agregar un nuevo nodo con el mismo nombre, simplemente se incrementa el contador del nodo ya existente y se inserta el siguiente ítem en la transacción como hijo de este. En la Figura \ref{fig:fptree_process} se aprecia parte de este proceso.
 
-\missingfigure{Proceso de construcción del FP-Tree del ejemplo}
+\begin{figure}[h!]
+\begin{center}
+\includegraphics[width=0.7\textwidth]{imagenes/fptree_process.png}
+\end{center}
+\vspace*{-5mm}
+\caption{Proceso de construcción del FP-Tree del ejemplo. Aquí se puede apreciar cómo ocurre el mecanismo de bifurcación de ramas del FP-Tree al insertar las dos primeras transacciones\cite{harrington2012machine}.}
+\label{fig:fptree_process}
+\end{figure}
 
-En términos generales, el algoritmo final de generación de FP-Tree es como sigue
+En la Figura \ref{fig:fptree_header} se muestra el FP-Tree y la tabla de encabezados que se obtiene al final de llevar a cabo el proceso de construcción con los datos de ejemplo.
 
-\missingfigure{FP-Tree y headertables resultantes del ejemplo}
+\begin{figure}[h!]
+\begin{center}
+\includegraphics[width=0.7\textwidth]{imagenes/fptree_header.png}
+\end{center}
+\vspace*{-5mm}
+\caption{FP-Tree y headertables construidos a partir de los datos de ejemplo, con un soporte de 0.5\cite{harrington2012machine}.}
+\label{fig:fptree_header}
+\end{figure}
 
-Luego, se procede a extraer los conjuntos frecuentes a partir del FP-Tree de la siguiente manera
+Luego, se procede a extraer los conjuntos frecuentes a partir del FP-Tree, para lo cual no es necesario hacer uso del conjunto de transacciones originales. Este proceso de extracción consta de los siguientes pasos:
+
+\begin{enumerate}
+\item Obtener conjunto de patrones condicionales a partir del FP-Tree.
+\item A partir de una de sus ramas de prefijo, construir un FP-Tree condicional.
+\item Repetir los pasos anteriores de manera recursiva hasta que el FP-Tree condicional actual tenga un solo elemento.
+\end{enumerate}
+
+Por cada uno de los conjuntos frecuentes de un solo elemento presentes en la tabla de encabezados, se extrae su \textit{conjunto de patrones condicionales}, que es una colección de \textit{ramas de prefijo}. Cada una de estas ramas de prefijo es un conjunto de ítemes presentes en un camino del árbol original que termina en un cierto ítem. Vale decir, son todos los ítemes que se encuentran desde la raíz del árbol hasta justo antes del nodo correspondiente a un ítem dado. Entonces, por ejemplo, para el conjunto frecuente \{$z$\} se tiene que su conjunto de patrones condicionales es la colección \{\{$x$, $s$\}, \{$z$, $x$, $y$\}, \{$z$\}\}.
+
+A partir de las ramas de prefijo que se encuentran dentro del conjunto de patrones condicionales se construye, entonces, un nuevo FP-Tree de la misma manera que se construyó el original a partir de las transacciones. A este nuevo FP-Tree se le denomina \textit{FP-Tree condicional}. Tal como en el caso original, este FP-Tree contiene solo los ítemes que cumplen con el requisito de soporte mínimo dentro de la rama de prefijo actual. Luego, se añade a la colección de conjuntos frecuentes los conjuntos que consisten de la unión entre los ítemes que se encuentran en la tabla de encabezados y el prefijo a partir del cual se obtuvieron las ramas de prefijo con las que se construyó el FP-Tree actual.
+
+Una vez añadidos estos conjuntos frecuentes se repite el proceso de manera recursiva, construyendo un nuevo FP-Tree condicional a partir de las ramas de prefijo para cada uno de los ítemes de la tabla de encabezados, hasta que el FP-Tree actualmente construido tenga un solo elemento.
 
 \subsection{Otros algoritmos, implementaciones y aplicaciones}
 
@@ -224,7 +305,7 @@ Posteriormente, Agrawal et al. presentaron el algoritmo \textit{AprioriTid}, cuy
 
 Savasere et al. introdujeron el algoritmo \textit{Partition}\cite{savasere1995efficient} con el fin de extraer reglas de asociación en base de datos, el cual presenta reducciones en las operaciones de la CPU y de entrada/salida, y que además facilita la paralelización. Posteriormente se creó el algoritmo \textit{Dynamic Itemset Counting (DIC)}\cite{brin1997dynamic}, que realiza menos lecturas sobre los datos que los algoritmos previos, y que utiliza la métrica de \textit{Convicción} a la hora de generar reglas de asociación. Luego, Park et al. presentaron un algoritmo que hace uso de funciones de Hashing con el fin de generar reglas candidatas\cite{park1995effective}. Se han realizado, también, adaptaciones de los algoritmos previos con el fin de realizar ARL en datos de tipo cuantitativo\cite{srikant1996mining}.
 
-Esfuerzos posteriores se han realizado con el fin de profundizar en los fundamentos teóricos subyacentes en ARL (e.g. definiendo el conjunto de posibles ítemes como una estructura algebráica llamada \textit{retículo})\cite{zaki1998theoretical}, y con el fin de extender la noción de reglas de asociación a correlaciones\cite{brin1997beyond}.
+Esfuerzos posteriores se han realizado con el fin de profundizar en los fundamentos teóricos subyacentes en ARL (e.g. definiendo el conjunto de posibles ítemes como una estructura algebráica llamada \textit{retículo})\cite{zaki1998theoretical}, y con el fin de extender la noción de reglas de asociación a correlaciones\cite{brin1997beyond} y taxonomías\cite{srikant1996mining}.
 
 Luego de esto, se han hecho numerosas implementaciones y optimizaciones a los algoritmos más utilizados en ARL, como, por ejemplo, el algoritmo Apriori\cite{bodon2010fast}; así como implementaciones que facilitan el mantener la privacidad de cada una de las fuentes de datos que participan en el proceso\cite{evfimievski2004privacy}.
 
