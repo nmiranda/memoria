@@ -32,7 +32,7 @@ La tabla \textit{SpecObj} contiene información de los objetos astronómicos sob
 \item \textbf{objTypeName}: El tipo de objeto (e.g. galaxia, estrella, quasar), determinado mediante imágenes.
 \item \textbf{specClass}: El tipo de objeto, determinado mediante su espectro.
 \item \textbf{mag\_0}. \textbf{mag\_1} y \textbf{mag\_2}: Magnitud de emisión en tres frecuencias distintas.
-\item \textbf{z}: \textit{Redshift} del objeto.
+\item \textbf{z}: \textit{Redshift} o corrimiento al rojo del objeto debido al efecto Doppler.
 \item \textbf{zErr}: Error de \textit{Redshift} del objeto.
 \end{itemize}
 
@@ -49,7 +49,7 @@ A su vez, la tabla \textit{SpecLineAll} contiene información sobre cada una de 
 \item \textbf{heightErr}: Error de la función gaussiana ajustada a la línea.
 \item \textbf{ew}: Ancho equivalente de la línea (una medida de su intensidad).
 \item \textbf{ewErr}: Error del ancho equivalente.
-\item \textbf{z}: \textit{Redshift} de la línea.
+\item \textbf{z}: \textit{Redshift} de la línea\footnote{Si es distinto la redshift del objeto en la tabla \textit{SpecObj} entonces la línea está mal identificada}.
 \item \textbf{zErr}: Error de \textit{redshift}.
 \end{itemize}
 
@@ -88,7 +88,7 @@ Para fines de esta prueba de concepto y validacíón del sistema se escogió rea
 
 En total, existen 52570585 líneas asociadas a los 131882 objetos de tipo estelar presentes en el \textit{data release 7}. Esto supone un claro problema técnico, dado que el sistema \textit{CasJobs} no permite descargar tablas de tal envergadura. Por lo tanto, debe realizarse un proceso de selección lo más sistemático posible. 
 
-En primer lugar, se consideró el conjunto de 131882 objetos de tipo estelar. En la Figura \ref{fig:stelar_obj_redshift} se puede apreciar una selección del histograma del \textit{redshift} de estos objetos. Se puede apreciar que la mayoría de los objetos se encuentran cercanos a 0 y unos pocos se encuentran distribuidos en valores mayores. Se decidió por tanto, eliminar estos objetos de mayor \textit{redshift} (y por tanto más lejanos) con el fin de trabajar sólo con aquellos objetos más cercanos. Se decidió por utilizar solo los objetos que tengan un \textit{redshift} menor que 0.002.
+En primer lugar, se consideró el conjunto de 131882 objetos de tipo estelar. En la Figura \ref{fig:stelar_obj_redshift} se puede apreciar una selección del histograma del \textit{redshift} de estos objetos. Se puede apreciar que la mayoría de los objetos se encuentran cercanos a 0 y unos pocos se encuentran distribuidos en valores mayores. Se decidió por tanto, eliminar estos objetos de mayor \textit{redshift} (y por tanto más lejanos) con el fin de trabajar sólo con aquellos objetos más cercanos. Se decidió por utilizar solo los objetos que tengan un \textit{redshift} menor que 0.002, dado que la velocidad de escape de la Vía Láctea corresponde a 45 km/s.
 
 \begin{figure}[h!]
 \begin{center}
@@ -99,7 +99,7 @@ En primer lugar, se consideró el conjunto de 131882 objetos de tipo estelar. En
 \label{fig:stelar_obj_redshift}
 \end{figure}
 
-Ahora bien, con el fin de reducir de forma más considerable el número de líneas a analizar, se decidió filtrar estas y dejar sólo las más brillantes. Para esto, se utilizó los valores de \textit{ancho equivalente (ew)} de cada una de las líneas, y se calculó una nueva medida a la que se denominó \textit{razón señal a ruido (SNR)} que consiste en la razón entre el ancho equivalente y su error (\textit{ewErr}). Para comprobar si este valor es un filtro efectivo del número de líneas, se tomo una muestra de 1 millón de líneas del total asociado a objetos estelares, y se produjo el histograma acumulativo de la Figura \ref{fig:stelar_obj_snr}. Observando esta figura, se puede apreciar que, en efecto, esta nueva medida introducida es un parámetro efectivo de selección de líneas (cerca del 20\% de las líneas de la muestra tiene un SNR mayor que 5).
+Ahora bien, con el fin de reducir de forma más considerable el número de líneas a analizar, se decidió filtrar estas y dejar sólo las más brillantes. Para esto, se utilizó los valores de \textit{ancho equivalente (ew)} de cada una de las líneas, y se calculó una nueva medida a la que se denominó \textit{razón señal a ruido (SNR)} que consiste en la razón entre el ancho equivalente y su error (\textit{ewErr}). Para comprobar si este valor es un filtro efectivo del número de líneas, se tomo una muestra de 1 millón de líneas del total asociado a objetos estelares, y se produjo el histograma acumulativo de la Figura \ref{fig:stelar_obj_snr}. Observando esta figura, se puede apreciar que, en efecto, esta nueva medida introducida es un parámetro efectivo de selección de líneas (cerca del 20\% de las líneas de la muestra tiene un SNR mayor que 5 y por lo tanto lo consideramos como detecciones fidedignas).
 
 \begin{figure}[h!]
 \begin{center}
@@ -237,6 +237,6 @@ Al seleccionar reglas con alto soporte se privilegia aquellas con líneas espect
 
 Además, se observa que al reducir el soporte y seleccionar por confianza, se encuentran conjuntos de líneas altamente correlacionados, pero presentes en una menor fracción del conjunto total de espectros. Por ejemplo, las líneas $O$, $H_e$, $G$ y $K$ aparecen, y están muy correlacionadas con las líneas $H_a$, $H_b$ y $H$, entre otras.
 
-En síntesis, puede decirse que es preferible, con el fin de no encontrar solo relaciones triviales o comúnes en demasía, buscar reglas por alta confianza y bajo soporte.
+En síntesis, puede decirse que es preferible, con el fin de no encontrar solo relaciones triviales o comúnes en demasía, buscar reglas por alta confianza y bajo soporte; siempre y cuando se cuente con un número muy grande de transacciones, dado que en la medida que este número crece se hace más interesante buscar soporte relativamente bajo con alta confianza.
 
 En cuanto al desempeño y eficiencia de los algoritmos, en primera instancia sorprende el hecho que para valores de soporte menor que 0.15 los tiempos de ejecución del algoritmo \textit{Apriori} sean mucho menores que los del algoritmo \textit{FP-Growth}, siendo que este último fue concebido como una optimización del primero. Si bien el encontrar la razón del por qué de estos resultados requiere un estudio más a cabalidad de experimentaciones sistemáticas a la luz del funcionamiento de los algoritmos, una hipótesis plausible puede tener que ver con el hecho de que se está trabajando con una cantidad reducida de transacciones y que las operaciones de conjuntos de Python, que son clave en la operación del algoritmo \textit{FP-Growth}, no se encuentren debidamente optimizadas para los requerimientos de este.
