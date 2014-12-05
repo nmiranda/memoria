@@ -47,7 +47,7 @@ A su vez, la tabla \textit{SpecLineAll} contiene información sobre cada una de 
 \item \textbf{category}: 1 si la línea se detectó mediante el uso de ajuste de modelos luego de aplicar un filtro (o \textit{transformada wavelet}) con el fin de determinar el \textit{redshift} de las líneas de emisión y 2 si la línea se detectó una vez que el objeto fue clasificado y su \textit{redshift} determinado.
 \item \textbf{height}: Altura de la función gaussiana ajustada a la línea.
 \item \textbf{heightErr}: Error de la función gaussiana ajustada a la línea.
-\item \textbf{ew}: Ancho equivalente de la línea (una medida de su intensidad).
+\item \textbf{ew}: Ancho equivalente de la línea. Es una medida del área integrada entre la línea espectral y el contínuo a longitudes de onda adyacentes. Indica el brillo o intensidad normalizada de la línea espectral.
 \item \textbf{ewErr}: Error del ancho equivalente.
 \item \textbf{z}: \textit{Redshift} de la línea\footnote{Si es distinto la redshift del objeto en la tabla \textit{SpecObj} entonces la línea está mal identificada}.
 \item \textbf{zErr}: Error de \textit{redshift}.
