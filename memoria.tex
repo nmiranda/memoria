@@ -24,9 +24,19 @@ PROYECTO FONDEF D11I1060, y el CENTRO DE MODELAMIENTO MATEM\'ATICO DE LA UNIVERS
 \usepackage{setspace}
 \usepackage{todonotes}
 \usepackage{listings}
-\usepackage[lined,boxed,commentsnumbered,ruled,vlined]{algorithm2e}
+\usepackage[lined,boxed,commentsnumbered,ruled,vlined,spanish]{algorithm2e}
 \usepackage{longtable}
 \usepackage{hyperref}
+
+\addto\captionsspanish{% Replace "english" with the language you use
+  \renewcommand{\contentsname}%
+    {Tabla de contenido}%
+}
+\addto\captionsspanish{% Replace "english" with the language you use
+  \renewcommand{\listfigurename}%
+    {Indice de ilustraciones}%
+}
+
 
 \begin{document}
 
@@ -34,11 +44,15 @@ PROYECTO FONDEF D11I1060, y el CENTRO DE MODELAMIENTO MATEM\'ATICO DE LA UNIVERS
 \maketitle
 
 \begin{abstract}
-En el presente trabajo se llevó a cabo la implementación de algoritmos de reglas de asociación con la finalidad de inferir relaciones lógicas existentes en grandes cantidades de datos. En particular, se busca aplicar a conjuntos de líneas espectrales extraídas a partir de datos de observaciones astronómicas, para así obtener información de las relaciones existentes entre ellas bajo distintas medidas de interés y relevancia estadística.
+Parte importante de la labor astronómica consiste en analizar observaciones de radiaciones electromagnéticas en la forma de espectros de frecuencia, procedentes del espacio y emitidas por objetos tales como estrellas, galaxias y otros. A partir de estos espectros se puede identificar una serie de propiedades y características de los objetos de los cuales provienen; en particular, las líneas espectrales (tanto de emisión como de absorción) presentes resultan ser un indicador de las especies (átomos, moléculas, isótopos, etc.) presentes en su composición química.
 
-Para ello se utilizó algoritmos de Aprendizaje de Reglas de asociación, o \textit{Association Rule Learning (ARL)}; en particular los algoritmos \textit{Apriori} y \textit{FP-Growth}. La aplicación final permite al usuario observar las reglas obtenidas bajo requerimientos mínimos de \textit{soporte} y \textit{confianza} de ellas, ordenarlas según estas dos medidas junto con su \textit{lift}, y mostrar las que posean un cierto elemento en particular en su antecedente, consecuente o en ambos.
+En el presente trabajo se llevó a cabo con el fin de obtener un cierto tipo de asociaciones lógicas, llamadas \textit{reglas de asociación}, entre líneas espectrales presentes a lo largo de distintos espectros de frecuencia. En particular, se busca aplicar a conjuntos de espectros de frecuencia obtenidos a partir de datos de observaciones astronómicas, para así obtener información de las relaciones existentes entre estas líneas bajo distintas medidas de interés y relevancia estadística.
 
-La aplicación se probó sobre datos de observaciones ópticas obtenidas del \textit{Sloan Digital Sky Survey (SDSS)}, previo un pre-procesamiento adecuado de estos, y se espera a futuro poder realizar el proceso de ARL a partir datos en otras frecuencias del espectro electromagnético; como por ejemplo, los datos radioastronómicos del \textit{Atacama Large Millimeter/submillimeter Array (ALMA)}.
+Para ello se llevó a cabo, en el lenguaje de programación \textit{Python}, una implementación de algoritmos de Aprendizaje de Reglas de asociación, o \textit{Association Rule Learning (ARL)}; en particular los algoritmos \textit{Apriori} y \textit{FP-Growth}. La aplicación final, que hace uso de estos algoritmos, permite al usuario observar las reglas obtenidas bajo requerimientos mínimos de \textit{soporte} y \textit{confianza} de ellas, ordenarlas según estas dos medidas junto con su \textit{lift}, y mostrar las que posean un cierto elemento en particular en su antecedente, consecuente o en ambos.
+
+La aplicación y sus algoritmos se probaron sobre datos simulados y, posteriormente, sobre datos reales de observaciones en el espectro visible obtenidas del \textit{Sloan Digital Sky Survey (SDSS)}, previo un pre-procesamiento adecuado de estos. Los resultados obtenidos muestran un considerable mejor desempeño (de por lo menos la mitad del tiempo total de ejecución) por parte del algoritmo \textit{Apriori} por sobre \textit{FP-Growth} para valores pequeños de soporte (cercanos a 0.15). Esto puede deberse, principalmente, al tamaño reducido del universo de ítems (lineas espectrales detectadas) posibles presentes en cada transacción (espectro de frecuencias); lo cual hace perder sustancialmente la ventaja comparativa que posee \textit{FP-Growth} al utilizar una estructura de datos tipo árbol.
+
+Se espera a futuro poder realizar el proceso de ARL a partir datos en otras frecuencias del espectro electromagnético; como por ejemplo, los datos radioastronómicos del \textit{Atacama Large Millimeter/submillimeter Array (ALMA)}. Junto con esto, se espera más adelante poder mejorar la aplicación en términos de su interfaz gráfica y usabilidad.
 \end{abstract}
 
 \begin{dedicatoria}
@@ -76,7 +90,7 @@ A todos ustedes, muchas gracias.
 \input{include/conclusiones}
 
 \nocite{*}
-\bibliographystyle{plain}
+\bibliographystyle{apalike}
 \bibliography{report}
 
 \appendix

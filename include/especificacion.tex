@@ -8,11 +8,11 @@
 
 \section{Descripción del problema}
 
-Supóngase que se cuenta con conjuntos de espectros, y que cada uno de ellos posee todas sus líneas espectrales correctamente detectadas y, por lo tanto, se conoce su posición en el espectro. En la práctica eso puede ser muy difícil de lograr, sobre todo en circunstancias donde pueden existir en principio una alta cantidad de líneas espectrales y estas pueden interferir unas con otras en la señal final, lo que se conoce como \textit{blending}.
+El problema a resolver, esencialmente, es el de encontrar reglas de asociacion entre líneas moleculares detectadas en espectros de frecuencia obtenidos a partir de observaciones astronómicas.
 
-Por lo tanto, para efectos de lo que sigue, basta con asumir que existe la posibilidad que no todas las líneas hayan sido detectadas. Pero es importante que las que sí fueron detectadas, lo hayan sido con una seguridad suficiente y que se sepa de manera adecuada su posición. Actualmente existen herramientas que son capaces de ajustar modelos físicos conocidos con anterioridad a datos espectrales con el fin de identificas las líneas en ellos presentes.
+Para ello, se asume que las líneas ya han sido detectadas en los distintos espectros; vale decir, se sabe que están presentes y se conocen sus posiciones dentro del rango de frecuencias. En la práctica eso puede ser muy difícil de lograr, sobre todo en circunstancias donde potencialmente pueden existir una alta cantidad de líneas espectrales y estas pueden interferir unas con otras en la señal final, lo que se conoce como \textit{blending}. 
 
-Teniendo estos conjuntos de espectros con sus respectivas líneas detectadas se desea aplicar a conjuntos de líneas espectrales extraídas a partir de datos de observaciones astronómicas, para así obtener información de las relaciones existentes entre ellas bajo distintas medidas de interés y relevancia estadística.
+Sin embargo, no es necesario que todas las líneas se encuentren ya identificadas; vale decir, que se sepa a qué especie (átomo, molécula, etc.) se encuentran asociadas. Actualmente existen herramientas que son capaces de ajustar modelos físicos conocidos con anterioridad a datos espectrales con el fin de identificar las líneas en ellos presentes.
 
 \section{Requisitos de la solución y casos de uso}
 
@@ -21,7 +21,7 @@ A continuación se enuncian los requerimientos del sistema:
 \begin{enumerate}
 	\item \textbf{Obtener reglas de asociación entre líneas de emisión espectrales [esencial].} \\
 	El sistema debe generar reglas de asociación entre líneas de emisión presentes en espectros, independientemente de si estos pertenecen a una misma o a distintas moléculas o átomos, o si no han sido aun identificadas.
-	\item \textbf{Permitir al usuario observar las reglas generadas, y ordenarlas según distintas medidas de relevancia estadística [esencial].} \\
+	\item \textbf{Permitir al usuario observar las reglas generadas, y desplegarlas a este ordenadas según distintas medidas de relevancia [esencial].} \\
 	\item \textbf{Permitir al usuario guardar las reglas de asociación generadas [esencial].} \\
 	Una vez extraídas las reglas de asociación, el usuario debe poder revisarlas y guardarlas para su revisión posterior.
 	\item \textbf{Permitir al usuario aplicar los mismos algoritmos de reglas de asociación a datos de diversas fuentes [esencial].} \\
@@ -33,7 +33,7 @@ A continuación se enuncian los requerimientos del sistema:
 
 \subsection{Casos de Uso}
 
-En la Figura \ref{fig:cases} se muestra un diagrama con los casos de uso preliminares del sistema a desarrollar.
+En la Figura \ref{fig:cases} se muestra un diagrama con los casos de uso preliminares del sistema a desarrollar, y a continuación se describen estos en detalle junto con sus actores.
 
 \begin{figure}[h!]
 \begin{center}

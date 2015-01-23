@@ -31,13 +31,13 @@ A continuación se detallan sus paquetes, módulos, e interfaces y explica sus f
 
 El paquete de \textit{Association Rule Learning (ARL)} es el encargado de realizar el aprendizaje mediante reglas de asociación en sí; vale decir, de recibir un conjunto de datos con transacciones y de retornar reglas de asociación generadas a partir de aquel conjunto.
 
-En las siguientes secciones se espacifican los formatos de entrada y salida de este paquete junto con una descripción de los módulos que lo componen.
+En las siguientes secciones se especifican los formatos de entrada y salida de este paquete junto con una descripción de los módulos que lo componen.
 
 \subsubsection{Módulo de interfaz de usuario/controlador}
 
 El módulo de interfaz de usuario y controlador es el encargado de recibir directamente del usuario los parámetros de entrada correspondientes. Este módulo contiene métodos, clases y funciones que reciben los parámetros del usuario, abren y leen los archivos de entrada adecuados, los procesan de acuerdo al formato especificado, y hacen entrega de los datos al módulo principal de ARL.
 
-Este módulo, es el encargado, además de recibir las reglas de asociación, entregarlas al módulo de formato para luego retornarlas al usuario en un archivo correspondiente.
+Este módulo es el encargado, además, de recibir las reglas de asociación y de entregarlas al módulo de formato para luego retornarlas al usuario en un archivo correspondiente.
 
 \subsubsection{Módulo de formato}
 
@@ -47,9 +47,9 @@ Hasta el momento los formatos soportados son valores separados por coma, o \text
 
 \subsubsection{Módulo principal de ARL}
 
-El módulo principal de ARL es el encargado de llevar a cabo el algoritmo de aprendizaje mediante reglas de asociación en sí. En su parte lógica, consta de dos sub-módulos principales. El primero es es sub-módulo encargado de extraer los conjuntos de ítemes frecuentes; vale decir, aquellos que cumplen con el requerimiento de soporte mínimo. Y el segundo es el sub-módulo de generación de reglas, que es el encargado de recibir los conjuntos de ítemes frecuentes y generar, a partir de ellos, las reglas de asociación que cumplen con el requerimiento de confianza mínima indicado.
+El módulo principal de ARL es el encargado de llevar a cabo el algoritmo de aprendizaje mediante reglas de asociación en sí. En su parte lógica, consta de dos sub-módulos principales. El primero es es sub-módulo encargado de extraer los conjuntos de ítems frecuentes; vale decir, aquellos que cumplen con el requerimiento de soporte mínimo. Y el segundo es el sub-módulo de generación de reglas, que es el encargado de recibir los conjuntos de ítems frecuentes y generar, a partir de ellos, las reglas de asociación que cumplen con el requerimiento de confianza mínima indicado.
 
-\subsubsection{Módulo de testeo de ARL}
+\subsubsection{Módulo de pruebas}
 
 Se encuentra dentro de este paquete, además, un módulo de testeo de los algoritmos de ARL sobre datos de prueba de pequeña envergadura; con el fin de realizar chequeos periódicos del funcionamiento correcto de estos algoritmos en la medida que se realizan cambios, mejoras o refactorizaciones sobre su código fuente.
 
@@ -59,9 +59,9 @@ Finalmente, se encuentra el módulo de herramientas generales, que consta de una
 
 \subsection{Paquete de procesamiento de datos}
 
-Debido a que, en la mayoría de las ocasiones los datos sobre los cuales se desea aplicar los algoritmos de reglas de asociación no se encuentran desde un comienzo en los formatos o estructuras necesarias, se procedió a implementar un paquete de pre-procesamiento. Este contiene una serie de scripts y métodos cuya función principal es extraer los datos desde sus fuentes originales, opcionalmente inferir aquella información que sea relevante, y guardarla en archivos cuyo formato sea comprensible para el paquete de aprendizaje de reglas de asociación.
+Debido a que en la mayoría de las ocasiones los datos sobre los cuales se desea aplicar los algoritmos de reglas de asociación no se encuentran en los formatos o estructuras necesarias, se procedió a implementar un paquete de pre-procesamiento. Este contiene una serie de scripts y métodos cuya función principal es extraer los datos desde sus fuentes originales, opcionalmente inferir aquella información que sea relevante, y guardarla en archivos cuyo formato sea comprensible para el paquete de aprendizaje de reglas de asociación.
 
-En su implementación actual, este paquete se encuentra enfocado, en su mayor parte, para trabajar sobre datos extraídos a partir del Sloan Digital Sky Survey (SDSS).
+En su implementación actual, este paquete se encuentra enfocado, en su mayor parte, en trabajar sobre datos extraídos a partir del Sloan Digital Sky Survey (SDSS).
 
 A continuación se enumeran algunos de sus componentes más importantes.
 
@@ -75,11 +75,11 @@ Contiene una serie de scripts cuyo fin es recibir un archivo de tabla de base de
 
 \subsubsection{Módulo de generación de transacciones}
 
-Este módulo contiene scripts cuya función es recibir un archivo de tabla de base de datos en formato CSV, y a partir de él generar un archivo CSV que contenga una transacción por cada fila; cada una de estas con una lista de ítemes en formato adecuado para ser recibido por el paquete de ARL.
+Este módulo contiene scripts cuya función es recibir un archivo de tabla de base de datos en formato CSV, y a partir de él generar un archivo CSV que contenga una transacción por cada fila; cada una de estas con una lista de ítems en formato adecuado para ser recibido por el paquete de ARL.
 
 \section{Diseño de clases}
 
-En la Figura \ref{fig:arl_diag_clases} se observa un diagrama con las clases más importantes dentro del paquete de Association Rule Learning y sus relaciones.
+En la Figura \ref{fig:arl_diag_clases} se observa un diagrama con las clases más importantes dentro del paquete de Association Rule Learning y sus relaciones. Estas son las encargadas abstraer la implementación de las distintas funciones y estructuras de datos de las cuales hacen uso los algoritmos de ARL tal como se describieron con anterioridad en el marco teórico.
 
 \begin{figure}[h!]
 \begin{center}
@@ -94,7 +94,7 @@ A continuación se detallan las clases de objetos más importantes del sistema.
 
 \subsection{Clase \textit{ItemSet}}
 
-La clase \textit{ItemSet} es la encargada de mantener información sobre un conjunto de ítemes y abstraer su estructura de datos subyacente. Cada instancia de esta clase corresponde a un conjunto de ítemes distinto, y contiene campos que guardan la información más reciente sobre su soporte (calculado sobre un cierto conjunto de transacciones) y punteros a meta-datos con información adicional sobre los ítemes en sí. Su interfaz asegura que se pueda realizar de forma adecuada, visto desde un punto de vista matemáticamente abstracto, las operaciones más comúnes de conjuntos de elementos; como comprobar pertenencia, sumar de conjuntos, diferencia entre conjuntos, entre otros.
+La clase \textit{ItemSet} es la encargada de mantener información sobre un conjunto de ítems y abstraer su estructura de datos subyacente. Cada instancia de esta clase corresponde a un conjunto de ítems distinto, y contiene campos que guardan la información más reciente sobre su soporte (calculado sobre un cierto conjunto de transacciones) y punteros a meta-datos con información adicional sobre los ítems en sí. Su interfaz asegura que se pueda realizar de forma adecuada, visto desde un punto de vista matemáticamente abstracto, las operaciones más comúnes de conjuntos de elementos; como comprobar pertenencia, sumar conjuntos, diferencia entre conjuntos, entre otros.
 
 \subsection{Clase \textit{AssociationRule}}
 
@@ -102,23 +102,23 @@ La clase \textit{AssociationRule} es la que define la estructura y comportamient
 
 \subsection{Clase \textit{FrequentItemSetMiner}}
 
-La clase \textit{FrequentItemSetMiner} es la encargada de abstraer y guardar información sobre el proceso de extraer a partir de las transacciones aquellos conjuntos de ítemes que cumplan con un requisito de soporte mínimo dado. Cada instancia de esta clase corresponde a un proceso de estracción distinto, conteniendo campos y estructuras de datos para los algoritmos involucrados, su estado actual y su resultado.
+La clase \textit{FrequentItemSetMiner} es la encargada de abstraer y guardar información sobre el proceso de extraer a partir de las transacciones aquellos conjuntos de ítems que cumplan con un requisito de soporte mínimo dado. Cada instancia de esta clase corresponde a un proceso de extracción distinto, conteniendo campos y estructuras de datos para los algoritmos involucrados, su estado actual y su resultado.
 
 En su implementación actual, esta clase es heredada por dos sub-clases. Una correspondiente al algoritmo \textit{Apriori}, y otra al algoritmo \textit{FP-Growth}. Cada una contiene su propia implementación de los métodos principales, definidos en su clase padre, junto con sus propias funciones auxiliares y estructuras de datos correspondientes.
 
 \subsection{Clase \textit{RuleMiner}}
 
-La clase \textit{RuleMiner} es la que abstrae el proceso de extraer reglas de asociación a partir de conjuntos frecuentes de ítemes. Cada instancia de esta clase corresponde a un proceso de extracción distinto; básicamente el mismo en todo los casos salvo en ciertos detalles, como algunas funciones auxiliares y referencias a estructuras de datos, dependiendo de si los conjuntos fueron extraídos mediante \textit{Apriori} o \textit{FP-Growth}.
+La clase \textit{RuleMiner} es la que abstrae el proceso de generar de asociación a partir de conjuntos frecuentes de ítems encontrados por los algoritmos de extracción de ítems frecuentes (\textit{Apriori} y \textit{FP-Growth}. Cada instancia de esta clase corresponde a un proceso de extracción distinto; básicamente el mismo en todo los casos salvo en ciertos detalles, como algunas funciones auxiliares y referencias a estructuras de datos, dependiendo de si los conjuntos fueron extraídos mediante uno u otro algoritmo.
 
 \section{Detalles de implementación}
 
-La implementación del sistema se llevó a cabo en el lenguaje de programación Python\cite{python.org}. Se realizó una implementación propia de los algoritmos antes descritos, con algunas adaptaciones para su funcionamiento correcto en el contexto de este proyecto; y se hizo uso de paquetes externos con el fin de hacer más simple el manejo de archivos CSV y la implementación de la interfaz por línea de comando.
+La implementación del sistema se llevó a cabo en el lenguaje de programación Python \cite{python.org}. Se realizó una implementación propia de los algoritmos antes descritos, con algunas adaptaciones para su funcionamiento correcto en el contexto de este proyecto; y se hizo uso de paquetes externos con el fin de hacer más simple el manejo de archivos CSV y la implementación de la interfaz por línea de comando.
 
-\subsection{Extracción de conjuntos de ítemes frecuentes}
+\subsection{Extracción de conjuntos de ítems frecuentes}
 
-Para la extracción de conjuntos de ítemes frecuentes se procedió a realizar la implementación de los algoritmos \textit{Apriori} y \textit{FP-Growth}. Ambos algoritmos reciben las transacciones en una misma estructura de datos y retornan los conjuntos frecuentes también en una misma estructura en ambos casos. Pero cada una de estas clases posee sus propios métodos, definidos por los algoritmos en general.
+Como se dijo anteriormente, para la extracción de conjuntos de ítems frecuentes se procedió a realizar la implementación de los algoritmos \textit{Apriori} y \textit{FP-Growth}. Ambos algoritmos reciben las transacciones en una misma estructura de datos y retornan los conjuntos frecuentes también en una misma estructura en ambos casos. Pero cada una de estas clases posee sus propios métodos, definidos por los algoritmos en general.
 
-En general, para ambos algoritmos la estructura de datos más utilizada para la implementación subyacente en los objetos correspondientes a conjuntos frecuentes, candidatos, antecedentes y consecuentes por igual, fue la de \textit{frozensets}. Esta clase de objetos, además de permitir las operaciones matemáticas de conjuntos clásicas, tales como sumas y diferencias de conjuntos, permite que los objetos sean hasheables; y, por lo tanto, utilizar los conjuntos como llaves de diccionario en forma de tablas de hash, y de esta forma, por ejemplo, indexar por conjunto distintas estructuras de datos auxiliares.
+En general, para ambos algoritmos la estructura de datos más utilizada para la implementación subyacente en los objetos correspondientes a conjuntos frecuentes, candidatos, antecedentes y consecuentes por igual, fue la de \textit{frozensets}. Esta clase de objetos, además de permitir las operaciones matemáticas de conjuntos clásicas, tales como sumas y diferencias de conjuntos, permite que a los objetos se les pueda aplicar una función de \textit{hashing}; y, por lo tanto, utilizar los conjuntos como llaves de diccionario en forma de tablas de \text{hash}, y de esta forma, por ejemplo, indexar por conjunto distintas estructuras de datos auxiliares.
 
 \subsection{Extracción de reglas de asociación}
 
@@ -132,7 +132,7 @@ El paquete de \textit{Association Rule Learning (ARL)} recibe como entrada un ar
 <TID>,"<ItemList>"
 \end{lstlisting}
 
-donde \textit{<TID>} es el identificador de la presente transacción, e \textit{<ItemList>} es una lista de identificadores únicos de los ítemes presentes en la transacción separados por comas. Tal como se indica, esta lista debe ir rodeada por comillas dobles en el archivo de entrada. A continuación se muestra un ejemplo de archivo de entrada válido.
+donde \textit{<TID>} es el identificador de la presente transacción, e \textit{<ItemList>} es una lista de identificadores únicos de los ítems presentes en la transacción separados por comas. Tal como se indica, esta lista debe ir rodeada por comillas dobles en el archivo de entrada. A continuación se muestra un ejemplo de archivo de entrada válido.
 
 \begin{lstlisting}[basicstyle=\ttfamily]
 000001,"15,2,44"
@@ -160,7 +160,7 @@ Esta lista es leída y procesada dentro del paquete de ARL y luego entregada en 
 <N>,"<Antecedent>","<Consequent>",<Support>,<Confidence>,<Lift>
 \end{lstlisting}
 
-Donde \textit{N} es un número identificador de la regla de asociación, \textit{<Antecedent>} es una lista de ítemes separados por coma correspondientes al antecedente de la regla, \textit{<Consequent>} es una lista de ítemes separados por coma correspondientes al consecuente de la regla, \textit{<Support>} es un valor de punto flotante entre 0 y 1 correspondiente al soporte de la regla, \textit{<Confidence>} es un valor de punto flotante entre 0 y 1 correspondiente a la confianza de la regla, y \textit{<Lift>} es un valor de punto flotante entre 0 y 1 correspondiente al lift de la regla. A continuación un ejemplo de este formato de archivo de salida.
+Donde \textit{N} es un número identificador de la regla de asociación, \textit{<Antecedent>} es una lista de ítems separados por coma correspondientes al antecedente de la regla, \textit{<Consequent>} es una lista de ítems separados por coma correspondientes al consecuente de la regla, \textit{<Support>} es un valor de punto flotante entre 0 y 1 correspondiente al soporte de la regla, \textit{<Confidence>} es un valor de punto flotante entre 0 y 1 correspondiente a la confianza de la regla, y \textit{<Lift>} es un valor de punto flotante entre mayor o igual a 0 correspondiente al lift de la regla. A continuación un ejemplo de este formato de archivo de salida.
 
 \begin{lstlisting}[basicstyle=\ttfamily]
 1,"15,33","2,89,91",0.21,0.85,2.31
@@ -192,7 +192,7 @@ donde \textit{<Class01>} es el identificador de la primera clase, \textit{<Count
 
 La interfaz del usuario con el paquete principal de ARL y con los scripts del paquete de pre-procesamiento de datos, se realiza mediante un terminal o línea de comandos. Los parámetros, con los cuales se invoca cada uno de estos, siguen la sintaxis estándar \textit{de facto} de la mayoría de los sistemas tipo UNIX. En la implementación de estas interfaces se priorizó la claridad de las instrucciones por sobre lo conciso de estas, y se favorece la escritura de resultados a archivo; haciendo uso de la salida estándar solo en casos de errores y avisos del funcionamiento del sistema.
 
-Cada uno de los archivos de entrada o interfaz de los módulos puede ser invocado con el parámetro \textit{\'-h\'} y se desplegará un texto de ayuda con los parámetros disponibles y sus funcionalidades.
+Cada uno de los archivos de entrada o interfaz de los módulos puede ser invocado con el parámetro \textit{-h} y se desplegará un texto de ayuda con los parámetros disponibles y sus funcionalidades.
 
 Por ejemplo, el archivo de entrada del paquete de ARL, llamado \textit{spelar.py}, tiene la siguiente sintaxis de invocación:
 

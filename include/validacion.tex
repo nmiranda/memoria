@@ -7,18 +7,54 @@
 % - Encuesta a usuarios finales
 % Dependiendo de la longitud, la validación puede ser una sección al final del capítulo de solución o un capítulo independiente
 
-\section{Antecedentes de datos de prueba}
+\section{Validación mediante simulaciones}
 
-Una vez lista la implementación de la mayor parte del sistema y los algoritmos de ARL, se procedió a realizar una prueba de concepto con datos reales. El objetivo final del sistema de ARL es poder ser aplicado a datos de líneas espectrales de diversos orígenes y características; sobre todo en observaciones sobre bandas de baja frecuencia, donde una mayor densidad de presencia de líneas hace más difícil el trabajar directamente sobre ellas, como suele ser el caso en bandas de frecuencia más alta.
+Una vez realizada la implementación del sistema y de los algoritmos de ARL, se realizó una serie de pruebas con datos simulados. Estos fueron generados de manera aleatorea, para así tener una base con la cual comparar el desempeño en la práctica de los algoritmos con datos reales; los cuales se alejan más de la aleatoriedad absoluta al poseer una estructura más definida, grupos de ítems comunes entre las transacciones, entre otros.
 
-Sin embargo, se decidió realizar la prueba de concepto de este proyecto sobre datos del \textit{Sloan Digital Sky Survey (SDSS)} por las siguientes razones:
+Para generar estos datos, en primer lugar se procedió a definir un universo posible de ítems para ser incluídos en cada una de las transacciones. En particular, se seleccionó un subconjunto $n$ de ítems a partir del mismo universo de ítems presentes en los datos reales (ver tabla \ref{tab:spec_line_names}). Luego, se procedió a generar las transacciones seleccionando aleatoreamente ítems a partir de aquel conjunto de la siguiente manera. Cada uno de estos $n$ ítems tiene una probabilidad $p$ de estar presente en una transacción dada, y una probabilidad $(1-p)$ de no estar presente en esta. Por lo tanto, la presencia de un cierto ítem en una transacción fija cualquiera es, esencialmente, lo que se conoce como un \textit{ensayo de Bernoulli}, y, por ende, la probabilidad de que una transacción dada tenga una cantidad $k$ de ítems puede expresarse con una función de distribución probabilística de la forma
+
+\begin{equation*}
+\operatorname{\mathbb{P}}[X = k] = \binom{n}{k}p^k(1-p)^{n-k}
+\end{equation*}
+
+con $0 \leq k \leq n$, la que se conoce como \textit{distribución binomial}, cuyo valor esperado corresponde a $np$ y su varianza a $np(1-p)$.
+
+Utilizando este método, se generó aleatoreamente conjuntos de 100.000 transacciones tomando ítems a partir de un subconjunto de tamaño $n = 10$ del universo de ítems. Se procedió entonces a realizar una serie de pruebas de los algoritmos \textit{Apriori} y \textit{FP-Growth} con estos datos, primero dejando fijo el soporte mínimo y variando la probabilidad $p$ de los ítems de estar presentes en cada transacción, y posteriormente dejando fija este $p$ y variando el soporte mínimo de ambos algoritmos.
+
+En la Figura \ref{fig:sim_01} se observa los tiempos de ejecución en promedio al dejar fijo un soporte mínimo de 0.15 para los algoritmos, para $p \in {0.2, 0.3, \ldots, 0.8}$, repitiendo el experimento 5 veces. Se observa que para $p \leq 0.6$ el algoritmo \textit{FP-Growth} posee un desempeño levemente mejor que el del algoritmo \textit{Apriori}, para luego ser superado con creces por este último cuando $p > 0.6$. Esto puede deberse, principalmente, a que al estar presente la mayoría de los ítems con alta probabilidad, estos se repiten mucho más de una transacción a otra, y el utilizar una estructura de datos tipo arbol deja de ser una ventaja, aproximándose más a una simple lista enlazada.
+
+\begin{figure}[h!]
+\begin{center}
+\includegraphics[width=0.9\textwidth]{imagenes/sim_01.png}
+\end{center}
+\vspace*{-5mm}
+\caption{Grafico de tiempos de ejecución de algoritmos \textit{Apriori} y \textit{FP-Growth} sobre datos simulados; utilizando soporte mínimo 0.15 y distintas probabilidades de presencia de ítems en una transacción dada.}
+\label{fig:sim_01}
+\end{figure}
+
+Un fenómeno similar, pero en forma inversa, puede apreciarse en la Figura \ref{fig:sim_02}, que muestra los tiempos de ejecución en promedio de 5 repeticiones del experimento de generar conjuntos de 100.000 transacciones con un valor $p = 0.8$ y ejecutar sobre estos los algoritmos de ARL con distintos soportes mínimos. Al igual que en el caso anterior, lo más probable es que esto ocurra debido a que al utilizar un bajo soporte, se considera una mayor cantidad de ítems en la generación de conjuntos frecuentes, y estos se repiten mucho más de un conjunto a otro, lo cual hace perder considerable ventaja al algoritmo \textit{FP-Growth} con respecto a \textit{Apriori}.
+
+\begin{figure}[h!]
+\begin{center}
+\includegraphics[width=0.9\textwidth]{imagenes/sim_02.png}
+\end{center}
+\vspace*{-5mm}
+\caption{Grafico de tiempos de ejecución de algoritmos \textit{Apriori} y \textit{FP-Growth} sobre datos simulados; utilizando soporte mínimo 0.15 y distintas probabilidades de presencia de ítems en una transacción dada.}
+\label{fig:sim_02}
+\end{figure}
+
+Una vez obtenidos estos resultados referenciales, se procedió a realizar la validación de los algoritmos sobre conjuntos de datos reales.
+
+\section{Antecedentes de datos de prueba reales}
+
+Una vez lista la implementación de la mayor parte del sistema y los algoritmos de ARL, se procedió a realizar una prueba de concepto con datos reales. Si bien el objetivo ideal sería aplicar estos algoritmos a datos de observaciones en bandas de baja frecuencia (como las de bandas de radio de \textit{ALMA}) donde existe una gran cantidad de líneas presentes por cada espectro, se decidió realizar la prueba de concepto de este proyecto sobre datos del \textit{Sloan Digital Sky Survey (SDSS)} por las siguientes razones:
 
 \begin{enumerate}
 \item Si bien el universo de líneas presentes en cada espectro es bastante reducido (48 líneas), la mayoría de estas se encuentran bien identificadas.
-\item Las líneas presentes en el espectro óptico son bien conocidas, y en general se posee información completa sobre sus características, tales como su temperatura.
+\item Las líneas presentes en el espectro visible son bien conocidas, y en general se posee información completa sobre sus características, tales como su temperatura.
 \end{enumerate}
 
-Ahora bien, hubo que tener en mente de forma constante que se está trabajando con un universo reducido de ítemes (líneas espectrales) al momento de analizar los resultados de estas pruebas.
+Ahora bien, hubo que tener en mente de forma constante que se está trabajando con un universo reducido de ítems (líneas espectrales) al momento de analizar los resultados de estas pruebas.
 
 Para acceder a los datos de \textit{SDSS} se utilizó la interfaz web del sistema \textit{CasJobs}, que recibe consultas en lenguaje SQL y guarda los resultados en una base de datos asociada a la cuenta del usuario. En particular se hizo uso de los datos del \textit{data release 7 (DR7)}, que es el último en contener tablas con información específica sobre las líneas espectrales.
 
@@ -51,9 +87,7 @@ A su vez, la tabla \textit{SpecLineAll} contiene información sobre cada una de 
 \item \textbf{zErr}: Error de \textit{redshift}.
 \end{itemize}
 
-Ahora bien, la tabla \textit{SpecObj} del DR7 de SDSS posee en total de 1.053.144 filas. Esto indica que aquel \textit{data release} contiene información espectroscópica de más de un millón de objetos. Cabe recalcar que el caso general del sistema de ARL aplicado a lineas espectrales asume que cada transacción corresponde a una observación o lectura de un espectro de frecuencias; y, por tanto, varios espectros pueden estar asociados a un mismo objeto astronómico. Sin embargo, dado que para el caso de los datos de SDSS puede que las líneas pertenecientes a cada objeto se hayan obtenido en diversas observaciones, se tomará cada \textbf{objeto} como una transacción, y no la observación particular de un objeto.
-
-Por lo tanto, al hacer una operación \textit{JOIN} entre las tablas \textit{SpecObj} y \textit{SpecLineAll}, se obtendrá la lista de todas las líneas espectrales con información del objeto astronómico del cual provienen. La idea es, entonces, utilizar cada uno de los objetos como una transacción, y las líneas asociadas a cada uno de ellos como sus ítems. Se utilizará el campo \textit{lineID} de la tabla \textit{SpecLineAll} como identificador de cada uno de estos ítemes; dado que dos líneas asociados a distintos objetos pueden tener el mismo valor en \textit{lineID}, cosa que no ocurre con el identificador único \textbf{SpecLineID}. 
+Ahora bien, la tabla \textit{SpecObj} del DR7 de SDSS posee en total de 1.053.144 filas. Esto indica que aquel \textit{data release} contiene información espectroscópica de más de un millón de objetos. Cabe recalcar que el caso general del sistema de ARL aplicado a lineas espectrales asume que cada transacción corresponde a una observación o lectura de un espectro de frecuencias; y, por tanto, varios espectros pueden estar asociados a un mismo objeto astronómico. Sin embargo, dado que para el caso de los datos de SDSS puede que las líneas pertenecientes a cada objeto se hayan obtenido en diversas observaciones, se tomará cada \textbf{objeto} como una transacción, y no la observación particular de un objeto. Por lo tanto, al hacer una operación \textit{JOIN} entre las tablas \textit{SpecObj} y \textit{SpecLineAll}, se obtendrá la lista de todas las líneas espectrales con información del objeto astronómico del cual provienen. La idea es, entonces, utilizar cada uno de los objetos como una transacción, y las líneas asociadas a cada uno de ellos como sus ítems. Se utilizará el campo \textit{lineID} de la tabla \textit{SpecLineAll} como identificador de cada uno de estos ítems; dado que dos líneas asociados a distintos objetos pueden tener el mismo valor en \textit{lineID}, cosa que no ocurre con el identificador único \textbf{SpecLineID}. 
 
 En efecto, existe en el DR7 una tabla llamada \textit{SpecLineNames}\ref{tab:spec_line_names} que enumera los 49 valores que puede tomar el campo \textit{lineID}. Cada uno de estos corresponde a una línea de una especie en particular. Algunos de estos valores son:
 
@@ -82,11 +116,11 @@ A continuación se numeran los objetos de la tabla \textit{SpecObj} según el ti
 
 \section{Selección y pre-procesamiento de datos}
 
-Para fines de esta prueba de concepto y validación del sistema se escogió realizar la extracción de reglas de asociación a partir de objetos de tipo estelar (\textit{specClass} 1 o 6), principalmente debido a que para objetos de este tipo el \textit{redshift} del objeto en general debería ser más coherente que el \textit{redshift} detectado por línea o espectro que en el caso de, por ejemplo, objetos de tipo galáctico.
+Para fines de esta prueba de concepto y validación del sistema se escogió realizar la extracción de reglas de asociación a partir de objetos de tipo estelar (\textit{specClass} 1 o 6), principalmente debido a que para objetos de este tipo el \textit{redshift} en general debería ser más bajo y, aproximadamente, dentro del mismo rango; lo cual permite una muestra más uniforme de longitudes de onda de las líneas.
 
 En total, existen 52.570.585 líneas asociadas a los 131882 objetos de tipo estelar presentes en el \textit{data release 7}. Esto supone un claro problema técnico, dado que el sistema \textit{CasJobs} no permite descargar tablas de tal envergadura. Por lo tanto, debe realizarse un proceso de selección lo más sistemático posible. 
 
-En primer lugar, se consideró el conjunto de 131.882 objetos de tipo estelar. En la Figura \ref{fig:stelar_obj_redshift} se puede apreciar una selección del histograma del \textit{redshift} de estos objetos. Se puede apreciar que la mayoría de los objetos se encuentran cercanos a 0 y unos pocos se encuentran distribuidos en valores mayores. Se decidió por tanto, eliminar estos objetos de mayor \textit{redshift} (y por tanto más lejanos) con el fin de trabajar sólo con aquellos objetos más cercanos. Se decidió por utilizar solo los objetos que tengan un \textit{redshift} menor que 0.002, dado que la velocidad de escape de la Vía Láctea corresponde a 450 km/s.
+En primer lugar, se consideró el conjunto de 131.882 objetos de tipo estelar. En la Figura \ref{fig:stelar_obj_redshift} se puede apreciar una selección del histograma del \textit{redshift} de estos objetos. Se puede apreciar que la mayoría de los objetos se encuentran cercanos a 0 y unos pocos se encuentran distribuidos en valores mayores. Se decidió por tanto, eliminar estos objetos de mayor \textit{redshift} (y por tanto más lejanos) con el fin de trabajar sólo con aquellos objetos más cercanos. Se decidió por utilizar solo los objetos que tengan un \textit{redshift} menor que 0.002.
 
 \begin{figure}[h!]
 \begin{center}
@@ -97,7 +131,7 @@ En primer lugar, se consideró el conjunto de 131.882 objetos de tipo estelar. E
 \label{fig:stelar_obj_redshift}
 \end{figure}
 
-Ahora bien, con el fin de reducir de forma más considerable el número de líneas a analizar, se decidió filtrar estas y dejar sólo las más brillantes. Para esto, se utilizó los valores de \textit{ancho equivalente (ew)}\footnote{El ancho equivalente es una medida del área integrada entre la línea espectral y el contínuo a longitudes de onda adyacentes. Indica el brillo o intensidad normalizada de la línea espectral.} de cada una de las líneas, y se calculó una nueva medida a la que se denominó \textit{razón señal a ruido (SNR)} que consiste en la razón entre el ancho equivalente y su error (\textit{ewErr}). Para comprobar si este valor es un filtro efectivo del número de líneas, se tomo una muestra de 1 millón de líneas del total asociado a objetos estelares, y se produjo el histograma acumulativo de la Figura \ref{fig:stelar_obj_snr}. Observando esta figura, se puede apreciar que, en efecto, esta nueva medida introducida es un parámetro efectivo de selección de líneas (cerca del 20\% de las líneas de la muestra tiene un SNR mayor que 5 y por lo tanto lo consideramos como detecciones fidedignas).
+Ahora bien, con el fin de reducir de forma más considerable el número de líneas a analizar, se decidió filtrar estas y dejar sólo las más brillantes. Para esto, se utilizó los valores de \textit{ancho equivalente (ew)}\footnote{El ancho equivalente es una medida del área integrada entre la línea espectral y el contínuo a longitudes de onda adyacentes. Indica el brillo o intensidad normalizada de la línea espectral.} de cada una de las líneas, y se calculó una nueva medida a la que se denominó \textit{razón señal a ruido (SNR)} que consiste en la razón entre el ancho equivalente y su error (\textit{ewErr}). Para comprobar si este valor es un filtro efectivo del número de líneas, se tomó una muestra de 1 millón de líneas del total asociado a objetos estelares, y se produjo el histograma acumulativo de la Figura \ref{fig:stelar_obj_snr}. Observando esta figura, se puede apreciar que, en efecto, esta nueva medida introducida es un parámetro efectivo de selección de líneas (cerca del 20\% de las líneas de la muestra tiene un SNR mayor que 5 y por lo tanto lo consideramos como detecciones fidedignas).
 
 \begin{figure}[h!]
 \begin{center}
@@ -138,7 +172,7 @@ Por eso, como parte del pre-procesamiento de los datos se prefirió, para aquell
 
 \section{Resultados}
 
-Al aplicar a los datos anteriores ya procesados el algoritmo de ARL, con un soporte mínimo de 0.15 y confianza mínima de 0.7, se produjo un total de 5181 reglas, generadas a partir de 576 conjuntos de ítemes frecuentes. Las 25 reglas con mayor soporte se muestran en la siguiente tabla.
+Al aplicar a los datos anteriores ya procesados el algoritmo de ARL, con un soporte mínimo de 0.15 y confianza mínima de 0.7, se produjo un total de 5181 reglas, generadas a partir de 576 conjuntos de ítems frecuentes. Las 25 reglas con mayor soporte se muestran en la siguiente tabla.
 
 \begin{longtable}{| c | l | c | c | c |}
 \hline
@@ -227,14 +261,18 @@ En la Figura \ref{fig:complexity_support} se muestra el resultado de realizar me
 \label{fig:complexity_support}
 \end{figure}
 
-\section{Observaciones y conclusiones}
+\section{Observaciones y análisis}
 
 Una vez observados estos resultados obtenidos a partir de espectros de la selección de objetos estelares del SDSS se pueden extraer las siguientes conclusiones.
 
-Al seleccionar reglas con alto soporte se privilegia aquellas con líneas espectrales comunes a una gran cantidad de espectros. En particular, la mayor parte de las reglas son entre líneas del hidrógeno, que es el elemento más abundante en las estrellas y además tiene una serie de líneas espectrales en el óptico. Existen pocas líneas de otros elementos presentes en estas reglas de alta confianza, como por ejemplo la línea H del calcio. Claramente estas se detectan en una gran cantidad de las estrellas con líneas brillantes del hidrógeno.
+Al seleccionar reglas con alto soporte se privilegia aquellas con líneas espectrales comunes a una gran cantidad de espectros. En particular, la mayor parte de las reglas son entre líneas del hidrógeno, que es el elemento más abundante en las estrellas y además tiene una serie de líneas espectrales en el visible. Existen pocas líneas de otros elementos presentes en estas reglas de alta confianza, como por ejemplo la línea H del calcio. Claramente estas se detectan en una gran cantidad de las estrellas con líneas brillantes del hidrógeno.
 
 Además, se observa que al reducir el soporte y seleccionar por confianza, se encuentran conjuntos de líneas altamente correlacionados, pero presentes en una menor fracción del conjunto total de espectros. Por ejemplo, las líneas $O$, $H_e$, $G$ y $K$ aparecen, y están muy correlacionadas con las líneas $H_a$, $H_b$ y $H$, entre otras.
 
 En síntesis, puede decirse que es preferible, con el fin de no encontrar solo relaciones triviales o comúnes en demasía, buscar reglas por alta confianza y bajo soporte; siempre y cuando se cuente con un número muy grande de transacciones, dado que en la medida que este número crece se hace más interesante buscar soporte relativamente bajo con alta confianza.
 
-En cuanto al desempeño y eficiencia de los algoritmos, en primera instancia sorprende el hecho que para valores de soporte menor que 0.15 los tiempos de ejecución del algoritmo \textit{Apriori} sean mucho menores que los del algoritmo \textit{FP-Growth}, siendo que este último fue concebido como una optimización del primero. Si bien el encontrar la razón del por qué de estos resultados requiere un estudio más a cabalidad de experimentaciones sistemáticas a la luz del funcionamiento de los algoritmos, una hipótesis plausible puede tener que ver con el hecho de que se está trabajando con una cantidad reducida de transacciones y que las operaciones de conjuntos de Python, que son clave en la operación del algoritmo \textit{FP-Growth}, no se encuentren debidamente optimizadas para los requerimientos de este.
+En cuanto al desempeño y eficiencia de los algoritmos, en primera instancia sorprende el hecho que para valores de soporte menor que 0.15 los tiempos de ejecución del algoritmo \textit{Apriori} sean mucho menores que los del algoritmo \textit{FP-Growth}, siendo que este último fue concebido como una optimización del primero. 
+
+Sin embargo, y tal como indica la literatura al respecto \cite{kosters2003complexity}, las complejidades entre \textit{Apriori} y \textit{FP-Growth} no son directamente comparables; y, por tanto, no existe una garantía de que uno de ellos tenga mejor desempeño que el otro en todos los casos posibles. Más bien, \textit{FP-Growth} demostrará una ventaja comparativa considerable en algunos casos, y en otros se verá ampliamente superado por \textit{Apriori}.
+
+En particular, los datos con los que se validaron los algoritmos resultan ser singulares en términos de lo reducido que es el universo de ítemes y el alto soporte que poseen la mayoría de los conjuntos de un ítem; los cuales se repiten mucho de una transacción a otra. Esto, junto con el hecho de que relativamente se trata de datos de mediana cantidad (del orden de 100.000 transacciones), hace que para el algoritmo \textit{Apriori} no sea tan costoso recorrer el conjunto de datos, y que las operaciones de manipulación de árboles del algoritmo \textit{FP-Growth} comiencen a ser más preponderante. A esto cabe agregar la posibilidad de que las operaciones de conjuntos de Python, que son clave en la operación del algoritmo \textit{FP-Growth}, no se encuentren debidamente optimizadas para los requerimientos de este.
